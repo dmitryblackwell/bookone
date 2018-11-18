@@ -1,0 +1,45 @@
+.versus {
+    font-weight: bold;
+    display: block;
+    margin: 1em auto;
+}
+#photoWrapper {
+	width:290px;
+	margin-top:30px;
+}
+#photoWrapper label {
+	display: table-cell;
+	vertical-align: middle;
+	padding: 0;
+	margin: 0;
+}
+#photoWrapper .newInputWrapper {
+	display: table;
+}
+#photoWrapper .newInputWrapper p {
+	font-size: 1em;
+	color: #959391;
+	padding-left: 0.5em;
+	display: table-cell;
+	vertical-align: middle;
+}
+#photoWrapper label > input[type=file] { 
+  	visibility: hidden; 
+	position: absolute; 
+}
+#photoWrapper label > input + .newInputWrapper span { 
+	cursor: pointer;
+	height: 29px;
+	width: 28px;
+	display: table-cell;
+	vertical-align: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-ms-user-select: none;
+}
+#photo {
+	background: url('https://erinbamberger.files.wordpress.com/2015/04/add-photo.jpg');
+    background-repeat: no-repeat;
+	background-size: 100% auto;
+}
