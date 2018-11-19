@@ -12,7 +12,7 @@
 	</div>
 	<div class="col">
 		<p id="username-text">
-			<a href="${contextPath}/user/<security:authentication property="principal.username"/>"><security:authentication property="principal.username"/></a>
+			<a href="${contextPath}/users/<security:authentication property="principal.username"/>"><security:authentication property="principal.username"/></a>
 			
 			<a href="#" onClick="formClick()">(logout)</a>
 		</p>

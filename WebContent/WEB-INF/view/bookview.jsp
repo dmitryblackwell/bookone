@@ -19,7 +19,7 @@
 			<div class="row">
 				<div class="artwork col-xs-12 col-md-4">
 					<img
-						src="${pageContext.request.contextPath}/resources/uploaded-images/${book.isbn}.jpg"
+						src="${pageContext.request.contextPath}/resources/uploaded-images/books/${book.isbn}.jpg"
 						style="height: 400px; width: 290px; background-color: #dddddd" />
 					<security:authorize access="hasRole('ADMIN')">
 						<form:form method="POST" action="upload-image" enctype="multipart/form-data">

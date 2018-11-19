@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 
 import javax.servlet.http.HttpSession;
 
+import com.bookshelf.service.FileUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +39,9 @@ public class BooksController {
 	
 	@Autowired
 	private GenreEditor genreEditor;
+
+	@Autowired
+	private FileUploadService fileUploadService;
 
 	// get all books
 	@GetMapping
@@ -82,24 +86,15 @@ public class BooksController {
 	}
 	
 	
-	private static final String IMG_PATH = "resources/uploaded-images";
+	private static final String IMG_PATH = "resources/uploaded-images/books";
 	
 	@PostMapping("/upload-image") 
-    public String singleFileUpload(@RequestParam("file") MultipartFile file,
-                                   RedirectAttributes redirectAttributes, @RequestParam("isbn") long isbn,
-                                   HttpSession session, Model model) {
+    public String singleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("isbn") long isbn, HttpSession session) {
 		
-    	final String UPLOADED_FOLDER = session.getServletContext().getRealPath("/") + IMG_PATH + File.separator;
-    	System.out.println(UPLOADED_FOLDER);
-        try {
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(UPLOADED_FOLDER + String.valueOf(isbn) + ".jpg"); 
-            Files.write(path, bytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    	final String UPLOADED_PATH = session.getServletContext().getRealPath("/") + IMG_PATH + File.separator + String.valueOf(isbn) + ".jpg";
+		fileUploadService.uploadFile(file, UPLOADED_PATH);
 
-        return PageConstants.REDIRECT_BOOKS + "/" + isbn;
+        return PageConstants.REDIRECT_BOOKS + "/" + isbn + "?";
     }
 	
 }

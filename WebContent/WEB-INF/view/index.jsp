@@ -10,6 +10,7 @@
 <meta charset="ISO-8859-1">
 <title>Home</title>
 <%@ include file="/WEB-INF/include/links.jsp"%>
+
 </head>
 <body>
 
@@ -54,19 +55,23 @@
 				</thead>
 				<tbody>
 					<c:forEach items="${books}" var="b">
-						<tr id="tr${b.isbn}" onclick="window.location.href = 'books/${b.isbn}';" class="pointer">
+						<tr id="tr${b.isbn}" class="pointer"> <%--  onclick="window.location.href = 'books/${b.isbn}';" --%>
 							<td>${b.isbn}</td>
 							<td>${b.author}</td>
 							<td>${b.name}</td>
 							<td>${b.price}</td>
 							<td>${b.genre.name}</td>
-							<td><security:authorize access="hasRole('ADMIN')">
-								<a href="#" onclick="return deleteBook('${b.isbn}');">delete</a>
+							<td>
+								<security:authorize access="hasRole('ADMIN')">
+									<a href="#" onclick="return deleteBook('${b.isbn}');">delete</a>
+									|
+									<a href="#" onclick="return setFields('${b.isbn}', '${b.author}', '${b.name}', '${b.price}', '${b.genre.id}');">edit</a>
+									|
+								</security:authorize>
+								<a href="buy?isbn=${b.isbn}">buy</a>
 								|
-								<a href="#" onclick="return setFields('${b.isbn}', '${b.author}', '${b.name}', '${b.price}', '${b.genre.id}');">edit</a>
-								|
-							</security:authorize> 
-							<a href="buy?isbn=${b.isbn}">buy</a></td>
+								<a href="books/${b.isbn}" >more</a>
+							</td>
 
 						</tr>
 					</c:forEach>
