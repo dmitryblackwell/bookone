@@ -106,7 +106,35 @@
 
                                 </div>
                                 <div class="tab-pane fade" id="connectedServices" role="tabpanel" aria-labelledby="ConnectedServices-tab">
-                                    Facebook, Google, Twitter Account that are connected to this account
+                                    <table id="bookTable" class="table table-hover sortable "> <!-- table-striped -->
+                                        <thead>
+                                        <tr>
+                                            <th>orderNo</th>
+                                            <th>author</th>
+                                            <th>name</th>
+                                            <th>price</th>
+                                            <th>quantity</th>
+                                            <th>status</th>
+                                            <th>action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <c:forEach items="${orders}" var="o">
+                                            <tr id="tr${o.orderNo}" class="pointer"> <%--  onclick="window.location.href = 'books/${b.isbn}';" --%>
+                                                <td>${o.orderNo}</td>
+                                                <td>${o.book.author}</td>
+                                                <td>${o.book.name}</td>
+                                                <td>${o.book.price}</td>
+                                                <td>${o.quantity}</td>
+                                                <td>${o.status}</td>
+                                                <td>
+                                                    <a href="#" onclick="return deleteOrder('${user.username}', '${o.orderNo}');">delete</a>
+                                                </td>
+
+                                            </tr>
+                                        </c:forEach>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>

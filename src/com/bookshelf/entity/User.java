@@ -1,7 +1,8 @@
 package com.bookshelf.entity;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
+import java.util.Set;
 
 @Entity
 @Table(name="users")
@@ -21,7 +22,10 @@ public class User {
     private boolean enabled;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-    private List<Authority> authorities;
+    private Set<Authority> authorities;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Order> orders;
 
 
     public String getUsername() {
@@ -56,12 +60,23 @@ public class User {
         this.enabled = enabled;
     }
 
-    public List<Authority> getAuthorities() {
+    public Set<Authority> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(List<Authority> authorities) {
+    public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
+    }
+    public void addOrder(Order order){
+        orders.add(order);
     }
 
     @Override
@@ -69,8 +84,10 @@ public class User {
         return "User{" +
                 "username='" + username + '\'' +
                 ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
                 ", enabled=" + enabled +
                 ", authorities=" + authorities +
+                ", orders=" + orders +
                 '}';
     }
 }

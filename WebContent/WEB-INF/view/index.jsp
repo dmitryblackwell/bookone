@@ -68,7 +68,8 @@
 									<a href="#" onclick="return setFields('${b.isbn}', '${b.author}', '${b.name}', '${b.price}', '${b.genre.id}');">edit</a>
 									|
 								</security:authorize>
-								<a href="buy?isbn=${b.isbn}">buy</a>
+								<input id="quantity${b.isbn}" value="1" style="width:30px;">
+								<a href="#" onclick="buyBook('<security:authentication property='principal.username'/>', ${b.isbn});">buy</a>
 								|
 								<a href="books/${b.isbn}" >more</a>
 							</td>
