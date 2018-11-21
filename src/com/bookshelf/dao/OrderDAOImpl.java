@@ -25,6 +25,18 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
+    public Order getOrder(String orderId) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(Order.class, orderId);
+    }
+
+    @Override
+    public void saveOrder(Order order) {
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(order);
+    }
+
+    @Override
     public void deleteOrder(String orderNo) {
         Session session = sessionFactory.getCurrentSession();
         Query<?> query = session.createQuery("delete from Order where orderNo=:orderNo");

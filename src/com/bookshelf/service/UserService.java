@@ -10,5 +10,4 @@ public interface UserService {
     User getUser(String login);
     void saveUser(User user);
     void addOrderForUser(String username, Book book, int quantity);
-    void deleteOrder(String orderNo);
 }

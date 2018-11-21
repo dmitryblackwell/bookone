@@ -19,8 +19,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDAO userDAO;
 
-    @Autowired
-    private OrderDAO orderDAO;
 
 
     @Override
@@ -39,10 +37,5 @@ public class UserServiceImpl implements UserService {
         Order order = new Order(user, book, quantity);
         user.addOrder(order);
         saveUser(user);
-    }
-
-    @Override
-    public void deleteOrder(String orderNo) {
-        orderDAO.deleteOrder(orderNo);
     }
 }

@@ -12,7 +12,10 @@
 	</div>
 	<div class="col">
 		<p id="username-text">
-			<a href="${contextPath}/users/<security:authentication property="principal.username"/>"><security:authentication property="principal.username"/></a>
+			<security:authorize access="hasRole('ADMIN')">
+				<a href="${contextPath}/orders" style="margin-right: 20px;">orders</a>
+			</security:authorize>
+			<a href="${contextPath}/users/<security:authentication property="principal.username"/>" id="profilePageLink"><security:authentication property="principal.username"/></a>
 			
 			<a href="#" onClick="formClick()">(logout)</a>
 		</p>

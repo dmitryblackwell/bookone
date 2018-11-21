@@ -1,13 +1,7 @@
 package com.bookshelf.entity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 
 @Entity
@@ -34,7 +28,10 @@ public class Book {
 	
 	@Column(name="description")
 	private String description;
-	
+
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "book", cascade = CascadeType.ALL)
+	private Set<Comment> comments;
+
 	public Book() {}	
 	public Book(long isbn, String author, String name, float price, Genre genre) {
 		super();
@@ -82,6 +79,13 @@ public class Book {
 		this.description = description;
 	}
 
+	public Set<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
+	}
 
 	@Override
 	public String toString() {

@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="security"
+           uri="http://www.springframework.org/security/tags"%>
 <html>
 <head>
     <title>${user.username}</title>
@@ -17,9 +19,6 @@
 
 </head>
 <body>
-
-
-
 <div class="container">
     <%@ include file="/WEB-INF/include/header.jsp"%>
     <div class="row">
@@ -98,7 +97,7 @@
                                             <label style="font-weight:bold;">Books bought</label>
                                         </div>
                                         <div class="col-md-8 col-6">
-                                            34
+                                            ${orders.size()}
                                         </div>
                                     </div>
                                     <hr />
@@ -115,7 +114,7 @@
                                             <th>price</th>
                                             <th>quantity</th>
                                             <th>status</th>
-                                            <th>action</th>
+                                            <%--<th>action</th> --%>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -127,10 +126,11 @@
                                                 <td>${o.book.price}</td>
                                                 <td>${o.quantity}</td>
                                                 <td>${o.status}</td>
+                                                <%--
                                                 <td>
-                                                    <a href="#" onclick="return deleteOrder('${user.username}', '${o.orderNo}');">delete</a>
+                                                    <a href="#" onclick="return deleteOrder('${o.orderNo}');">delete</a>
                                                 </td>
-
+                                                --%>
                                             </tr>
                                         </c:forEach>
                                         </tbody>
