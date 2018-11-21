@@ -8,7 +8,9 @@ import java.nio.file.Paths;
 
 import javax.servlet.http.HttpSession;
 
+import com.bookshelf.entity.Comment;
 import com.bookshelf.service.FileUploadService;
+import com.bookshelf.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +41,9 @@ public class BooksController {
 	
 	@Autowired
 	private GenreEditor genreEditor;
+
+	@Autowired
+	private UserService userService;
 
 	@Autowired
 	private FileUploadService fileUploadService;
@@ -77,6 +82,13 @@ public class BooksController {
 		model.addAttribute("book", book);		
 		
 		return "bookview";
+	}
+
+	@PostMapping("/{isbn}/comments")
+	//@ResponseBody
+	public String saveComment(@PathVariable long isbn, @RequestParam String username, @RequestParam String comment, Model model){
+		// TODO make this shit work
+		return null;
 	}
 	
 	

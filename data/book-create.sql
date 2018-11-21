@@ -49,6 +49,7 @@ INSERT INTO orders VALUES
 	("ME3421", "mumu", 9780131872486, 2, default);
 
 CREATE TABLE comments(
+  id INT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
 	isbn BIGINT NOT NULL,
   username varchar(50) NOT NULL,
   comment varchar(4096),
@@ -56,3 +57,5 @@ CREATE TABLE comments(
  	FOREIGN KEY (username) REFERENCES users(username),
 	FOREIGN KEY (isbn) REFERENCES books(isbn)
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO comments VALUES (default, 9780131872486, 'mumu', 'cool book!');

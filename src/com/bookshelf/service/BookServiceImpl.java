@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.bookshelf.dao.CommentDAO;
+import com.bookshelf.entity.Comment;
+import com.bookshelf.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,9 @@ public class BookServiceImpl implements BookService {
 
 	@Autowired
 	private BookDAO bookDAO;
+
+	@Autowired
+	private CommentDAO commentDAO;
 	
 	@Autowired
 	private GenreDAO genreDAO;
@@ -43,6 +49,8 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public Genre getGenre(String name) { return genreDAO.getGenre(name); }
 
-
-
+	@Override
+	public void addComment(Book book, User user, String comment) {
+		commentDAO.saveComment(new Comment(book, user, comment));
+	}
 }

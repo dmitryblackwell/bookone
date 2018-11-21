@@ -7,7 +7,7 @@
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 <%@ include file="/WEB-INF/include/links.jsp"%>
-
+<link href="<c:url value="/resources/css/comments.css"/>" rel="stylesheet" />
 </head>
 <body>
 
@@ -70,7 +70,38 @@
 						<span>buy</span>
 					</div>
 				</div>
+
 			</div>
+			<div class="row">
+				<div class="col-md-4"></div>
+				<div class="col-md-8" style="float:right;">
+					<div class="comments-section">
+						<c:forEach items="${book.comments}" var="c">
+							<div class="comment-post">
+
+								<div class="col-xs-2"><img src="${pageContext.request.contextPath}/resources/uploaded-images/users/${c.user.username}.jpg"/></div>
+								<div class="col-xs-9">
+									<p><span class="comment-author">${c.user.username}</span><span class="comment-time">${c.user.orders.size()} orders</span></p>
+									<p class="comment-content">${c.comment}</p>
+								</div>
+
+							</div>
+						</c:forEach>
+
+						<div class="col-xs-12">
+							<form:form action="${book.isbn}/comments" method="post" id="addCommentForm" cssStyle="margin-top: 50px;">
+								<textarea name="comment"></textarea>
+								<input type="hidden" name="username" value="<security:authentication property="principal.username"/>">
+								<div class="btn" for="test" id="addcomment" onclick="document.getElementById('addCommentForm').submit();" style="float: right;">
+									<span>add comment</span>
+								</div>
+							</form:form>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
 		</div>
 	</div>
 </body>

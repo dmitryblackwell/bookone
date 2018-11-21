@@ -1,10 +1,15 @@
 package com.bookshelf.entity;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name="comments")
 public class Comment {
+    @Id
+    @Column(name="id")
+    private int id;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="isbn")
@@ -16,6 +21,21 @@ public class Comment {
 
     @Column(name="comment")
     private String comment;
+
+    public Comment() {}
+    public Comment(Book book, User user, String comment) {
+        this.book = book;
+        this.user = user;
+        this.comment = comment;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Book getBook() {
         return book;
