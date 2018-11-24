@@ -9,9 +9,11 @@ import java.nio.file.Paths;
 import javax.servlet.http.HttpSession;
 
 import com.bookshelf.entity.Comment;
+import com.bookshelf.entity.User;
 import com.bookshelf.service.FileUploadService;
 import com.bookshelf.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -85,10 +87,17 @@ public class BooksController {
 	}
 
 	@PostMapping("/{isbn}/comments")
-	//@ResponseBody
-	public String saveComment(@PathVariable long isbn, @RequestParam String username, @RequestParam String comment, Model model){
-		// TODO make this shit work
-		return null;
+	public String saveComment(@PathVariable long isbn, @RequestParam String username, @RequestParam String comment){
+		bookService.addComment(isbn, username, comment);
+
+		return PageConstants.REDIRECT_BOOKS +"/" + isbn;
+	}
+
+	@DeleteMapping("/{isbn}/comments/{id}")
+	@ResponseBody
+	public String deleteComment(@PathVariable long isbn, @PathVariable int id){
+		bookService.deleteComment(id);
+		return "comment deleted";
 	}
 	
 	

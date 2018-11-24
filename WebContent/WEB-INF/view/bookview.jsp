@@ -7,7 +7,6 @@
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 <%@ include file="/WEB-INF/include/links.jsp"%>
-<link href="<c:url value="/resources/css/comments.css"/>" rel="stylesheet" />
 </head>
 <body>
 
@@ -77,11 +76,16 @@
 				<div class="col-md-8" style="float:right;">
 					<div class="comments-section">
 						<c:forEach items="${book.comments}" var="c">
-							<div class="comment-post">
+							<div class="comment-post" id="comment${c.id}">
 
-								<div class="col-xs-2"><img src="${pageContext.request.contextPath}/resources/uploaded-images/users/${c.user.username}.jpg"/></div>
+								<div class="col-xs-2"><img src="${contextPath}/resources/uploaded-images/users/${c.user.username}.jpg"/></div>
 								<div class="col-xs-9">
-									<p><span class="comment-author">${c.user.username}</span><span class="comment-time">${c.user.orders.size()} orders</span></p>
+									<p>
+										<span class="comment-author"><a href="${contextPath}/users/${c.user.username}">${c.user.username}</a></span><span class="comment-time">${c.user.orders.size()} orders</span>
+										<security:authorize access="hasRole('ADMIN')">
+											<span class="comment-time"><a href="#" onclick="return deleteComment('${book.isbn}', '${c.id}')">delete</a> </span>
+										</security:authorize>
+									</p>
 									<p class="comment-content">${c.comment}</p>
 								</div>
 
@@ -96,7 +100,6 @@
 									<span>add comment</span>
 								</div>
 							</form:form>
-
 						</div>
 					</div>
 				</div>

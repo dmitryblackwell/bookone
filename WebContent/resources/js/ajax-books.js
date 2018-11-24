@@ -49,3 +49,15 @@ function approveOrder(orderNo){
     });
     return false;
 }
+
+function deleteComment(isbn, id){
+    id *= 1;
+    $.ajax({
+        url: isbn + "/comments/" + id,
+        type: "DELETE"
+    }).then(function() {
+        var div = "#comment" + id;
+        $(div).css( "display", "none" )
+    });
+    return false;
+}

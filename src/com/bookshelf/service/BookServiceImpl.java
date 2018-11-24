@@ -50,7 +50,12 @@ public class BookServiceImpl implements BookService {
 	public Genre getGenre(String name) { return genreDAO.getGenre(name); }
 
 	@Override
-	public void addComment(Book book, User user, String comment) {
-		commentDAO.saveComment(new Comment(book, user, comment));
+	public void addComment(long isbn, String username, String comment) {
+		commentDAO.saveComment(isbn, username, comment);
+	}
+
+	@Override
+	public void deleteComment(int id) {
+		commentDAO.deleteComment(id);
 	}
 }

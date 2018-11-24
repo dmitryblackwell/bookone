@@ -27,6 +27,9 @@ public class User {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Order> orders;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Comment> comments;
+
 
     public String getUsername() {
         return username;
@@ -77,6 +80,14 @@ public class User {
     }
     public void addOrder(Order order){
         orders.add(order);
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 
     @Override

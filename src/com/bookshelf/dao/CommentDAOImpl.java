@@ -3,6 +3,7 @@ package com.bookshelf.dao;
 import com.bookshelf.entity.Comment;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.loader.custom.sql.SQLQueryParser;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -14,9 +15,13 @@ public class CommentDAOImpl implements CommentDAO {
     private SessionFactory sessionFactory;
 
     @Override
-    public void saveComment(Comment comment) {
+    public void saveComment(long isbn, String username, String comment) {
         Session session = sessionFactory.getCurrentSession();
-        session.saveOrUpdate(comment);
+        Query query = session.createSQLQuery("INSERT INTO comments VALUES (default, :isbn, :username, :comment);");
+        query.setParameter("isbn", isbn);
+        query.setParameter("username", username);
+        query.setParameter("comment", comment);
+        query.executeUpdate();
     }
 
     @Override

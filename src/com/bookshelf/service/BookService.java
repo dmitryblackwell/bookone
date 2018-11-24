@@ -16,7 +16,8 @@ public interface BookService {
 	public Genre getGenre(int id);
 	public Genre getGenre(String name);
 
-	void addComment(Book book, User ser, String comment);
+	void addComment(long isbn, String username, String comment);
+	void deleteComment(int id);
 }
 
 // TODO make this world a better place

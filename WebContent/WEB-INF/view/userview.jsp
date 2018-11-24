@@ -146,6 +146,25 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="comments-section">
+                <c:forEach items="${user.comments}" var="c">
+                    <div class="comment-post" id="comment${c.id}">
+
+                        <div class="col-xs-2"><img src="${contextPath}/resources/uploaded-images/users/${c.user.username}.jpg"/></div>
+                        <div class="col-xs-9">
+                            <p>
+                                <span class="comment-author">${c.user.username}</span>commented book <a href="${contextPath}/books/${c.book.isbn}">${c.book.name}</a>
+                            </p>
+                            <p class="comment-content">${c.comment}</p>
+                        </div>
+
+                    </div>
+                </c:forEach>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
