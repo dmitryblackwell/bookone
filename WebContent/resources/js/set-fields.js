@@ -5,6 +5,6 @@ function setFields(isbn, author, name, price, genre){
 	$("input[name='author']").val(author);
 	$("input[name='name']").val(name);
 	$("input[name='price']").val(price);
-	$("select[name='genreId']").val(genre);
+	$("select[name='genre']").val(genre);
 	return false;
 }

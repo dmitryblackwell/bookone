@@ -65,7 +65,7 @@
 							</tr>
 						</tbody>
 					</table>
-					<div class="btn" for="test" id="savebook" style="float: right;">
+					<div class="btn" for="test"  onclick="buyBook('<security:authentication property='principal.username'/>', '${book.isbn}');" id="savebook" style="float: right;">
 						<span>buy</span>
 					</div>
 				</div>

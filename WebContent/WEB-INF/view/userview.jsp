@@ -51,10 +51,13 @@
                         <div class="col-12">
                             <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="basicInfo-tab" data-toggle="tab" href="#basicInfo" role="tab" aria-controls="basicInfo" aria-selected="true">Basic Info</a>
+                                    <a class="nav-link active" id="basicInfo-tab" data-toggle="tab" href="#basicInfo" role="tab" aria-controls="basicInfo" aria-selected="true">info</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="connectedServices-tab" data-toggle="tab" href="#connectedServices" role="tab" aria-controls="connectedServices" aria-selected="false">Connected Services</a>
+                                    <a class="nav-link" id="connectedServices-tab" data-toggle="tab" href="#connectedServices" role="tab" aria-controls="connectedServices" aria-selected="false">orders</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="orders-tab" data-toggle="tab" href="#comments" role="tab" aria-controls="comment" aria-selected="false">comments</a>
                                 </li>
                             </ul>
                             <div class="tab-content ml-1" id="myTabContent">
@@ -114,7 +117,7 @@
                                             <th>price</th>
                                             <th>quantity</th>
                                             <th>status</th>
-                                            <%--<th>action</th> --%>
+                                            <th>action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -126,15 +129,37 @@
                                                 <td>${o.book.price}</td>
                                                 <td>${o.quantity}</td>
                                                 <td>${o.status}</td>
-                                                <%--
+
                                                 <td>
-                                                    <a href="#" onclick="return deleteOrder('${o.orderNo}');">delete</a>
+                                                    <%--<a href="#" onclick="return deleteOrder('${o.orderNo}');">delete</a>--%>
+                                                    <a href="/books/${o.book.isbn}" >more</a>
                                                 </td>
-                                                --%>
+
                                             </tr>
                                         </c:forEach>
                                         </tbody>
                                     </table>
+                                </div>
+                                <div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="Orders-tab">
+                                    <div class="row" style="margin-top: 50px;">
+                                        <div class="col-8">
+                                            <div class="comments-section">
+                                                <c:forEach items="${user.comments}" var="c">
+                                                    <div class="comment-post" id="comment${c.id}">
+
+                                                        <div class="col-xs-2"><img src="${contextPath}/resources/uploaded-images/users/${c.user.username}.jpg"/></div>
+                                                        <div class="col-xs-9">
+                                                            <p>
+                                                                <span class="comment-author">${c.user.username}</span> commented book <a href="${contextPath}/books/${c.book.isbn}">${c.book.name}</a>
+                                                            </p>
+                                                            <p class="comment-content">${c.comment}</p>
+                                                        </div>
+
+                                                    </div>
+                                                </c:forEach>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -143,25 +168,6 @@
 
                 </div>
 
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="comments-section">
-                <c:forEach items="${user.comments}" var="c">
-                    <div class="comment-post" id="comment${c.id}">
-
-                        <div class="col-xs-2"><img src="${contextPath}/resources/uploaded-images/users/${c.user.username}.jpg"/></div>
-                        <div class="col-xs-9">
-                            <p>
-                                <span class="comment-author">${c.user.username}</span>commented book <a href="${contextPath}/books/${c.book.isbn}">${c.book.name}</a>
-                            </p>
-                            <p class="comment-content">${c.comment}</p>
-                        </div>
-
-                    </div>
-                </c:forEach>
             </div>
         </div>
     </div>

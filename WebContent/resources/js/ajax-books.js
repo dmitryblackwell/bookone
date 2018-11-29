@@ -9,9 +9,9 @@ function deleteBook(isbn){
 	return false;
 }
 
-function goToUserProfile(username) {
+function goToUserProfile() {
     //document.getElementById('profilePageLink').click();
-    document.location.href = "users/" + username + "?r=" + (Math.random());
+    document.location.href = "/getCurrentUser";
     // var Http = new XMLHttpRequest();
     // var url = "users/"+username;
     // Http.open("GET", url);
@@ -19,12 +19,15 @@ function goToUserProfile(username) {
 }
 
 function buyBook(username, isbn){
+    var quantity = $("#quantity"+isbn).val();
+    if (quantity == undefined)
+        quantity = 1;
     $.ajax({
-        url: "users/" + username + "/orders",
-		data: {"isbn":isbn, "quantity": $("#quantity"+isbn).val()},
+        url: "/users/" + username + "/orders",
+		data: {"isbn":isbn, "quantity": quantity},
         type: "POST",
-		success: goToUserProfile(username),
-		error: goToUserProfile(username)
+		success: goToUserProfile(),
+		error: goToUserProfile()
     });
 }
 function deleteOrder(orderNo){
