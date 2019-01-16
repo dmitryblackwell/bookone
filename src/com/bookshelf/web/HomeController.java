@@ -25,7 +25,6 @@ public class HomeController {
 
 	@GetMapping("/login")
 	public String login() throws MessagingException, EmailException {
-		new MailUtil().sendMail( "dmitryblackwell@gmail.com", "Lol!", "you know what to do...");
 		return "login";
 	}
 
