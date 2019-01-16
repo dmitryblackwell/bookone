@@ -2,6 +2,7 @@ package com.bookshelf.web;
 
 import com.bookshelf.util.MailUtil;
 import com.mchange.v2.lang.ThreadUtils;
+import org.apache.commons.mail.EmailException;
 import org.springframework.http.HttpRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,8 +24,8 @@ public class HomeController {
 	}
 
 	@GetMapping("/login")
-	public String login() throws MessagingException {
-		//MailUtil.sendMail( "dmitryblackwell@gmail.com", "It WORKED!!!", "you know what to do...");
+	public String login() throws MessagingException, EmailException {
+		new MailUtil().sendMail( "dmitryblackwell@gmail.com", "Lol!", "you know what to do...");
 		return "login";
 	}
 

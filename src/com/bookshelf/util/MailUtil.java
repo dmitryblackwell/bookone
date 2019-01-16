@@ -1,37 +1,43 @@
 package com.bookshelf.util;
 
+import org.apache.commons.mail.EmailException;
 import org.apache.log4j.Logger;
 
-import javax.mail.Message.RecipientType;
+
+import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.Email;
+import org.apache.commons.mail.SimpleEmail;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import java.util.Date;
-import java.util.Properties;
 
 public class MailUtil {
 
     private static final Logger LOGGER = Logger.getLogger(MailUtil.class);
 
-    private MailUtil() {}
 
-    private static final String FROM = "no_reply@bookone.com";
-    private static final String HOST = "smtp.gmail.com";
+    public void sendMail(final String emailAddress, final String subject, final String mailText) throws MessagingException, EmailException {
+        Email email = new SimpleEmail();
+        // Configuration
+        email.setHostName("smtp.googlemail.com");
+        email.setSmtpPort(465);
+        email.setAuthenticator(new DefaultAuthenticator(Constant.LOGIN, Constant.PASS));
 
-    public static void sendMail(final String emailAddress, final String subject, final String mailText) throws MessagingException {
-        Properties props = new Properties();
-        props.put("mail.smtp.host", "127.0.0.1");
-        props.put("mail.smtp.port", "2109");
-        props.put("mail.debug", "true");
-        Session session = Session.getDefaultInstance(props);
-        MimeMessage message = new MimeMessage(session);
-        message.setFrom(new InternetAddress(FROM));
-        message.setRecipient(RecipientType.TO, new InternetAddress(emailAddress));
-        message.setSubject(subject);
-        message.setText(mailText, "UTF-8"); // as "text/plain"
-        message.setSentDate(new Date());
-        Transport.send(message);
+        // Required for gmail
+        email.setSSLOnConnect(true);
+
+        // Sender
+        email.setFrom(Constant.FROM_ADDRESS);
+
+        // Email title
+        email.setSubject(subject);
+
+        // Email message.
+        email.setMsg(mailText);
+
+        // Receiver
+        email.addTo(emailAddress);
+        email.send();
+        LOGGER.info("Email was sent to " + emailAddress);
     }
 }
