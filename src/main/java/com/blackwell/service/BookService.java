@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.blackwell.entity.Book;
 import com.blackwell.entity.Genre;
-import com.blackwell.entity.User;
 
 public interface BookService {
 	public List<Book> getBooks();

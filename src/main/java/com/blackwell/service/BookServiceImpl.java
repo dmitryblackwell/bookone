@@ -58,4 +58,5 @@ public class BookServiceImpl implements BookService {
 	public void deleteComment(int id) {
 		commentDAO.deleteComment(id);
 	}
+
 }

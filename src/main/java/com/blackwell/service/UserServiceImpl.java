@@ -6,6 +6,7 @@ import com.blackwell.entity.Book;
 import com.blackwell.entity.Order;
 import com.blackwell.entity.User;
 import org.apache.log4j.Logger;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +36,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addOrderForUser(String username, Book book, int quantity) {
         User user = userDAO.getUser(username);
-        Order order = new Order(user, book, quantity);
-        user.addOrder(order);
+        Order order = Order.builder()
+                .user(user)
+                .book(book)
+                .quantity(quantity)
+                .build();
+        user.getOrders().add(order);
         saveUser(user);
     }
 }
