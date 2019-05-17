@@ -3,6 +3,7 @@ package com.blackwell.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -39,4 +40,16 @@ public class Book {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "book", cascade = CascadeType.ALL)
 	private Set<Comment> comments;
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Book book = (Book) o;
+		return isbn == book.isbn;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(isbn);
+	}
 }

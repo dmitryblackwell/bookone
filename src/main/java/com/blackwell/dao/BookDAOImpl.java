@@ -17,26 +17,36 @@ public class BookDAOImpl implements BookDAO {
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public List<Book> getBooks() {
+	public List<Book> get() {
 		Session session = sessionFactory.getCurrentSession();
 		Query<Book> query = session.createQuery("from Book", Book.class);
 		return query.getResultList();
 	}
 
 	@Override
-	public Book getBook(long isbn) {
+	public Book get(int id) {
+		return this.get((long) id);
+	}
+
+	@Override
+	public Book get(long isbn) {
 		Session session = sessionFactory.getCurrentSession();
 		return session.get(Book.class, isbn);
 	}
 	
 	@Override
-	public void saveBook(Book book) {
+	public void save(Book book) {
 		Session session = sessionFactory.getCurrentSession();
 		session.saveOrUpdate(book);
 	}
-	
+
 	@Override
-	public void deleteBook(long isbn) {
+	public void delete(int id) {
+		this.delete((long) id);
+	}
+
+	@Override
+	public void delete(long isbn) {
 		Session session = sessionFactory.getCurrentSession();
 		Query<?> query = session.createQuery("delete from Book where isbn=:bookISBN");
 		query.setParameter("bookISBN", isbn);

@@ -3,24 +3,37 @@ package com.blackwell.config;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	// private static final String EMPLOYEE = "EMPLOYEE";
+	@Value("${mocks.enabled}")
+	private boolean isMocksEnabled;
 	
 	@Autowired
 	private DataSource dataSource;
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.jdbcAuthentication().dataSource(dataSource);
+		if (isMocksEnabled) {
+			// TODO rewrite it with new method
+			User.UserBuilder users = User.withDefaultPasswordEncoder();
+
+			// TODO hash passwords for mocks
+			auth.inMemoryAuthentication()
+					.withUser(users.username("herasim").password("fun123").roles("USER"))
+					.withUser(users.username("mumu").password("fun123").roles("USER", "ADMIN"));
+		} else {
+			auth.jdbcAuthentication().dataSource(dataSource);
+		}
 	}
 
 	@Override
