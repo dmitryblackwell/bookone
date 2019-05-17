@@ -3,10 +3,12 @@ package com.blackwell.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @Setter
 @ToString(exclude = {"book", "user"})
+@EqualsAndHashCode(exclude = {"book", "user", "comment"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

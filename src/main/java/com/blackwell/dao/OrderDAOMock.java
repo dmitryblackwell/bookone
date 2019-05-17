@@ -1,21 +1,33 @@
 package com.blackwell.dao;
 
 import com.blackwell.entity.Order;
+import com.blackwell.entity.User;
+import com.blackwell.util.OrderNoGenerator;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.aspectj.weaver.ast.Or;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Repository
 public class OrderDAOMock implements OrderDAO {
 
-    private List<Order> orders = new ArrayList<>();
+    @Autowired
+    @Qualifier("userDAOMock")
+    private UserDAO userDAO;
 
     @Override
     public List<Order> get() {
+        List<Order> orders = new ArrayList<>();
+        userDAO.get().forEach(user -> orders.addAll(user.getOrders()));
         return orders;
     }
 
@@ -26,15 +38,20 @@ public class OrderDAOMock implements OrderDAO {
 
     @Override
     public Order get(String orderId) {
-        return orders.stream()
+        List<Order> filteredOrders = get().stream()
                 .filter(order -> StringUtils.equals(order.getOrderNo(), orderId))
-                .collect(Collectors.toList())
-                .get(0);
+                .collect(Collectors.toList());
+
+        return CollectionUtils.isEmpty(filteredOrders) ? null : filteredOrders.get(0);
     }
 
     @Override
     public void save(Order order) {
-        orders.add(order);
+        if (get().contains(order))
+            return;
+        order.setOrderNo(OrderNoGenerator.generate());
+        userDAO.get(order.getUser().getUsername())
+                .getOrders().add(order);
     }
 
     @Override
@@ -44,8 +61,8 @@ public class OrderDAOMock implements OrderDAO {
 
     @Override
     public void delete(String orderNo) {
-        orders = orders.stream()
-                .filter(order -> !StringUtils.equals(order.getOrderNo(), orderNo))
-                .collect(Collectors.toList());
+        for(User user : userDAO.get()) {
+            user.getOrders().removeIf(order -> StringUtils.equals(order.getOrderNo(), orderNo));
+        }
     }
 }

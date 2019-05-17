@@ -2,14 +2,14 @@ package com.blackwell.dao;
 
 import com.blackwell.entity.Book;
 import com.blackwell.entity.Genre;
+import com.blackwell.util.BeanUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -30,6 +30,7 @@ public class BookDAOMock implements BookDAO {
                 .genre(programmingGenre)
                 .description("Thinking in Java should be read cover to cover" +
                         " by every Java programmer.")
+                .comments(new HashSet<>())
                 .build();
         Book futurologicalCongressBook = Book.builder()
                 .isbn(9780826401076L)
@@ -39,6 +40,7 @@ public class BookDAOMock implements BookDAO {
                 .genre(sciFiGenre)
                 .description("The Futurological Congress is a 1971 black humour " +
                         "science fiction novel.")
+                .comments(new HashSet<>())
                 .build();
         Book catsCradleBook = Book.builder()
                 .isbn(9788071453611L)
@@ -48,6 +50,7 @@ public class BookDAOMock implements BookDAO {
                 .genre(sciFiGenre)
                 .description("At the opening of the book, the narrator, describes " +
                         "about what important Americans did on the day Hiroshima was bombed.")
+                .comments(new HashSet<>())
                 .build();
 
         books.addAll(Arrays.asList(thinkingInJavaBook, futurologicalCongressBook, catsCradleBook));
@@ -73,9 +76,10 @@ public class BookDAOMock implements BookDAO {
 
     @Override
     public void save(Book book) {
-        // TODO implement replacement of not-null fields
-        books.remove(book);
-        books.add(book);
+        Book currentBook = (Book) CollectionUtils.find(books, o -> o.equals(book));
+        if (currentBook == null)
+            return;
+        BeanUtils.copy(currentBook, book);
     }
 
     @Override

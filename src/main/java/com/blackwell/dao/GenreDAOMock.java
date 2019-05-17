@@ -1,6 +1,7 @@
 package com.blackwell.dao;
 
 import com.blackwell.entity.Genre;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -35,10 +36,11 @@ public class GenreDAOMock implements GenreDAO {
 
     @Override
     public Genre get(String name) {
-        return genres.stream()
+        List<Genre> filteredGenres = genres.stream()
                 .filter(genre -> StringUtils.equals(genre.getName(), name))
-                .collect(Collectors.toList())
-                .get(0);
+                .collect(Collectors.toList());
+
+        return CollectionUtils.isEmpty(filteredGenres) ? null : filteredGenres.get(0);
     }
 
     @Override

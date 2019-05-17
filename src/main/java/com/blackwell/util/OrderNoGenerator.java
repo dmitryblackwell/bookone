@@ -8,13 +8,12 @@ import java.io.Serializable;
 import java.util.Random;
 
 public class OrderNoGenerator implements IdentifierGenerator {
-    private Random r = new Random();
-    private char getRandomLetter(){
+    private static Random r = new Random();
+    private static char getRandomLetter(){
         return (char) (r.nextInt(25)+65);
     }
 
-    @Override
-    public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
+    public static String generate() {
         StringBuilder sb = new StringBuilder();
 
         sb.append(getRandomLetter());
@@ -23,5 +22,10 @@ public class OrderNoGenerator implements IdentifierGenerator {
         for(int i=0; i<4; ++i)
             sb.append(r.nextInt(9));
         return sb.toString();
+    }
+
+    @Override
+    public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
+        return generate();
     }
 }

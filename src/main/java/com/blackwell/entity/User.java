@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @ToString(exclude = {"password", "authorities", "orders", "comments"})
+@EqualsAndHashCode(exclude = {"email", "password", "enabled", "authorities", "orders", "comments"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

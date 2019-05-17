@@ -9,6 +9,7 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = "user")
 @Builder
 @Entity
 @Table(name="authorities")

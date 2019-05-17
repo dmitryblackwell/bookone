@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Repository
@@ -27,13 +29,14 @@ public class CommentDAOMock implements CommentDAO {
     @Override
     public void save(long isbn, String username, String comment) {
         Book book = bookDAO.get(isbn);
-        book.getComments().add(
-                Comment.builder()
+        Comment usersComment = Comment.builder()
                         .id(maxCommentId++)
                         .book(book)
                         .user(userDAO.get(username))
                         .comment(comment)
-                        .build());
+                        .build();
+        book.getComments().add(usersComment);
+        userDAO.get(username).getComments().add(usersComment);
     }
 
     @Override
@@ -46,10 +49,17 @@ public class CommentDAOMock implements CommentDAO {
     @Override
     public void delete(int id) {
         bookDAO.get().forEach(book -> book.setComments(
-                                    book.getComments().stream()
-                                        .filter(comment -> comment.getId() != id)
-                                        .collect(Collectors.toSet())
-                                    ));
+                filterCommentsList(book.getComments(), id)
+        ));
+        userDAO.get().forEach(user -> user.setComments(
+                filterCommentsList(user.getComments(), id)
+        ));
+    }
+
+    private Set<Comment> filterCommentsList(Set<Comment> comments, int id) {
+        return comments.stream()
+                .filter(comment -> comment.getId() != id)
+                .collect(Collectors.toSet());
     }
 
     @Override

@@ -40,7 +40,8 @@ public class DAOManagerServiceImpl implements DAOManagerService {
             if(StringUtils.containsIgnoreCase(DAOClass.getSimpleName(), isMocksEnabled ? MOCK : IMPL)) {
                 String className = DAOClass.getSimpleName();
                 className = className.substring(0, 1).toLowerCase()  + className.substring(1);
-                DAOs.put(DAOClass, (DAO) applicationContext.getBean(className));
+                DAOs.put((Class<? extends DAO>) DAOClass.getInterfaces()[0],
+                        (DAO) applicationContext.getBean(className));
             }
         }
     }
