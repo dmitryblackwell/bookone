@@ -2,7 +2,7 @@
 __Awesome things are in development...__
 __version: 1.1.0__
 
-##Getting started
+## Getting started
 
 ### Basic setup
 
