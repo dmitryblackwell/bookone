@@ -11,10 +11,13 @@ import org.springframework.stereotype.Repository;
 
 import com.blackwell.entity.Book;
 
+import javax.transaction.Transactional;
+
 @Repository
+@Transactional
 public class BookDAOImpl implements BookDAO {
 
-	@Autowired
+	@Autowired(required = false)
 	private SessionFactory sessionFactory;
 	
 	@Override

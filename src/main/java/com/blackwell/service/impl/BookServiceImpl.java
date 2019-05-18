@@ -20,7 +20,6 @@ import com.blackwell.entity.Book;
 import com.blackwell.entity.Genre;
 
 @Service
-@Transactional
 public class BookServiceImpl implements BookService {
 
 	@Autowired

@@ -10,12 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
+@Transactional
 public class CommentDAOImpl implements CommentDAO {
 
-    @Autowired
+    @Autowired(required = false)
     private SessionFactory sessionFactory;
 
     @Override

@@ -14,7 +14,6 @@ import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
 @Service
-@Transactional
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);

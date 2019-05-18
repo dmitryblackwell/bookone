@@ -14,7 +14,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 public class OrderServiceImpl implements OrderService {
 
     @Autowired

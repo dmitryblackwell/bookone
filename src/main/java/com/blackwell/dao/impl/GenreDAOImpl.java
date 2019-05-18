@@ -14,10 +14,13 @@ import org.springframework.stereotype.Repository;
 import com.blackwell.entity.Genre;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import javax.transaction.Transactional;
+
 @Repository
+@Transactional
 public class GenreDAOImpl implements GenreDAO {
 	
-	@Autowired
+	@Autowired(required = false)
 	private SessionFactory sessionFactory;
 	
 	@Override

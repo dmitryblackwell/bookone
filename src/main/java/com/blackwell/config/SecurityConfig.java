@@ -18,7 +18,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Value("${mocks.enabled}")
 	private boolean isMocksEnabled;
 	
-	@Autowired
+	@Autowired(required = false)
 	private DataSource dataSource;
 
 	@Override
