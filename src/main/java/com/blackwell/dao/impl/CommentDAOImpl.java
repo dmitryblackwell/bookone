@@ -1,5 +1,6 @@
-package com.blackwell.dao;
+package com.blackwell.dao.impl;
 
+import com.blackwell.dao.CommentDAO;
 import com.blackwell.entity.Comment;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

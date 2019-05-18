@@ -18,7 +18,7 @@
   <p>
   	someone got fired... <a href="${pageContext.request.contextPath}/">back</a>
   	<br>
-  	${message}
+  	<%-- ${message} --%>
   </p>
   
 </div>

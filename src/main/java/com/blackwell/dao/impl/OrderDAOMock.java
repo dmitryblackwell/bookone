@@ -1,5 +1,7 @@
-package com.blackwell.dao;
+package com.blackwell.dao.impl;
 
+import com.blackwell.dao.OrderDAO;
+import com.blackwell.dao.UserDAO;
 import com.blackwell.entity.Order;
 import com.blackwell.entity.User;
 import com.blackwell.util.OrderNoGenerator;
@@ -14,6 +16,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -62,7 +65,10 @@ public class OrderDAOMock implements OrderDAO {
     @Override
     public void delete(String orderNo) {
         for(User user : userDAO.get()) {
-            user.getOrders().removeIf(order -> StringUtils.equals(order.getOrderNo(), orderNo));
+            Set<Order> filteredOrders = user.getOrders().stream()
+                    .filter(order -> !StringUtils.equals(order.getOrderNo(), orderNo))
+                    .collect(Collectors.toSet());
+            user.setOrders(filteredOrders);
         }
     }
 }

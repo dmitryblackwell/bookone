@@ -1,20 +1,17 @@
-package com.blackwell.service;
+package com.blackwell.service.impl;
 
-import com.blackwell.dao.OrderDAO;
 import com.blackwell.dao.UserDAO;
 import com.blackwell.entity.Book;
 import com.blackwell.entity.Order;
 import com.blackwell.entity.User;
+import com.blackwell.service.DAOManagerService;
+import com.blackwell.service.UserService;
 import org.apache.log4j.Logger;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
-import java.util.Iterator;
-import java.util.Set;
 
 @Service
 @Transactional

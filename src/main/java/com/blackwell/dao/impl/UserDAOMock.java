@@ -1,5 +1,6 @@
-package com.blackwell.dao;
+package com.blackwell.dao.impl;
 
+import com.blackwell.dao.UserDAO;
 import com.blackwell.entity.Authority;
 import com.blackwell.entity.Comment;
 import com.blackwell.entity.Order;
@@ -29,8 +30,8 @@ public class UserDAOMock implements UserDAO {
                 .username("herasim")
                 .email("herasim@mail.com")
                 .enabled(true)
-                .orders(Collections.emptySet())
-                .comments(Collections.emptySet())
+                .orders(new HashSet<>())
+                .comments(new HashSet<>())
                 .build();
         Authority herasimUserAuth = new Authority(herasim, "ROLE_USER");
         herasim.setAuthorities(Collections.singleton(herasimUserAuth));

@@ -1,5 +1,8 @@
-package com.blackwell.dao;
+package com.blackwell.dao.impl;
 
+import com.blackwell.dao.BookDAO;
+import com.blackwell.dao.CommentDAO;
+import com.blackwell.dao.UserDAO;
 import com.blackwell.entity.Book;
 import com.blackwell.entity.Comment;
 import org.springframework.beans.factory.annotation.Autowired;

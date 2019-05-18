@@ -1,7 +1,8 @@
-package com.blackwell.dao;
+package com.blackwell.dao.impl;
 
 import java.util.List;
 
+import com.blackwell.dao.BookDAO;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;

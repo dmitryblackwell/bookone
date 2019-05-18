@@ -1,5 +1,6 @@
-package com.blackwell.dao;
+package com.blackwell.dao.impl;
 
+import com.blackwell.dao.GenreDAO;
 import com.blackwell.entity.Genre;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;

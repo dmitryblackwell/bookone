@@ -1,4 +1,4 @@
-package com.blackwell.service;
+package com.blackwell.service.impl;
 
 import java.util.List;
 
@@ -8,6 +8,8 @@ import javax.transaction.Transactional;
 import com.blackwell.dao.CommentDAO;
 import com.blackwell.entity.Comment;
 import com.blackwell.entity.User;
+import com.blackwell.service.BookService;
+import com.blackwell.service.DAOManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

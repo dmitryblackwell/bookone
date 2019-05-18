@@ -1,6 +1,8 @@
-package com.blackwell.dao;
+package com.blackwell.dao.impl;
 
+import com.blackwell.dao.OrderDAO;
 import com.blackwell.entity.Book;
+import com.blackwell.entity.Order;
 import com.blackwell.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,36 +14,45 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.util.List;
 
 @Repository
-public class UserDAOImpl implements UserDAO {
+public class OrderDAOImpl implements OrderDAO {
 
     @Autowired
     private SessionFactory sessionFactory;
 
     @Override
-    public List<User> get() {
+    public List<Order> get() {
         Session session = sessionFactory.getCurrentSession();
-        Query<User> query = session.createQuery("from User", User.class);
+        Query<Order> query = session.createQuery("from Order", Order.class);
         return query.getResultList();
     }
 
     @Override
-    public User get(int id) {
+    public Order get(int id) {
         throw new NotImplementedException();
     }
 
     @Override
-    public User get(String login) {
+    public Order get(String orderId) {
         Session session = sessionFactory.getCurrentSession();
-        return session.get(User.class, login);
+        return session.get(Order.class, orderId);
     }
 
     @Override
-    public void save(User user) {
-        sessionFactory.getCurrentSession().saveOrUpdate(user);
+    public void save(Order order) {
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(order);
     }
 
     @Override
     public void delete(int id) {
         throw new NotImplementedException();
+    }
+
+    @Override
+    public void delete(String orderNo) {
+        Session session = sessionFactory.getCurrentSession();
+        Query<?> query = session.createQuery("delete from Order where orderNo=:orderNo");
+        query.setParameter("orderNo", orderNo);
+        query.executeUpdate();
     }
 }

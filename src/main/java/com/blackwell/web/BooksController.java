@@ -73,7 +73,7 @@ public class BooksController {
 	@ResponseBody
 	public String delete(@PathVariable long isbn) {
 		bookService.deleteBook(isbn);
-		return "book savely deleted";
+		return "book safely deleted";
 	}
 	
 	

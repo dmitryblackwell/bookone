@@ -1,7 +1,8 @@
-package com.blackwell.dao;
+package com.blackwell.dao.impl;
 
 import java.util.List;
 
+import com.blackwell.dao.GenreDAO;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

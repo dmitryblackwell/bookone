@@ -1,5 +1,6 @@
-package com.blackwell.dao;
+package com.blackwell.dao.impl;
 
+import com.blackwell.dao.BookDAO;
 import com.blackwell.entity.Book;
 import com.blackwell.entity.Genre;
 import com.blackwell.util.BeanUtils;
@@ -77,8 +78,10 @@ public class BookDAOMock implements BookDAO {
     @Override
     public void save(Book book) {
         Book currentBook = (Book) CollectionUtils.find(books, o -> o.equals(book));
-        if (currentBook == null)
+        if (currentBook == null) {
+            books.add(book);
             return;
+        }
         BeanUtils.copy(currentBook, book);
     }
 
