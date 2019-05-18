@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -18,13 +19,20 @@ import java.util.List;
 @Transactional
 public class OrderDAOImpl implements OrderDAO {
 
+    private static final String HQL_GET_ORDERS = "from Order";
+    private static final String HQL_DELETE_ORDER = "delete from Order where orderNo=:orderNo";
+
+    private final SessionFactory sessionFactory;
+
     @Autowired(required = false)
-    private SessionFactory sessionFactory;
+    public OrderDAOImpl(@Nullable SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public List<Order> get() {
         Session session = sessionFactory.getCurrentSession();
-        Query<Order> query = session.createQuery("from Order", Order.class);
+        Query<Order> query = session.createQuery(HQL_GET_ORDERS, Order.class);
         return query.getResultList();
     }
 
@@ -53,7 +61,7 @@ public class OrderDAOImpl implements OrderDAO {
     @Override
     public void delete(String orderNo) {
         Session session = sessionFactory.getCurrentSession();
-        Query<?> query = session.createQuery("delete from Order where orderNo=:orderNo");
+        Query<?> query = session.createQuery(HQL_DELETE_ORDER);
         query.setParameter("orderNo", orderNo);
         query.executeUpdate();
     }

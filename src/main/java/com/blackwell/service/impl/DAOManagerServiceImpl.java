@@ -18,8 +18,6 @@ import java.util.Set;
 @Service
 public class DAOManagerServiceImpl implements DAOManagerService {
 
-    private static final Logger LOGGER = Logger.getLogger(DAOManagerServiceImpl.class);
-
     private static final String MOCK = "mock";
 
     private static final String IMPL = "impl";
@@ -29,8 +27,12 @@ public class DAOManagerServiceImpl implements DAOManagerService {
     @Value("${mocks.enabled}")
     private boolean isMocksEnabled;
 
+    private final ApplicationContext applicationContext;
+
     @Autowired
-    private ApplicationContext applicationContext;
+    public DAOManagerServiceImpl(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 
     @PostConstruct
     private void postConstruct() {

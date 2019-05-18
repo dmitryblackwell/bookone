@@ -16,12 +16,14 @@ import javax.transaction.Transactional;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
-
-    @Autowired
-    private DAOManagerService daoManagerService;
+    private final DAOManagerService daoManagerService;
 
     private UserDAO userDAO;
+
+    @Autowired
+    public UserServiceImpl(DAOManagerService daoManagerService) {
+        this.daoManagerService = daoManagerService;
+    }
 
     @PostConstruct
     public void postConstruct() {

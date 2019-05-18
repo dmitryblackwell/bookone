@@ -11,9 +11,13 @@ import com.blackwell.service.BookService;
 @Component
 public class GenreEditor extends PropertyEditorSupport {
 	
+	private final BookService service;
+
 	@Autowired
-	private BookService service;
-	
+	public GenreEditor(BookService service) {
+		this.service = service;
+	}
+
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
 		Genre genre = service.getGenre(text);

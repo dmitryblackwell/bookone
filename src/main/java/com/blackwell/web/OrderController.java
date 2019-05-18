@@ -1,6 +1,5 @@
 package com.blackwell.web;
 
-import com.blackwell.constant.PageConstants;
 import com.blackwell.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,8 +10,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/orders")
 public class OrderController {
 
+    private final OrderService orderService;
+
     @Autowired
-    private OrderService orderService;
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
     @GetMapping
     public String getOrders(Model model){

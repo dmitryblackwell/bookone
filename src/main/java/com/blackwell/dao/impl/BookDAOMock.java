@@ -69,10 +69,11 @@ public class BookDAOMock implements BookDAO {
 
     @Override
     public Book get(long isbn) {
-        return books.stream()
+        List<Book> filteredBooks = books.stream()
                 .filter(book -> book.getIsbn() == isbn)
-                .collect(Collectors.toList())
-                .get(0);
+                .collect(Collectors.toList());
+
+        return CollectionUtils.isEmpty(filteredBooks) ? null : filteredBooks.get(0);
     }
 
     @Override

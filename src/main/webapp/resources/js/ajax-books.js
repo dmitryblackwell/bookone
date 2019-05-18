@@ -56,7 +56,7 @@ function approveOrder(orderNo){
 function deleteComment(isbn, id){
     id *= 1;
     $.ajax({
-        url: isbn + "/comments/" + id,
+        url: "comments/" + id,
         type: "DELETE"
     }).then(function() {
         var div = "#comment" + id;

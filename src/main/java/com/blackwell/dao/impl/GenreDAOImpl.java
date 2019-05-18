@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import com.blackwell.entity.Genre;
@@ -19,14 +20,20 @@ import javax.transaction.Transactional;
 @Repository
 @Transactional
 public class GenreDAOImpl implements GenreDAO {
+
+	private static final String HQL_GET_GENRES = "from Genre";
 	
+	private final SessionFactory sessionFactory;
+
 	@Autowired(required = false)
-	private SessionFactory sessionFactory;
-	
+	public GenreDAOImpl(@Nullable SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
 	@Override
 	public List<Genre> get() {
 		Session session = sessionFactory.getCurrentSession();
-		Query<Genre> query = session.createQuery("from Genre", Genre.class);
+		Query<Genre> query = session.createQuery(HQL_GET_GENRES, Genre.class);
 		return query.getResultList();
 	}
 	

@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -17,13 +18,19 @@ import java.util.List;
 @Transactional
 public class UserDAOImpl implements UserDAO {
 
+    private static final String HQL_GET_USERS = "from User";
+
+    private final SessionFactory sessionFactory;
+
     @Autowired(required = false)
-    private SessionFactory sessionFactory;
+    public UserDAOImpl(@Nullable SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public List<User> get() {
         Session session = sessionFactory.getCurrentSession();
-        Query<User> query = session.createQuery("from User", User.class);
+        Query<User> query = session.createQuery(HQL_GET_USERS, User.class);
         return query.getResultList();
     }
 

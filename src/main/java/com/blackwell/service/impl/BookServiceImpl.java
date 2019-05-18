@@ -22,14 +22,18 @@ import com.blackwell.entity.Genre;
 @Service
 public class BookServiceImpl implements BookService {
 
-	@Autowired
-	private DAOManagerService daoManagerService;
+	private final DAOManagerService daoManagerService;
 
 	private BookDAO bookDAO;
 
 	private CommentDAO commentDAO;
 
 	private GenreDAO genreDAO;
+
+	@Autowired
+	public BookServiceImpl(DAOManagerService daoManagerService) {
+		this.daoManagerService = daoManagerService;
+	}
 
 	@PostConstruct
 	public void postConstruct() {

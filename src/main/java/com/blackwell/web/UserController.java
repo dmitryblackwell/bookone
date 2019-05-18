@@ -1,13 +1,10 @@
 package com.blackwell.web;
 
 import com.blackwell.constant.PageConstants;
-import com.blackwell.entity.Book;
-import com.blackwell.entity.Order;
 import com.blackwell.entity.User;
 import com.blackwell.service.BookService;
 import com.blackwell.service.FileUploadService;
 import com.blackwell.service.UserService;
-import com.blackwell.util.OrderNoGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,21 +15,23 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    private final BookService bookService;
+
+    private final FileUploadService fileUploadService;
 
     @Autowired
-    private BookService bookService;
-
-    @Autowired
-    private FileUploadService fileUploadService;
+    public UserController(UserService userService, BookService bookService, FileUploadService fileUploadService) {
+        this.userService = userService;
+        this.bookService = bookService;
+        this.fileUploadService = fileUploadService;
+    }
 
     @GetMapping("/{username}")
     public String getUser(@PathVariable String username, Model model){

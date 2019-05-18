@@ -21,13 +21,16 @@ public class CommentDAOMock implements CommentDAO {
 
     private static int maxCommentId = 0;
 
-    @Autowired
-    @Qualifier("bookDAOMock")
-    private BookDAO bookDAO;
+    private final BookDAO bookDAO;
+
+    private final UserDAO userDAO;
 
     @Autowired
-    @Qualifier("userDAOMock")
-    private UserDAO userDAO;
+    public CommentDAOMock(@Qualifier("bookDAOMock") BookDAO bookDAO,
+                          @Qualifier("userDAOMock") UserDAO userDAO) {
+        this.bookDAO = bookDAO;
+        this.userDAO = userDAO;
+    }
 
     @Override
     public void save(long isbn, String username, String comment) {

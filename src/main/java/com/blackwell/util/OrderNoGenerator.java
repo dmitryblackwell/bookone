@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Random;
 
 public class OrderNoGenerator implements IdentifierGenerator {
+
     private static Random r = new Random();
     private static char getRandomLetter(){
         return (char) (r.nextInt(25)+65);

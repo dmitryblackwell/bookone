@@ -16,10 +16,14 @@ import java.util.List;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
-    private DAOManagerService daoManagerService;
+    private final DAOManagerService daoManagerService;
 
     private OrderDAO orderDAO;
+
+    @Autowired
+    public OrderServiceImpl(DAOManagerService daoManagerService) {
+        this.daoManagerService = daoManagerService;
+    }
 
     @PostConstruct
     public void postConstruct() {

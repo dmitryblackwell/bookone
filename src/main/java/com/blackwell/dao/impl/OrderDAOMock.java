@@ -23,9 +23,12 @@ import java.util.stream.Collectors;
 @Repository
 public class OrderDAOMock implements OrderDAO {
 
+    private final UserDAO userDAO;
+
     @Autowired
-    @Qualifier("userDAOMock")
-    private UserDAO userDAO;
+    public OrderDAOMock(@Qualifier("userDAOMock") UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
     @Override
     public List<Order> get() {

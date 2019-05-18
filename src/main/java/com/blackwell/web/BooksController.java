@@ -1,54 +1,36 @@
 package com.blackwell.web;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import javax.servlet.http.HttpSession;
-
-import com.blackwell.entity.Comment;
-import com.blackwell.entity.User;
-import com.blackwell.service.FileUploadService;
-import com.blackwell.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.blackwell.constant.PageConstants;
 import com.blackwell.entity.Book;
 import com.blackwell.entity.Genre;
 import com.blackwell.service.BookService;
+import com.blackwell.service.FileUploadService;
 import com.blackwell.util.GenreEditor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpSession;
+import java.io.File;
 
 @Controller
 @RequestMapping("/books")
 public class BooksController {
-	@Autowired
-	private BookService bookService;
+	private final BookService bookService;
 	
-	@Autowired
-	private GenreEditor genreEditor;
+	private final GenreEditor genreEditor;
+
+	private final FileUploadService fileUploadService;
 
 	@Autowired
-	private UserService userService;
-
-	@Autowired
-	private FileUploadService fileUploadService;
+	public BooksController(BookService bookService, GenreEditor genreEditor, FileUploadService fileUploadService) {
+		this.bookService = bookService;
+		this.genreEditor = genreEditor;
+		this.fileUploadService = fileUploadService;
+	}
 
 	// get all books
 	@GetMapping
@@ -93,9 +75,9 @@ public class BooksController {
 		return PageConstants.REDIRECT_BOOKS +"/" + isbn;
 	}
 
-	@DeleteMapping("/{isbn}/comments/{id}")
+	@DeleteMapping("/comments/{id}")
 	@ResponseBody
-	public String deleteComment(@PathVariable long isbn, @PathVariable int id){
+	public String deleteComment(@PathVariable int id){
 		bookService.deleteComment(id);
 		return "comment deleted";
 	}

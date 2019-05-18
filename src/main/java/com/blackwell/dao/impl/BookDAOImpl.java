@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import com.blackwell.entity.Book;
@@ -17,13 +18,20 @@ import javax.transaction.Transactional;
 @Transactional
 public class BookDAOImpl implements BookDAO {
 
+	private static final String HQL_GET_BOOKS = "from Book";
+	private static final String HQL_DELETE_BOOK = "delete from Book where isbn=:bookISBN";
+
+	private final SessionFactory sessionFactory;
+
 	@Autowired(required = false)
-	private SessionFactory sessionFactory;
-	
+	public BookDAOImpl(@Nullable SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
 	@Override
 	public List<Book> get() {
 		Session session = sessionFactory.getCurrentSession();
-		Query<Book> query = session.createQuery("from Book", Book.class);
+		Query<Book> query = session.createQuery(HQL_GET_BOOKS, Book.class);
 		return query.getResultList();
 	}
 
@@ -52,7 +60,7 @@ public class BookDAOImpl implements BookDAO {
 	@Override
 	public void delete(long isbn) {
 		Session session = sessionFactory.getCurrentSession();
-		Query<?> query = session.createQuery("delete from Book where isbn=:bookISBN");
+		Query<?> query = session.createQuery(HQL_DELETE_BOOK);
 		query.setParameter("bookISBN", isbn);
 		query.executeUpdate();		
 	}

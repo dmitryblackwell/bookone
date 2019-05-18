@@ -12,7 +12,6 @@ public class SpringMvcDispatcherServletInitializer
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -25,8 +24,7 @@ public class SpringMvcDispatcherServletInitializer
 	protected String[] getServletMappings() {
 		return new String[] { "/" };
 	}
-	
-	private final int maxUploadSizeInMb = 5 * 1024 * 1024; // 5 MB
+
 	@Override
 	protected void customizeRegistration(ServletRegistration.Dynamic registration) {
 
@@ -34,6 +32,8 @@ public class SpringMvcDispatcherServletInitializer
 		File uploadDirectory = new File(System.getProperty("java.io.tmpdir"));
 
 		// register a MultipartConfigElement
+		// 5 MB
+		final int maxUploadSizeInMb = 5 * 1024 * 1024;
 		MultipartConfigElement multipartConfigElement = new MultipartConfigElement(uploadDirectory.getAbsolutePath(),
 				maxUploadSizeInMb, maxUploadSizeInMb * 2, maxUploadSizeInMb / 2);
 
