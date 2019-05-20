@@ -1,6 +1,6 @@
 # BookOne
 
-##### Master Status: [![Build Status](https://travis-ci.org/dmitryblackwell/bookone.svg?branch=master)](https://travis-ci.org/dmitryblackwell/bookone)
+##### v1.3.0-Tests Status: [![Build Status](https://travis-ci.org/dmitryblackwell/bookone.svg?branch=v1.3.0-Tests)](https://travis-ci.org/dmitryblackwell/bookone)
 
 ##### version: __1.2.0__
 
