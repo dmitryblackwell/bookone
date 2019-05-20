@@ -81,8 +81,10 @@ public class UserDAOMock implements UserDAO {
                 currentUser = u;
             updateOrders(u.getOrders());
         }
-        if (currentUser == null)
+        if (currentUser == null) {
+            users.add(user);
             return;
+        }
 
         BeanUtils.copy(currentUser, user);
     }

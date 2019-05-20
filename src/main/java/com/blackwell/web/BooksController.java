@@ -6,12 +6,15 @@ import com.blackwell.entity.Genre;
 import com.blackwell.service.BookService;
 import com.blackwell.service.FileUploadService;
 import com.blackwell.util.GenreEditor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
@@ -32,54 +35,48 @@ public class BooksController {
 		this.fileUploadService = fileUploadService;
 	}
 
-	// get all books
 	@GetMapping
-	public String getBooks(Model model) {
-		model.addAttribute("books", bookService.getBooks());
-		model.addAttribute("genres", bookService.getGenres());
-		model.addAttribute("book", new Book());
-		return "index";
+	public ModelAndView getBooks() {
+		ModelAndView modelAndView = new ModelAndView("index");
+		modelAndView.addObject("books", bookService.getBooks());
+		modelAndView.addObject("genres", bookService.getGenres());
+		modelAndView.addObject("book", new Book());
+		return modelAndView;
 	}
 	
-	
-	// save or update one book
+
 	@PostMapping
-	public String saveBook(@ModelAttribute Book book) {
+	public ModelAndView saveBook(@ModelAttribute Book book) {
 		bookService.saveBook(book);
-		System.out.println(book);
-		return PageConstants.REDIRECT_HOME;
+		return new ModelAndView(PageConstants.REDIRECT_HOME);
 	}
 
-	// delete book
 	@DeleteMapping("/{isbn}")
-	@ResponseBody
-	public String delete(@PathVariable long isbn) {
+	@ResponseStatus(code = HttpStatus.OK)
+	public void delete(@PathVariable long isbn) {
 		bookService.deleteBook(isbn);
-		return "book safely deleted";
 	}
-	
-	
-	// get one book
+
 	@GetMapping("/{isbn}")
-	public String getBook(@PathVariable long isbn, Model model) {		
+	public ModelAndView getBook(@PathVariable long isbn) {
 		Book book = bookService.getBook(isbn);
-		model.addAttribute("book", book);		
-		
-		return "bookview";
+		ModelAndView modelAndView = new ModelAndView("bookview");
+		modelAndView.addObject("book", book);
+		return modelAndView;
 	}
 
 	@PostMapping("/{isbn}/comments")
-	public String saveComment(@PathVariable long isbn, @RequestParam String username, @RequestParam String comment){
+	public ModelAndView saveComment(@PathVariable long isbn, @RequestParam String username, @RequestParam String comment){
 		bookService.addComment(isbn, username, comment);
 
-		return PageConstants.REDIRECT_BOOKS +"/" + isbn;
+		String viewName = StringUtils.join(PageConstants.REDIRECT_BOOKS, "/", isbn);
+		return new ModelAndView(viewName);
 	}
 
 	@DeleteMapping("/comments/{id}")
-	@ResponseBody
-	public String deleteComment(@PathVariable int id){
+	@ResponseStatus(code = HttpStatus.OK)
+	public void deleteComment(@PathVariable int id){
 		bookService.deleteComment(id);
-		return "comment deleted";
 	}
 	
 	
