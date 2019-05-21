@@ -64,8 +64,16 @@ To run this project without importing it to the IDE follow next steps:
 1. Run BookoneApplication class as java application.
 1. Enjoy.
 
+### Run Integration tests
+To test your code run next maven command:
+```
+clean integration-test
+```
+It will also create report from JaCoCo in `target/site/jacoco/index.html`
+
 ### Development history
 
 - 1.0.0 - Basic working project.
 - 1.1.0 - Move project to spring boot. Add lombok.
 - 1.2.0 - Add mocks and Travis CI.
+- 1.3.0 - Integration tests.
