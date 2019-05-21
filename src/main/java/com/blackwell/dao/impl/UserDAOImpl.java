@@ -19,7 +19,7 @@ import java.util.List;
 public class UserDAOImpl implements UserDAO {
 
     private static final String HQL_GET_USERS = "from User";
-
+    private static final String HQL_DELETE_USER = "delete from User where username=:userName";
     private final SessionFactory sessionFactory;
 
     @Autowired(required = false)
@@ -53,5 +53,13 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void delete(int id) {
         throw new NotImplementedException();
+    }
+
+    @Override
+    public void delete(String username) {
+        Session session = sessionFactory.getCurrentSession();
+        Query<?> query = session.createQuery(HQL_DELETE_USER);
+        query.setParameter("userName", username);
+        query.executeUpdate();
     }
 }

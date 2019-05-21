@@ -1,62 +1,49 @@
 package com.blackwell.web;
 
-import static org.junit.Assert.*;
-
 import com.blackwell.constant.PageConstants;
-import com.blackwell.dao.*;
+import com.blackwell.dao.BookDAO;
+import com.blackwell.dao.GenreDAO;
+import com.blackwell.dao.UserDAO;
 import com.blackwell.entity.Book;
 import com.blackwell.entity.Comment;
-import com.blackwell.entity.User;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.stereotype.Service;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebMvcTest(BooksController.class)
-public class BooksIntegrationTest {
+import static org.junit.Assert.*;
 
-    private static final long ISBN = 1234L;
-    private static final String NAME = "BookName";
-    private static final String USERNAME = "username";
-    private static final String COMMENT = "This is some Comment!";
+
+@WebMvcTest(BookController.class)
+public class BookIntegrationTest extends AbstractIntegrationTest {
 
     @Autowired
-    private BooksController booksController;
+    private BookController bookController;
 
-    @Autowired
-    @Qualifier("bookDAOMock")
     private BookDAO bookDAO;
 
-    @Autowired
-    @Qualifier("genreDAOMock")
     private GenreDAO genreDAO;
 
-    @Autowired
-    @Qualifier("commentDAOMock")
-    private CommentDAO commentDAO;
-
-    @Autowired
-    @Qualifier("userDAOMock")
     private UserDAO userDAO;
 
+    @Override
+    public void afterPropertiesSet() {
+        super.afterPropertiesSet();
+        this.bookDAO = daoManagerService.getDAO(BookDAO.class);
+        this.genreDAO = daoManagerService.getDAO(GenreDAO.class);
+        this.userDAO = daoManagerService.getDAO(UserDAO.class);
+    }
 
     @Test
     public void getBooksTest() {
-        Map<String, Object> model = booksController.getBooks().getModel();
+        Map<String, Object> model = bookController.getBooks().getModel();
 
         assertEquals(model.get("books"), bookDAO.get());
         assertEquals(model.get("genres"), genreDAO.get());
@@ -65,29 +52,36 @@ public class BooksIntegrationTest {
 
     @Test
     public void saveAndDeleteBookTest() {
-        ModelAndView modelAndView = booksController.saveBook(generateBook());
+        Book generatedBook = generateBook();
+        long isbn = generatedBook.getIsbn();
+        ModelAndView modelAndView = bookController.saveBook(generatedBook);
         assertEquals(modelAndView.getViewName(), PageConstants.REDIRECT_HOME);
 
-        Book book = bookDAO.get(ISBN);
-        assertEquals(book, generateBook());
-        assertEquals(book.getName(), NAME);
+        Book book = bookDAO.get(isbn);
+        assertEquals(book, generatedBook);
+        assertEquals(book.getName(), generatedBook.getName());
 
-        booksController.delete(ISBN);
-        assertNull(bookDAO.get(ISBN));
+        bookController.delete(isbn);
+        assertNull(bookDAO.get(isbn));
     }
 
     @Test
     public void getBookTest(){
-        bookDAO.save(generateBook());
-        ModelAndView modelAndView = booksController.getBook(ISBN);
+        Book generatedBook = generateBook();
+        long isbn = generatedBook.getIsbn();
+
+        bookDAO.save(generatedBook);
+        ModelAndView modelAndView = bookController.getBook(isbn);
         assertEquals(modelAndView.getViewName(), "bookview");
 
         Object bookObj = modelAndView.getModel().get("book");
         assertTrue(bookObj instanceof Book);
         Book book = (Book) bookObj;
 
-        assertEquals(book, generateBook());
-        assertEquals(book.getName(), NAME);
+        assertEquals(book, generatedBook);
+        assertEquals(book.getName(), generatedBook.getName());
+        bookDAO.delete(isbn);
+        assertNull(bookDAO.get(isbn));
     }
 
     @Test
@@ -95,7 +89,7 @@ public class BooksIntegrationTest {
         bookDAO.save(generateBook());
         userDAO.save(generateUser());
 
-        ModelAndView modelAndView = booksController.saveComment(ISBN, USERNAME, COMMENT);
+        ModelAndView modelAndView = bookController.saveComment(ISBN, USERNAME, COMMENT);
         final String viewName = PageConstants.REDIRECT_BOOKS + "/" +  ISBN;
         assertEquals(modelAndView.getViewName(), viewName);
 
@@ -107,22 +101,23 @@ public class BooksIntegrationTest {
         assertEquals(userComment, bookComment);
 
         int commentId = userComment.getId();
-        booksController.deleteComment(commentId);
+        bookController.deleteComment(commentId);
         assertNull(getCommentFromMockUser());
         assertNull(getCommentFromMockBook());
 
         bookDAO.delete(ISBN);
+        userDAO.delete(USERNAME);
     }
 
     private Comment getCommentFromMockUser() {
-        return getCommentFromList(userDAO.get(USERNAME).getComments());
+        return getMockedCommentFromList(userDAO.get(USERNAME).getComments());
     }
 
     private Comment getCommentFromMockBook() {
-        return getCommentFromList(bookDAO.get(ISBN).getComments());
+        return getMockedCommentFromList(bookDAO.get(ISBN).getComments());
     }
 
-    private Comment getCommentFromList(Set<Comment> comments) {
+    private Comment getMockedCommentFromList(Set<Comment> comments) {
         List<Comment> filteredComments = comments.stream()
                 .filter(this::isCommentEqualsToMock)
                 .collect(Collectors.toList());
@@ -131,28 +126,10 @@ public class BooksIntegrationTest {
         return filteredComments.get(0);
     }
 
-
-
     private boolean isCommentEqualsToMock(Comment comment) {
         return StringUtils.equals(comment.getComment(), COMMENT) &&
                 comment.getBook().getIsbn() == ISBN &&
                 StringUtils.equals(comment.getUser().getUsername(), USERNAME);
-    }
-
-    private Book generateBook() {
-        return  Book.builder()
-                .isbn(ISBN)
-                .name(NAME)
-                .comments(new HashSet<>())
-                .build();
-    }
-
-    private User generateUser() {
-        return User.builder()
-                .username(USERNAME)
-                .comments(new HashSet<>())
-                .orders(new HashSet<>())
-                .build();
     }
 
 }

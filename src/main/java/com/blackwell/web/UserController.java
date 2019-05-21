@@ -6,6 +6,7 @@ import com.blackwell.service.BookService;
 import com.blackwell.service.FileUploadService;
 import com.blackwell.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -42,10 +43,9 @@ public class UserController {
     }
 
     @PostMapping("/{username}/orders")
-    @ResponseBody
-    public String saveOrder(@RequestParam("isbn") long isbn, @PathVariable("username") String username, @RequestParam("quantity") int quantity) {
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public void saveOrder(@RequestParam("isbn") long isbn, @PathVariable("username") String username, @RequestParam("quantity") int quantity) {
         userService.addOrderForUser(username, bookService.getBook(isbn), quantity);
-        return "order saved";
     }
 
 

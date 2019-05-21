@@ -94,6 +94,13 @@ public class UserDAOMock implements UserDAO {
         throw new NotImplementedException();
     }
 
+    @Override
+    public void delete(String username) {
+        users = users.stream()
+                .filter(user -> !StringUtils.equals(user.getUsername(), username))
+                .collect(Collectors.toList());
+    }
+
     private void updateOrders(Set<Order> orders) {
         for (Order order : orders) {
             if (StringUtils.isBlank(order.getOrderNo())) {

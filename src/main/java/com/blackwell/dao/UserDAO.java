@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface UserDAO extends DAO<User> {
     User get(String login);
+    void delete(String username);
 }

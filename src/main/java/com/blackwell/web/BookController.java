@@ -21,7 +21,7 @@ import java.io.File;
 
 @Controller
 @RequestMapping("/books")
-public class BooksController {
+public class BookController {
 	private final BookService bookService;
 	
 	private final GenreEditor genreEditor;
@@ -29,7 +29,7 @@ public class BooksController {
 	private final FileUploadService fileUploadService;
 
 	@Autowired
-	public BooksController(BookService bookService, GenreEditor genreEditor, FileUploadService fileUploadService) {
+	public BookController(BookService bookService, GenreEditor genreEditor, FileUploadService fileUploadService) {
 		this.bookService = bookService;
 		this.genreEditor = genreEditor;
 		this.fileUploadService = fileUploadService;
