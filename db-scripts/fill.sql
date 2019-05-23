@@ -1,12 +1,5 @@
 USE bookshelf;
 
---DELETE FROM comments;
---DELETE FROM orders;
---DELETE FROM books;
---DELETE FROM genres;
---DELETE FROM authorities;
---DELETE FROM users;
-
 INSERT INTO users VALUES 
 		('herasim', 'herasim@mail.com' ,'{bcrypt}$2a$04$eFytJDGtjbThXa80FyOOBuFdK2IwjyWefYkMpiBEFlpBwDH.5PM0K',1), -- fun123
 		('mumu', 'mumu@mu.mu' ,'{bcrypt}$2a$04$eFytJDGtjbThXa80FyOOBuFdK2IwjyWefYkMpiBEFlpBwDH.5PM0K',1);

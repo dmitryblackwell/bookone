@@ -2,9 +2,11 @@ package com.blackwell.web;
 
 import com.blackwell.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/orders")
@@ -24,16 +26,14 @@ public class OrderController {
     }
 
     @DeleteMapping("/{orderNo}")
-    @ResponseBody
-    public String deleteOrder(@PathVariable("orderNo") String orderNo){
+    @ResponseStatus(code = HttpStatus.OK)
+    public void deleteOrder(@PathVariable("orderNo") String orderNo){
         orderService.deleteOrder(orderNo);
-        return "order deleted";
     }
 
     @PostMapping("/{orderNo}")
-    @ResponseBody
-    public String approveOrder(@PathVariable("orderNo") String orderNo){
+    @ResponseStatus(code = HttpStatus.OK)
+    public void approveOrder(@PathVariable("orderNo") String orderNo){
         orderService.approve(orderNo);
-        return "order approved";
     }
 }

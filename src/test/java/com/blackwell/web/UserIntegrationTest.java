@@ -55,7 +55,6 @@ public class UserIntegrationTest extends AbstractIntegrationTest {
     public void saveOrderTest() throws Exception {
         User user = generateUser();
         Book book = generateBook();
-        Order generateOrder = generateOrder(user, book);
         userDAO.save(user);
         bookDAO.save(book);
         mockMvc.perform(post("/users/{username}/orders", USERNAME)
@@ -63,11 +62,7 @@ public class UserIntegrationTest extends AbstractIntegrationTest {
                 .param("quantity", String.valueOf(QUANTITY)))
                 .andExpect(status().isCreated());
 
-        List<Order> filteredOrders = orderDAO.get().stream()
-                                    .filter(this::isOrderEqualsToMock)
-                                    .collect(Collectors.toList());
-        assertFalse(CollectionUtils.isEmpty(filteredOrders));
-        Order order = filteredOrders.get(0);
+        Order order = getMockedOrderFromList(orderDAO.get());
         assertFalse(StringUtils.isBlank(order.getOrderNo()));
         assertNotNull(orderDAO.get(order.getOrderNo()));
 
@@ -75,13 +70,5 @@ public class UserIntegrationTest extends AbstractIntegrationTest {
         userDAO.delete(USERNAME);
         bookDAO.delete(ISBN);
     }
-
-    private boolean isOrderEqualsToMock(Order order) {
-        return order != null && order.getBook() != null && order.getBook().getIsbn() == ISBN &&
-                order.getUser() != null && StringUtils.equals(order.getUser().getUsername(), USERNAME) &&
-                order.getQuantity() == QUANTITY;
-    }
-
-
 
 }

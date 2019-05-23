@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE users (
 	username varchar(50) NOT NULL,
 	email varchar(50) NOT NULL,
-	password varchar(68) NOT NULL,
+	password varchar(100) NOT NULL,
 	enabled tinyint(1) NOT NULL,
 	PRIMARY KEY (username)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
