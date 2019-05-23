@@ -1,9 +1,11 @@
 package com.blackwell.web;
 
 import com.blackwell.entity.Book;
+import com.blackwell.entity.Genre;
 import com.blackwell.entity.Order;
 import com.blackwell.entity.User;
 import com.blackwell.service.DAOManagerService;
+import com.blackwell.util.OrderNoGenerator;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +22,13 @@ import static org.junit.Assert.assertNotNull;
 public abstract class AbstractIntegrationTest implements InitializingBean {
 
     static final long ISBN = 1234L;
-    private static final String NAME = "BookName";
     static final String USERNAME = "username";
-    private static final String EMAIL = "username@email.com";
     static final String COMMENT = "This is some Comment!";
     static final int QUANTITY = 2;
+    private static final String NAME = "BookName";
+    private static final String AUTHOR = "author";
+    private static final String PASSWORD = "${bcrypt}$2y$12$A5JgjEEMpRzP14f48Qr0YesHXr7/ORtnv4jAfAiMBSIfRJf5svz5C";
+    private static final String EMAIL = "username@email.com";
 
 
     @Autowired
@@ -47,16 +51,10 @@ public abstract class AbstractIntegrationTest implements InitializingBean {
         return User.builder()
                 .username(USERNAME)
                 .email(EMAIL)
+                .enabled(true)
+                .password(PASSWORD)
                 .comments(new HashSet<>())
                 .orders(new HashSet<>())
-                .build();
-    }
-
-    Order generateOrder(User user, Book book) {
-        return Order.builder()
-                .user(user)
-                .book(book)
-                .quantity(QUANTITY)
                 .build();
     }
 
@@ -64,9 +62,20 @@ public abstract class AbstractIntegrationTest implements InitializingBean {
         return  Book.builder()
                 .isbn(ISBN)
                 .name(NAME)
+                .author(AUTHOR)
+                .price(66.6f)
+                .genre(new Genre(1, "sci-fi"))
                 .comments(new HashSet<>())
                 .build();
     }
 
+    Order generateOrder(User user, Book book) {
+        return Order.builder()
+                .orderNo(OrderNoGenerator.generate())
+                .user(user)
+                .book(book)
+                .quantity(QUANTITY)
+                .build();
+    }
 
 }
