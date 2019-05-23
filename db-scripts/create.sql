@@ -1,7 +1,3 @@
--- DROP DATABASE  IF EXISTS bookshelf;
-
--- CREATE DATABASE  IF NOT EXISTS bookshelf;
-
 USE bookshelf;
 
 DROP TABLE IF EXISTS comments;

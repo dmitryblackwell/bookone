@@ -1,10 +1,15 @@
 language: java
 sudo: true
 dist: trusty
-jdk: oraclejdk9
+jdk: oraclejdk8
+services:
+  - mysql
 addons:
   apt:
     packages:
-      - oracle-java9-installer
+      - oracle-java8-installer
 before_install:
   - chmod +x mvnw
+  - mysql -u root --password="" < db-scripts/setup.sql
+  - mysql -u root --password="" < db-scripts/create.sql
+  - mysql -u root --password="" < db-scripts/fill.sql
