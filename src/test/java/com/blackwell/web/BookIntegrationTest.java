@@ -3,6 +3,7 @@ package com.blackwell.web;
 import com.blackwell.constant.PageConstants;
 import com.blackwell.dao.BookDAO;
 import com.blackwell.dao.GenreDAO;
+import com.blackwell.dao.OrderDAO;
 import com.blackwell.dao.UserDAO;
 import com.blackwell.entity.Book;
 import com.blackwell.entity.Comment;
@@ -20,26 +21,10 @@ import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
-
-@WebMvcTest(BookController.class)
-public class BookIntegrationTest extends AbstractIntegrationTest {
+public class BookIntegrationTest extends IntegrationTest {
 
     @Autowired
     private BookController bookController;
-
-    private BookDAO bookDAO;
-
-    private GenreDAO genreDAO;
-
-    private UserDAO userDAO;
-
-    @Override
-    public void afterPropertiesSet() {
-        super.afterPropertiesSet();
-        this.bookDAO = daoManagerService.getDAO(BookDAO.class);
-        this.genreDAO = daoManagerService.getDAO(GenreDAO.class);
-        this.userDAO = daoManagerService.getDAO(UserDAO.class);
-    }
 
     @Test
     public void getBooksTest() {

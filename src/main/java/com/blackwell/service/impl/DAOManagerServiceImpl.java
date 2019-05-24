@@ -19,7 +19,6 @@ import java.util.Set;
 public class DAOManagerServiceImpl implements DAOManagerService {
 
     private static final String MOCK = "mock";
-
     private static final String IMPL = "impl";
 
     private Map<Class<? extends DAO>, DAO> DAOs = new HashMap<>();
@@ -40,16 +39,23 @@ public class DAOManagerServiceImpl implements DAOManagerService {
         Set<Class<? extends DAO>> classes = reflections.getSubTypesOf(DAO.class);
         for (Class<? extends DAO> DAOClass : classes) {
             if(StringUtils.containsIgnoreCase(DAOClass.getSimpleName(), isMocksEnabled ? MOCK : IMPL)) {
-                String className = DAOClass.getSimpleName();
-                className = className.substring(0, 1).toLowerCase()  + className.substring(1);
                 DAOs.put((Class<? extends DAO>) DAOClass.getInterfaces()[0],
-                        (DAO) applicationContext.getBean(className));
+                        (DAO) getBean(DAOClass));
             }
         }
     }
 
     @Override
     public <T extends DAO> T getDAO(Class<T> clazz) {
-        return (T) DAOs.get(clazz);
+        if (clazz.isInterface()) {
+            return (T) DAOs.get(clazz);
+        }
+        return (T) getBean(clazz);
+    }
+
+    private Object getBean(Class<?> clazz) {
+        String className = clazz.getSimpleName();
+        className = className.substring(0, 1).toLowerCase()  + className.substring(1);
+        return applicationContext.getBean(className);
     }
 }

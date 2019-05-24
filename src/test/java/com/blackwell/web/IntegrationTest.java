@@ -1,21 +1,41 @@
 package com.blackwell.web;
 
+import com.blackwell.BookoneApplication;
+import com.blackwell.config.AppConfig;
+import com.blackwell.config.SecurityConfig;
+import com.blackwell.config.SecurityWebApplicationInitializer;
+import com.blackwell.config.SpringMvcDispatcherServletInitializer;
+import com.blackwell.dao.*;
+import com.blackwell.dao.impl.*;
 import com.blackwell.entity.Book;
 import com.blackwell.entity.Genre;
 import com.blackwell.entity.Order;
 import com.blackwell.entity.User;
 import com.blackwell.service.DAOManagerService;
 import com.blackwell.util.OrderNoGenerator;
+import junitparams.JUnitParamsRunner;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.model.InitializationError;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.rules.SpringClassRule;
+import org.springframework.test.context.junit4.rules.SpringMethodRule;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,8 +43,9 @@ import java.util.stream.Collectors;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-public abstract class AbstractIntegrationTest implements InitializingBean {
+@SpringBootTest
+@RunWith(Parameterized.class)
+public abstract class IntegrationTest implements InitializingBean {
 
     static final long ISBN = 1234L;
     static final String USERNAME = "username";
@@ -35,21 +56,61 @@ public abstract class AbstractIntegrationTest implements InitializingBean {
     private static final String PASSWORD = "${bcrypt}$2y$12$A5JgjEEMpRzP14f48Qr0YesHXr7/ORtnv4jAfAiMBSIfRJf5svz5C";
     private static final String EMAIL = "username@email.com";
 
+    @ClassRule
+    public static final SpringClassRule SPRING_CLASS_RULE= new SpringClassRule();
+    @Rule
+    public final SpringMethodRule springMethodRule = new SpringMethodRule();
+
     @Autowired
     DAOManagerService daoManagerService;
 
     @Autowired
-    private WebApplicationContext wac;
+    WebApplicationContext wac;
 
     MockMvc mockMvc;
+
+    UserDAO userDAO;
+    BookDAO bookDAO;
+    OrderDAO orderDAO;
+    GenreDAO genreDAO;
+
+    @Parameterized.Parameter
+    public Class<?extends DAO> userDAOClass;
+
+    @Parameterized.Parameter(1)
+    public Class<?extends DAO> bookDAOClass;
+
+    @Parameterized.Parameter(2)
+    public Class<?extends DAO> orderDAOClass;
+
+    @Parameterized.Parameter(3)
+    public Class<?extends DAO> genreDAOClass;
+
+    @Parameterized.Parameters
+    public static Collection daoObjects() throws Exception {
+        return Arrays.asList(new Object[][] {
+                { UserDAOMock.class, BookDAOMock.class, OrderDAOMock.class, GenreDAOMock.class},
+                { UserDAOImpl.class, BookDAOImpl.class, OrderDAOImpl.class, GenreDAOImpl.class}
+        });
+    }
 
     @Override
     public void afterPropertiesSet() {
         assertNotNull(this.wac);
         assertNotNull(this.daoManagerService);
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-    }
+        this.userDAO = (UserDAO) daoManagerService.getDAO(userDAOClass);
+        this.bookDAO = (BookDAO) daoManagerService.getDAO(bookDAOClass);
+        this.orderDAO = (OrderDAO) daoManagerService.getDAO(orderDAOClass);
+        this.genreDAO = (GenreDAO) daoManagerService.getDAO(genreDAOClass);
 
+
+        assertNotNull(mockMvc);
+        assertNotNull(userDAO);
+        assertNotNull(bookDAO);
+        assertNotNull(orderDAO);
+        assertNotNull(genreDAO);
+    }
 
     User generateUser() {
         return User.builder()
@@ -97,3 +158,4 @@ public abstract class AbstractIntegrationTest implements InitializingBean {
     }
 
 }
+

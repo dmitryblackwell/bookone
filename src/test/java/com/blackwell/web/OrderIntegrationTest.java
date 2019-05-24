@@ -1,9 +1,6 @@
 package com.blackwell.web;
 
 
-import com.blackwell.dao.BookDAO;
-import com.blackwell.dao.OrderDAO;
-import com.blackwell.dao.UserDAO;
 import com.blackwell.entity.Order;
 import org.junit.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -13,22 +10,7 @@ import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(OrderController.class)
-public class OrderIntegrationTest extends AbstractIntegrationTest {
-
-    private OrderDAO orderDAO;
-
-    private BookDAO bookDAO;
-
-    private UserDAO userDAO;
-
-    @Override
-    public void afterPropertiesSet() {
-        super.afterPropertiesSet();
-        this.orderDAO = daoManagerService.getDAO(OrderDAO.class);
-        this.bookDAO = daoManagerService.getDAO(BookDAO.class);
-        this.userDAO = daoManagerService.getDAO(UserDAO.class);
-    }
+public class OrderIntegrationTest extends IntegrationTest {
 
     @Test
     public void getOrdersTest() throws Exception {
