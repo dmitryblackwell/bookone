@@ -1,23 +1,10 @@
 package com.blackwell.web;
 
-import com.blackwell.BookoneApplication;
-import com.blackwell.dao.BookDAO;
-import com.blackwell.dao.DAO;
-import com.blackwell.dao.OrderDAO;
-import com.blackwell.dao.UserDAO;
-import com.blackwell.dao.impl.*;
 import com.blackwell.entity.Book;
 import com.blackwell.entity.Order;
 import com.blackwell.entity.User;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.context.ContextConfiguration;
-
-import java.util.Arrays;
-import java.util.Collection;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.*;
@@ -25,7 +12,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-//@WebMvcTest(UserController.class)
 public class UserIntegrationTest extends IntegrationTest {
 
     @Test

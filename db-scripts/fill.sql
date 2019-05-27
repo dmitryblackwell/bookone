@@ -25,10 +25,3 @@ INSERT INTO orders VALUES
 	("ME3421", "mumu", 9780131872486, 2, default);
 
 INSERT INTO comments VALUES (default, 9780131872486, 'mumu', 'cool book!');
-
-
-
-
-
-
-

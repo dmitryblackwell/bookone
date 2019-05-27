@@ -1,17 +1,12 @@
 package com.blackwell.web;
 
 import com.blackwell.constant.PageConstants;
-import com.blackwell.dao.BookDAO;
-import com.blackwell.dao.GenreDAO;
-import com.blackwell.dao.OrderDAO;
-import com.blackwell.dao.UserDAO;
 import com.blackwell.entity.Book;
 import com.blackwell.entity.Comment;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
