@@ -37,11 +37,12 @@
 			</form:form>
 		</security:authorize>	
 		
-		<form>
+		<%--<form>
 			<fieldset class="form-fieldset ui-input __third">
 				<input type="text" style="width:100%;text-align:center;margin-bottom:45px;" id="searchInput" onkeyup="tablesearch()" placeholder="search for books by name...">
 			</fieldset>
 		</form>
+		--%>
 			<table id="bookTable" class="table table-hover sortable "> <!-- table-striped -->
 				<thead>
 					<tr>

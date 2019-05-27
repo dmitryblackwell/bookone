@@ -7,7 +7,5 @@
 <script src="<c:url value="/resources/js/jquery-3.3.1.min.js"/>"></script>
 <script src="<c:url value="/resources/js/ajax-books.js"/>"></script>
 <script src="<c:url value="/resources/js/set-fields.js"/>"></script>
-<script src="<c:url value="/resources/js/sort-table.js"/>"></script>
-<script src="<c:url value="/resources/js/table-search.js"/>"></script>
 <script src="<c:url value="/resources/js/form.js"/>"></script>
 <script src="<c:url value="/resources/js/upload-form.js"/>"></script>
