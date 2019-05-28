@@ -9,6 +9,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static com.blackwell.MockEntityGenerator.*;
 
 public class OrderIntegrationTest extends IntegrationTest {
 

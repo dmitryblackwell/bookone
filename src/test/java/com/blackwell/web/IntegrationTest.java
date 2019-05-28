@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.blackwell.MockEntityGenerator.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
@@ -32,14 +33,7 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(SpringJUnit4ClassRunner.class)
 public abstract class IntegrationTest implements InitializingBean {
 
-    static final long ISBN = 1234L;
-    static final String USERNAME = "username";
-    static final String COMMENT = "This is some Comment!";
-    static final int QUANTITY = 2;
-    private static final String NAME = "BookName";
-    private static final String AUTHOR = "author";
-    private static final String PASSWORD = "${bcrypt}$2y$12$A5JgjEEMpRzP14f48Qr0YesHXr7/ORtnv4jAfAiMBSIfRJf5svz5C";
-    private static final String EMAIL = "username@email.com";
+
 
     @Autowired
     DAOManagerService daoManagerService;
@@ -72,36 +66,7 @@ public abstract class IntegrationTest implements InitializingBean {
         assertNotNull(genreDAO);
     }
 
-    User generateUser() {
-        return User.builder()
-                .username(USERNAME)
-                .email(EMAIL)
-                .enabled(true)
-                .password(PASSWORD)
-                .comments(new HashSet<>())
-                .orders(new HashSet<>())
-                .build();
-    }
 
-    Book generateBook() {
-        return  Book.builder()
-                .isbn(ISBN)
-                .name(NAME)
-                .author(AUTHOR)
-                .price(66.6f)
-                .genre(new Genre(1, "sci-fi"))
-                .comments(new HashSet<>())
-                .build();
-    }
-
-    Order generateOrder(User user, Book book) {
-        return Order.builder()
-                .orderNo(OrderNoGenerator.generate())
-                .user(user)
-                .book(book)
-                .quantity(QUANTITY)
-                .build();
-    }
 
     Order getMockedOrderFromList(List<Order> orders) {
         List<Order> filteredOrders = orders.stream()

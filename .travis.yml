@@ -8,8 +8,24 @@ addons:
   apt:
     packages:
       - oracle-java8-installer
+env:
+  global:
+    - CC_TEST_REPORTER_ID==62c6b2ad694f8b15d00d369627284cc7c669437a5cdadc7ff98bce8070541b7d
+
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
 before_install:
   - chmod +x mvnw
   - mysql -u root --password="" < db-scripts/setup.sql
   - mysql -u root --password="" < db-scripts/create.sql
   - mysql -u root --password="" < db-scripts/fill.sql
+  - pip install --user codecov
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+
+after_success:
+  - codecov

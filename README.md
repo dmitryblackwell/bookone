@@ -5,7 +5,7 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/e908eabd23e03aa282aa/test_coverage)](https://codeclimate.com/github/dmitryblackwell/bookone/test_coverage)
 [![Build Status](https://travis-ci.org/dmitryblackwell/bookone.svg?branch=master)](https://travis-ci.org/dmitryblackwell/bookone)
 
-##### version: __1.3.0__
+##### version: __1.3.1-SNAPSHOT__
 
 ## Getting started
 
@@ -19,8 +19,6 @@
 1. Setup [DB connection](#db-connection) or [Mocks](#mocks).
 
 #### <a name="mocks"></a> Setup Mocks
-
-Mocks are enabled by default. But you never be to sure.
  
 To enable mocks follow next steps:
 
@@ -76,7 +74,8 @@ It will also create report from JaCoCo in `target/site/jacoco/index.html`
 
 ### Development history
 
-- 1.0.0 - Basic working project.
-- 1.1.0 - Move project to spring boot. Add lombok.
-- 1.2.0 - Add mocks and Travis CI.
-- 1.3.0 - Integration tests.
+- 1 - Basic working project.
+    - 1.1 - Move project to spring boot. Add lombok.
+    - 1.2 - Add mocks and Travis CI.
+    - 1.3 - Integration tests.
+        - 1.3.1 - Add more tests.
