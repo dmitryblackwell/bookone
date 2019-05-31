@@ -5,7 +5,7 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/e908eabd23e03aa282aa/test_coverage)](https://codeclimate.com/github/dmitryblackwell/bookone/test_coverage)
 [![Build Status](https://travis-ci.org/dmitryblackwell/bookone.svg?branch=master)](https://travis-ci.org/dmitryblackwell/bookone)
 
-##### version: __1.3.1-SNAPSHOT__
+##### version: __1.3.1__
 
 ## Getting started
 
