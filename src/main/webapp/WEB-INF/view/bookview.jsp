@@ -48,7 +48,7 @@
 								<th>${book.isbn}</th>
 							</tr>
 							<tr>
-								<th>${book.author}</th>
+								<th>${book.authorsNames}</th>
 								<td>author</td>
 							</tr>
 							<tr>
@@ -57,7 +57,7 @@
 							</tr>
 							<tr>
 								<th>Genre</th>
-								<td>${book.genre.name}</td>
+								<td>${book.genresNames}</td>
 							</tr>
 							<tr>
 								<th>Description</th>
@@ -75,18 +75,18 @@
 				<div class="col-md-4"></div>
 				<div class="col-md-8" style="float:right;">
 					<div class="comments-section">
-						<c:forEach items="${book.comments}" var="c">
+						<c:forEach items="${comments}" var="c">
 							<div class="comment-post" id="comment${c.id}">
 
-								<div class="col-xs-2"><img src="${contextPath}/resources/uploaded-images/users/${c.user.username}.jpg"/></div>
+								<div class="col-xs-2"><img src="${contextPath}/resources/uploaded-images/users/${c.username}.jpg"/></div>
 								<div class="col-xs-9">
 									<p>
-										<span class="comment-author"><a href="${contextPath}/users/${c.user.username}">${c.user.username}</a></span><span class="comment-time">${c.user.orders.size()} orders</span>
+										<span class="comment-author"><a href="${contextPath}/users/${c.username}">${c.username}</a></span>
 										<security:authorize access="hasRole('ADMIN')">
 											<span class="comment-time"><a href="#" onclick="return deleteComment('${book.isbn}', '${c.id}')">delete</a> </span>
 										</security:authorize>
 									</p>
-									<p class="comment-content">${c.comment}</p>
+									<p class="comment-content">${c.body}</p>
 								</div>
 
 							</div>

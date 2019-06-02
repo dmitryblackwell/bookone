@@ -1,76 +1,51 @@
 package com.blackwell.service.impl;
 
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
-
-import com.blackwell.dao.CommentDAO;
-import com.blackwell.entity.Comment;
-import com.blackwell.entity.User;
-import com.blackwell.service.BookService;
-import com.blackwell.service.DAOManagerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-
-import com.blackwell.dao.BookDAO;
-import com.blackwell.dao.GenreDAO;
 import com.blackwell.entity.Book;
 import com.blackwell.entity.Genre;
+import com.blackwell.repository.BookRepository;
+import com.blackwell.repository.GenreRepository;
+import com.blackwell.service.BookService;
+import com.blackwell.util.ServiceUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
+@Transactional
 public class BookServiceImpl implements BookService {
 
-	private final DAOManagerService daoManagerService;
-
-	private BookDAO bookDAO;
-
-	private CommentDAO commentDAO;
-
-	private GenreDAO genreDAO;
+	@Autowired
+	private BookRepository bookRepository;
 
 	@Autowired
-	public BookServiceImpl(DAOManagerService daoManagerService) {
-		this.daoManagerService = daoManagerService;
-	}
+	private GenreRepository genreRepository;
 
-	@PostConstruct
-	public void postConstruct() {
-		bookDAO = daoManagerService.getDAO(BookDAO.class);
-		commentDAO = daoManagerService.getDAO(CommentDAO.class);
-		genreDAO = daoManagerService.getDAO(GenreDAO.class);
-	}
 	
 	@Override
-	public Book getBook(long isbn) {return bookDAO.get(isbn); }
+	public Book getBook(long isbn) {return bookRepository.findById(isbn).get(); }
 
 	@Override
-	public List<Book> getBooks() { return bookDAO.get(); }
+	public List<Book> getBooks() {
+		return ServiceUtils.getListFromIterable(bookRepository.findAll());
+	}
 
 	@Override
-	public void saveBook(Book book) { bookDAO.save(book); }
+	public void saveBook(Book book) { bookRepository.save(book); }
 
 	@Override
-	public void deleteBook(long isbn) {	bookDAO.delete(isbn); }
+	public void deleteBook(long isbn) {	bookRepository.deleteBookByIsbn(isbn); }
 	
 	@Override
-	public List<Genre> getGenres() { return genreDAO.get(); }
-
-	@Override
-	public Genre getGenre(int id) {	return genreDAO.get(id); }
-
-	@Override
-	public Genre getGenre(String name) { return genreDAO.get(name); }
-
-	@Override
-	public void addComment(long isbn, String username, String comment) {
-		commentDAO.save(isbn, username, comment);
+	public List<Genre> getGenres() {
+		return ServiceUtils.getListFromIterable(genreRepository.findAll());
 	}
 
 	@Override
-	public void deleteComment(int id) {
-		commentDAO.delete(id);
-	}
+	public Genre getGenre(int id) {	return genreRepository.findById(id).get(); }
+
+	@Override
+	public Genre getGenre(String name) { return genreRepository.findGenreByName(name); }
 
 }

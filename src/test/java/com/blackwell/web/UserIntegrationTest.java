@@ -3,6 +3,7 @@ package com.blackwell.web;
 import com.blackwell.entity.Book;
 import com.blackwell.entity.Order;
 import com.blackwell.entity.User;
+import com.blackwell.util.ServiceUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
@@ -18,34 +19,34 @@ public class UserIntegrationTest extends IntegrationTest {
     @Test
     public void getUserTest() throws Exception {
         User user = generateUser();
-        userDAO.save(user);
+        userRepository.save(user);
         mockMvc.perform(get("/users/{username}", USERNAME))
                 .andExpect(status().isOk())
                 .andExpect(view().name("userview"))
                 .andExpect(model().attribute("user", equalTo(user)))
-                .andExpect(model().attribute("orders", user.getOrders()));
-        userDAO.delete(user.getUsername());
-        assertNull(userDAO.get(user.getUsername()));
+                .andExpect(model().attribute("orders", orderRepository.findOrdersByUserUsername(USERNAME)));
+        userRepository.deleteUserByUsername(user.getUsername());
+        assertNull(userRepository.findUserByUsername(user.getUsername()));
     }
 
     @Test
     public void saveOrderTest() throws Exception {
         User user = generateUser();
         Book book = generateBook();
-        userDAO.save(user);
-        bookDAO.save(book);
+        userRepository.save(user);
+        bookRepository.save(book);
         mockMvc.perform(post("/users/{username}/orders", USERNAME)
                 .param("isbn", String.valueOf(ISBN))
                 .param("quantity", String.valueOf(QUANTITY)))
                 .andExpect(status().isCreated());
 
-        Order order = getMockedOrderFromList(orderDAO.get());
-        assertFalse(StringUtils.isBlank(order.getOrderNo()));
-        assertNotNull(orderDAO.get(order.getOrderNo()));
+        Order order = getMockedOrderFromList(ServiceUtils.getListFromIterable(orderRepository.findAll()));
+        assertFalse(StringUtils.isBlank(order.getId()));
+        assertNotNull(orderRepository.findById(order.getId()));
 
-        orderDAO.delete(order.getOrderNo());
-        userDAO.delete(USERNAME);
-        bookDAO.delete(ISBN);
+        orderRepository.deleteById(order.getId());
+        userRepository.deleteUserByUsername(USERNAME);
+        bookRepository.deleteBookByIsbn(ISBN);
     }
 
 }

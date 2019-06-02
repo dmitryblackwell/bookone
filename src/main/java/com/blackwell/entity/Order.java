@@ -1,45 +1,31 @@
 package com.blackwell.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
-@ToString(exclude = {"user", "book"})
-@EqualsAndHashCode(exclude = {"user", "book", "status", "quantity"})
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @Builder
-@Entity
-@Table(name="orders")
+@Table(name = "orders")
 public class Order {
 
     @Id
-    @Column(name="orderNo")
     @GenericGenerator(name = "sequence_dep_id", strategy = "com.blackwell.util.OrderNoGenerator")
     @GeneratedValue(generator = "sequence_dep_id")
-    private String orderNo;
+    private String id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="username")
+    @ManyToOne
     private User user;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="isbn")
+    @ManyToOne
     private Book book;
 
-    @Column(name="status")
-    private int status;
-
-    @Column(name="quantity")
-    private int quantity;
-
-    public Order(User user, Book book, int quantity) {
-        this.user = user;
-        this.book = book;
-        this.quantity = quantity;
-    }
+    @Enumerated(EnumType.ORDINAL)
+    private OrderStatus status;
 }

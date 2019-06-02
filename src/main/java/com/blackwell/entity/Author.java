@@ -7,21 +7,17 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "comments")
-public class Comment {
+public class Author {
     @Id
     private int id;
-    private float score;
-    private String header;
-    private String body;
-
-    private long isbn;
-    private String username;
+    private String fullName;
+    private int born;
+    private int die;
+    private String description;
 }

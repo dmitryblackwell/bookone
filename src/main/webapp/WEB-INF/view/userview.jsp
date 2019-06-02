@@ -115,19 +115,17 @@
                                             <th>author</th>
                                             <th>name</th>
                                             <th>price</th>
-                                            <th>quantity</th>
                                             <th>status</th>
                                             <th>action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <c:forEach items="${orders}" var="o">
-                                            <tr id="tr${o.orderNo}" class="pointer"> <%--  onclick="window.location.href = 'books/${b.isbn}';" --%>
-                                                <td>${o.orderNo}</td>
-                                                <td>${o.book.author}</td>
+                                            <tr id="tr${o.id}" class="pointer"> <%--  onclick="window.location.href = 'books/${b.isbn}';" --%>
+                                                <td>${o.id}</td>
+                                                <td>${o.book.authorsNames}</td>
                                                 <td>${o.book.name}</td>
                                                 <td>${o.book.price}</td>
-                                                <td>${o.quantity}</td>
                                                 <td>${o.status}</td>
 
                                                 <td>
@@ -144,15 +142,15 @@
                                     <div class="row" style="margin-top: 50px;">
                                         <div class="col-8">
                                             <div class="comments-section">
-                                                <c:forEach items="${user.comments}" var="c">
+                                                <c:forEach items="${comments}" var="c">
                                                     <div class="comment-post" id="comment${c.id}">
 
-                                                        <div class="col-xs-2"><img src="${contextPath}/resources/uploaded-images/users/${c.user.username}.jpg"/></div>
+                                                        <div class="col-xs-2"><img src="${contextPath}/resources/uploaded-images/users/${c.username}.jpg"/></div>
                                                         <div class="col-xs-9">
                                                             <p>
-                                                                <span class="comment-author">${c.user.username}</span> commented book <a href="${contextPath}/books/${c.book.isbn}">${c.book.name}</a>
+                                                                <span class="comment-author">${c.username}</span> commented book <a href="${contextPath}/books/${c.isbn}">${c.isbn}</a>
                                                             </p>
-                                                            <p class="comment-content">${c.comment}</p>
+                                                            <p class="comment-content">${c.body}</p>
                                                         </div>
 
                                                     </div>

@@ -2,15 +2,16 @@ package com.blackwell.web;
 
 import com.blackwell.constant.PageConstants;
 import com.blackwell.entity.Book;
+import com.blackwell.entity.Comment;
 import com.blackwell.entity.Genre;
 import com.blackwell.service.BookService;
+import com.blackwell.service.CommentService;
 import com.blackwell.service.FileUploadService;
 import com.blackwell.util.GenreEditor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,19 +19,21 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.util.List;
 
 @Controller
 @RequestMapping("/books")
 public class BookController {
-	private final BookService bookService;
-	
-	private final GenreEditor genreEditor;
 
+	private final BookService bookService;
+	private final CommentService commentService;
+	private final GenreEditor genreEditor;
 	private final FileUploadService fileUploadService;
 
 	@Autowired
-	public BookController(BookService bookService, GenreEditor genreEditor, FileUploadService fileUploadService) {
+	public BookController(BookService bookService, CommentService commentService, GenreEditor genreEditor, FileUploadService fileUploadService) {
 		this.bookService = bookService;
+		this.commentService = commentService;
 		this.genreEditor = genreEditor;
 		this.fileUploadService = fileUploadService;
 	}
@@ -60,14 +63,16 @@ public class BookController {
 	@GetMapping("/{isbn}")
 	public ModelAndView getBook(@PathVariable long isbn) {
 		Book book = bookService.getBook(isbn);
+		List<Comment> comments = commentService.getComments(isbn);
 		ModelAndView modelAndView = new ModelAndView("bookview");
 		modelAndView.addObject("book", book);
+		modelAndView.addObject("comments", comments);
 		return modelAndView;
 	}
 
 	@PostMapping("/{isbn}/comments")
 	public ModelAndView saveComment(@PathVariable long isbn, @RequestParam String username, @RequestParam String comment){
-		bookService.addComment(isbn, username, comment);
+		commentService.saveComment(isbn, username, comment);
 
 		String viewName = StringUtils.join(PageConstants.REDIRECT_BOOKS, "/", isbn);
 		return new ModelAndView(viewName);
@@ -76,7 +81,7 @@ public class BookController {
 	@DeleteMapping("/comments/{id}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public void deleteComment(@PathVariable int id){
-		bookService.deleteComment(id);
+		commentService.deleteComment(id);
 	}
 	
 	

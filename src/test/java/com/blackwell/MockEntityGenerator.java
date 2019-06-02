@@ -1,9 +1,6 @@
 package com.blackwell;
 
-import com.blackwell.entity.Book;
-import com.blackwell.entity.Genre;
-import com.blackwell.entity.Order;
-import com.blackwell.entity.User;
+import com.blackwell.entity.*;
 import com.blackwell.util.OrderNoGenerator;
 
 import java.util.HashSet;
@@ -12,6 +9,7 @@ public class MockEntityGenerator {
 
     public static final long ISBN = 1234L;
     public static final String USERNAME = "username";
+    public static final String FULL_NAME = "Full Name";
     public static final String COMMENT = "This is some Comment!";
     public static final int QUANTITY = 2;
     public static final String NAME = "BookName";
@@ -23,30 +21,32 @@ public class MockEntityGenerator {
         return User.builder()
                 .username(USERNAME)
                 .email(EMAIL)
-                .enabled(true)
+                .fullName(FULL_NAME)
+                .level(UserLevel.BEGINER)
                 .password(PASSWORD)
-                .comments(new HashSet<>())
-                .orders(new HashSet<>())
+                .phoneNumber("050 1234 123")
+                .enabled(true)
                 .build();
     }
 
     public static Book generateBook() {
-        return  Book.builder()
+        Book book = Book.builder()
                 .isbn(ISBN)
                 .name(NAME)
-                .author(AUTHOR)
+                .authors(new HashSet<>())
                 .price(66.6f)
-                .genre(new Genre(1, "sci-fi"))
-                .comments(new HashSet<>())
+                .genres(new HashSet<>())
                 .build();
+        book.getAuthors().add(Author.builder().id(1234).fullName(AUTHOR).build());
+        book.getGenres().add(new Genre(1, "sci-fi", "Science fiction"));
+        return book;
     }
 
     public static Order generateOrder(User user, Book book) {
         return Order.builder()
-                .orderNo(OrderNoGenerator.generate())
+                .id(OrderNoGenerator.generate())
                 .user(user)
                 .book(book)
-                .quantity(QUANTITY)
                 .build();
     }
 

@@ -1,55 +1,38 @@
 package com.blackwell.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-@Getter
-@Setter
-@ToString(exclude = "comments")
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Entity
-@Table(name="books")
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Book {
-	
-	@Id
-	@Column(name="isbn")
-	private long isbn;
-	
-	@Column(name="author")
-	private String author;
-	
-	@Column(name="name")
-	private String name;
-	
-	@Column(name="price")
-	private float price;
-	
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.DETACH, CascadeType.REFRESH})
-	@JoinColumn(name="genre")
-	private Genre genre;
-	
-	@Column(name="description")
-	private String description;
+    @Id
+    private long isbn;
+    private String name;
+    private float price;
+    private String description;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "book", cascade = CascadeType.ALL)
-	private Set<Comment> comments;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Genre> genres;
+    @ManyToMany(fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL)
+    private Set<Author> authors;
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		Book book = (Book) o;
-		return isbn == book.isbn;
-	}
+    public List<String> getAuthorsNames() {
+        return authors.stream().map(Author::getFullName).collect(Collectors.toList());
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(isbn);
-	}
+    public List<String> getGenresNames() {
+        return genres.stream().map(Genre::getName).collect(Collectors.toList());
+    }
 }

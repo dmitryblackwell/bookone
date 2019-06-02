@@ -27,18 +27,18 @@
             </thead>
             <tbody>
             <c:forEach items="${orders}" var="o">
-                <tr id="tr${o.orderNo}" class="pointer"> <%--  onclick="window.location.href = 'books/${b.isbn}';" --%>
-                    <td>${o.orderNo}</td>
-                    <td>${o.book.author}</td>
+                <tr id="tr${o.id}" class="pointer"> <%--  onclick="window.location.href = 'books/${b.isbn}';" --%>
+                    <td>${o.id}</td>
+                    <td>${o.book.authorsNames}</td>
                     <td>${o.book.name}</td>
                     <td>${o.book.price}</td>
                     <td>${o.user.username}</td>
                     <td>${o.user.email}</td>
-                    <td id="status-${o.orderNo}">${o.status}</td>
+                    <td id="status-${o.id}">${o.status}</td>
                     <td>
-                        <a href="#" onclick="return approveOrder('${o.orderNo}');">approve</a>
+                        <a href="#" onclick="return approveOrder('${o.id}');">approve</a>
                         |
-                        <a href="#" onclick="return deleteOrder('${o.orderNo}');">delete</a>
+                        <a href="#" onclick="return deleteOrder('${o.id}');">delete</a>
                     </td>
 
                 </tr>

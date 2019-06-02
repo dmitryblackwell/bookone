@@ -1,22 +1,19 @@
 package com.blackwell.service;
 
-import java.util.List;
-
 import com.blackwell.entity.Book;
 import com.blackwell.entity.Genre;
 
-public interface BookService {
-	public List<Book> getBooks();
-	public Book getBook(long isbn);
-	public void saveBook(Book book);
-	public void deleteBook(long isbn);
-	
-	public List<Genre> getGenres();
-	public Genre getGenre(int id);
-	public Genre getGenre(String name);
+import java.util.List;
 
-	void addComment(long isbn, String username, String comment);
-	void deleteComment(int id);
+public interface BookService {
+	List<Book> getBooks();
+	Book getBook(long isbn);
+	void saveBook(Book book);
+	void deleteBook(long isbn);
+	
+	List<Genre> getGenres();
+	Genre getGenre(int id);
+	Genre getGenre(String name);
 }
 
 // TODO make this world a better place

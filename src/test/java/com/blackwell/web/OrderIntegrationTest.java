@@ -2,8 +2,9 @@ package com.blackwell.web;
 
 
 import com.blackwell.entity.Order;
+import com.blackwell.entity.OrderStatus;
+import com.blackwell.util.ServiceUtils;
 import org.junit.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.*;
@@ -18,41 +19,42 @@ public class OrderIntegrationTest extends IntegrationTest {
         mockMvc.perform(get("/orders"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("orderview"))
-                .andExpect(model().attribute("orders", equalTo(orderDAO.get())));
+                .andExpect(model().attribute("orders", equalTo(ServiceUtils.getListFromIterable(orderRepository.findAll()))));
     }
 
     @Test
     public void createApproveDeleteOrderTest() throws Exception {
-        userDAO.save(generateUser());
-        bookDAO.save(generateBook());
+        userRepository.save(generateUser());
+        bookRepository.save(generateBook());
 
         Order order = createOrderTest();
-        approveOrderTest(order.getOrderNo());
-        deleteOrderTest(order.getOrderNo());
+        approveOrderTest(order.getId());
+        deleteOrderTest(order.getId());
 
-        userDAO.delete(USERNAME);
-        bookDAO.delete(ISBN);
+        userRepository.deleteUserByUsername(USERNAME);
+        bookRepository.deleteBookByIsbn(ISBN);
     }
 
     private Order createOrderTest() throws Exception {
         mockMvc.perform(post("/users/{username}/orders", USERNAME)
-                .param("isbn", String.valueOf(ISBN))
-                .param("quantity", String.valueOf(QUANTITY)))
+                .param("isbn", String.valueOf(ISBN)))
                 .andExpect(status().isCreated());
-        return getMockedOrderFromList(orderDAO.get());
+        return getMockedOrderFromList(ServiceUtils.getListFromIterable(orderRepository.findAll()));
     }
 
     private void approveOrderTest(String orderNo) throws Exception {
         mockMvc.perform(post("/orders/{orderNo}", orderNo))
                 .andExpect(status().isOk());
-        assertEquals(orderDAO.get(orderNo).getStatus(), 1);
+        assertEquals(orderRepository.findById(orderNo).get().getStatus(), OrderStatus.APPROVED);
+
     }
 
     private void deleteOrderTest(String orderNo) throws Exception{
-        assertNotNull(orderDAO.get(orderNo));
+        assertNotNull(orderRepository.findById(orderNo).get());
+
         mockMvc.perform(delete("/orders/{orderNo}", orderNo))
                 .andExpect(status().isOk());
-        assertNull(orderDAO.get(orderNo));
+        assertNull(orderRepository.findById(orderNo).orElse(null));
     }
 
 }

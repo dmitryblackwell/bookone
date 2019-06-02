@@ -24,10 +24,10 @@
 			<form:form method="POST" modelAttribute="book" class="bookform" id="bookform">
 				<fieldset class="form-fieldset ui-input" id="fieldset-save">					
 					<form:input path="isbn" placeholder="isbn"/>
-					<form:input path="author" placeholder="author"/>
+					<form:input path="authors" placeholder="authors"/>
 					<form:input path="name" placeholder="name"/>
 					<form:input path="price" placeholder="price" style="width:158px;"/>
-					<form:select path="genre">
+					<form:select path="genres">
 						<form:options items="${genres}" itemLabel="name"/>
 					</form:select>
 					<div class="btn" for="test" id="savebook" onclick="document.getElementById('bookform').submit();">
@@ -58,18 +58,17 @@
 					<c:forEach items="${books}" var="b">
 						<tr id="tr${b.isbn}" class="pointer"> <%--  onclick="window.location.href = 'books/${b.isbn}';" --%>
 							<td>${b.isbn}</td>
-							<td>${b.author}</td>
+							<td>${b.authorsNames}</td>
 							<td>${b.name}</td>
 							<td>${b.price}</td>
-							<td>${b.genre.name}</td>
+							<td>${b.genresNames}</td>
 							<td>
 								<security:authorize access="hasRole('ADMIN')">
 									<a href="#" onclick="return deleteBook('${b.isbn}');">delete</a>
 									|
-									<a href="#" onclick="return setFields('${b.isbn}', '${b.author}', '${b.name}', '${b.price}', '${b.genre.name}');">edit</a>
+									<a href="#" onclick="return setFields('${b.isbn}', '${b.authors}', '${b.name}', '${b.price}', '${b.genres}');">edit</a>
 									|
 								</security:authorize>
-								<input id="quantity${b.isbn}" value="1" style="width:30px;">
 								<a href="#" onclick="buyBook('<security:authentication property='principal.username'/>', '${b.isbn}');">buy</a>
 								|
 								<a href="books/${b.isbn}" >more</a>

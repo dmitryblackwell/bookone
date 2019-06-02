@@ -1,10 +1,9 @@
 package com.blackwell.web;
 
 import com.blackwell.constant.PageConstants;
+import com.blackwell.entity.Order;
 import com.blackwell.entity.User;
-import com.blackwell.service.BookService;
-import com.blackwell.service.FileUploadService;
-import com.blackwell.service.UserService;
+import com.blackwell.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,15 +21,20 @@ import java.io.File;
 public class UserController {
 
     private final UserService userService;
-
     private final BookService bookService;
+    private final OrderService orderService;
+    private final CommentService commentService;
 
     private final FileUploadService fileUploadService;
 
+
     @Autowired
-    public UserController(UserService userService, BookService bookService, FileUploadService fileUploadService) {
+    public UserController(UserService userService, BookService bookService, OrderService orderService,
+                          CommentService commentService, FileUploadService fileUploadService) {
         this.userService = userService;
         this.bookService = bookService;
+        this.orderService = orderService;
+        this.commentService = commentService;
         this.fileUploadService = fileUploadService;
     }
 
@@ -38,14 +42,19 @@ public class UserController {
     public String getUser(@PathVariable String username, Model model){
         User user = userService.getUser(username);
         model.addAttribute("user", user);
-        model.addAttribute("orders", user.getOrders());
+        model.addAttribute("orders", orderService.getOrdersByUser(username));
+        model.addAttribute("comments", commentService.getComments(username));
         return "userview";
     }
 
     @PostMapping("/{username}/orders")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void saveOrder(@RequestParam("isbn") long isbn, @PathVariable("username") String username, @RequestParam("quantity") int quantity) {
-        userService.addOrderForUser(username, bookService.getBook(isbn), quantity);
+    public void saveOrder(@RequestParam("isbn") long isbn, @PathVariable("username") String username) {
+        Order order = Order.builder()
+                .user(userService.getUser(username))
+                .book(bookService.getBook(isbn))
+                .build();
+        orderService.saveOrder(order);
     }
 
 
