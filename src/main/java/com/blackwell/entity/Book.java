@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -29,6 +30,8 @@ public class Book {
     private Set<Author> authors;
 
     public List<String> getAuthorsNames() {
+        if (authors == null)
+            return Collections.emptyList();
         return authors.stream().map(Author::getFullName).collect(Collectors.toList());
     }
 

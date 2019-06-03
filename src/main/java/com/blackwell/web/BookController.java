@@ -42,7 +42,6 @@ public class BookController {
 	public ModelAndView getBooks() {
 		ModelAndView modelAndView = new ModelAndView("index");
 		modelAndView.addObject("books", bookService.getBooks());
-		modelAndView.addObject("genres", bookService.getGenres());
 		modelAndView.addObject("book", new Book());
 		return modelAndView;
 	}
@@ -61,13 +60,8 @@ public class BookController {
 	}
 
 	@GetMapping("/{isbn}")
-	public ModelAndView getBook(@PathVariable long isbn) {
-		Book book = bookService.getBook(isbn);
-		List<Comment> comments = commentService.getComments(isbn);
-		ModelAndView modelAndView = new ModelAndView("bookview");
-		modelAndView.addObject("book", book);
-		modelAndView.addObject("comments", comments);
-		return modelAndView;
+	public ModelAndView getBook(@PathVariable long isbn, @RequestParam(required = false) boolean edit) {
+		return edit ? getBookEditPage(isbn) : getBookPage(isbn);
 	}
 
 	@PostMapping("/{isbn}/comments")
@@ -101,5 +95,26 @@ public class BookController {
 
         return PageConstants.REDIRECT_BOOKS + "/" + isbn + "?";
     }
+
+    private ModelAndView getBookEditPage(long isbn) {
+		ModelAndView modelAndView = new ModelAndView("book-edit");
+		Book book;
+		if (isbn != 0)
+			book = bookService.getBook(isbn);
+		else
+			book = new Book();
+		modelAndView.addObject("genres", bookService.getGenres());
+		modelAndView.addObject("book", book);
+		return modelAndView;
+	}
+
+	private ModelAndView getBookPage(long isbn) {
+		Book book = bookService.getBook(isbn);
+		List<Comment> comments = commentService.getComments(isbn);
+		ModelAndView modelAndView = new ModelAndView("bookview");
+		modelAndView.addObject("book", book);
+		modelAndView.addObject("comments", comments);
+		return modelAndView;
+	}
 	
 }

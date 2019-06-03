@@ -39,7 +39,7 @@ h2 {
 	margin: 0 auto;
 	margin-bottom: 30px;
 }
-#bookform input, #bookform select{
+#bookform input, #bookform select, #bookform textarea{
 	width: 200px;
 }
 #savebook{

@@ -1,3 +1,5 @@
+USE bookshelf;
+
 INSERT INTO genre VALUES (1, 'sci-fi', 'Science fiction'), (2, 'Pump Fiction', 'Pump Fiction');
 
 INSERT INTO book VALUES

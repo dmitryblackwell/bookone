@@ -53,7 +53,7 @@ public class BookIntegrationTest extends IntegrationTest {
         long isbn = generatedBook.getIsbn();
 
         bookRepository.save(generatedBook);
-        ModelAndView modelAndView = bookController.getBook(isbn);
+        ModelAndView modelAndView = bookController.getBook(isbn, false);
         assertEquals(modelAndView.getViewName(), "bookview");
 
         Object bookObj = modelAndView.getModel().get("book");
