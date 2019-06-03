@@ -47,11 +47,12 @@ $(document).ready(function () {
         }
     }
 
-    // for adding authors
-    $('#myInput').keydown(function (event) {
-        var keypressed = event.keyCode || event.which;
-        if (keypressed == 13) {
-            newElement();
+    $("#myInput").autocomplete({
+        source: "/author/search",
+        minLength: 2,
+        messages: {
+            noResults: '',
+            results: function() {}
         }
     });
 });
