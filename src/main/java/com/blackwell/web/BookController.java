@@ -22,7 +22,7 @@ import java.io.File;
 import java.util.List;
 
 @Controller
-@RequestMapping("/books")
+@RequestMapping("/book")
 public class BookController {
 
 	private final BookService bookService;
@@ -47,8 +47,8 @@ public class BookController {
 	}
 	
 
-	@PostMapping
-	public ModelAndView saveBook(@ModelAttribute Book book) {
+	@PostMapping("/{isbn}")
+	public ModelAndView saveBook(@PathVariable long isbn, @ModelAttribute Book book) {
 		bookService.saveBook(book);
 		return new ModelAndView(PageConstants.REDIRECT_HOME);
 	}

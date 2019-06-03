@@ -40,12 +40,16 @@ h2 {
 	margin-bottom: 30px;
 }
 #bookform input, #bookform select, #bookform textarea{
-	width: 200px;
+	font-size: 15px;
+	border-bottom: 0px #50617A solid;
 }
 #savebook{
 	display: inline-block;
 }
+.book-edit-table tr th{
+	align-self: center;
 
+}
 #headerimg{
 	-webkit-box-shadow:
 		0 0 20px rgba(255,255,255,.6),

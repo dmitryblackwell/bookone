@@ -20,20 +20,6 @@
 					<img
 						src="${pageContext.request.contextPath}/resources/uploaded-images/books/${book.isbn}.jpg"
 						style="height: 400px; width: 290px; background-color: #dddddd" />
-					<security:authorize access="hasRole('ADMIN')">
-						<form:form method="POST" action="upload-image" enctype="multipart/form-data">
-							<div id="photoWrapper">
-								<label style="float:left;"> <input type="file" accept="image/jpeg" name="file"></input>
-									<div class="newInputWrapper">
-										<span id="photo"></span>
-										<p class="filename">Add Picture</p>
-									</div>
-								</label>
-								<input type="hidden" name="isbn" accept="image/jpeg" value="${book.isbn}">
-								<input type="submit" value="Submit" style="float:right;" />
-							</div>					
-						</form:form>
-					</security:authorize>
 				</div>
 
 				<div class="book-table col-xs-12 col-md-8">
@@ -48,15 +34,15 @@
 								<th>${book.isbn}</th>
 							</tr>
 							<tr>
-								<th>${book.authorsNames}</th>
-								<td>author</td>
+								<th>Authors</th>
+								<td>${book.authorsNames}</td>
 							</tr>
 							<tr>
 								<th>Price</th>
 								<td>${book.price}</td>
 							</tr>
 							<tr>
-								<th>Genre</th>
+								<th>Genres</th>
 								<td>${book.genresNames}</td>
 							</tr>
 							<tr>
