@@ -12,7 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
@@ -28,8 +27,6 @@ public class BookIntegrationTest extends IntegrationTest {
         Map<String, Object> model = bookController.getBooks().getModel();
 
         assertEquals(model.get("books"), ServiceUtils.getListFromIterable(bookRepository.findAll()));
-        assertEquals(model.get("genres"),ServiceUtils.getListFromIterable(genreRepository.findAll()));
-        assertTrue(model.get("book") instanceof Book);
     }
 
     @Test
@@ -64,6 +61,35 @@ public class BookIntegrationTest extends IntegrationTest {
         assertEquals(book.getName(), generatedBook.getName());
         bookRepository.deleteBookByIsbn(isbn);
         assertNull(bookRepository.findById(isbn).orElse(null));
+    }
+
+    @Test
+    public void getEditBookTest() {
+        Book generatedBook = generateBook();
+        long isbn = generatedBook.getIsbn();
+
+        bookRepository.save(generatedBook);
+        ModelAndView modelAndView = bookController.getBook(isbn, true);
+        assertTrue(modelAndView.getModel().get("book") instanceof Book);
+
+        Book book = (Book) modelAndView.getModel().get("book");
+        assertEquals(isbn, book.getIsbn());
+        assertEquals(generatedBook, book);
+
+        bookRepository.deleteBookByIsbn(isbn);
+        assertNull(bookRepository.findById(isbn).orElse(null));
+    }
+
+    @Test
+    public void getNewEditBookTest() {
+        ModelAndView modelAndView = bookController.getBook(0, true);
+
+        assertTrue(modelAndView.getModel().get("book") instanceof Book);
+        Book book = (Book) modelAndView.getModel().get("book");
+        assertEquals(book.getIsbn(), 0);
+        assertTrue(StringUtils.isBlank(book.getName()));
+        assertEquals(modelAndView.getModel().get("genres"),
+                ServiceUtils.getListFromIterable(genreRepository.findAll()));
     }
 
     @Test

@@ -42,7 +42,6 @@ public class BookController {
 	public ModelAndView getBooks() {
 		ModelAndView modelAndView = new ModelAndView("index");
 		modelAndView.addObject("books", bookService.getBooks());
-		modelAndView.addObject("book", new Book());
 		return modelAndView;
 	}
 	
