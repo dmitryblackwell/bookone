@@ -38,15 +38,12 @@
 							<td>${b.price}</td>
 							<td>${b.genresNames}</td>
 							<td>
+								<a href="books/${b.isbn}" ><img width="25px" src="https://img.icons8.com/dusk/64/000000/details-popup.png"></a>
+								<a href="#" onclick="buyBook('<security:authentication property='principal.username'/>', '${b.isbn}');"><img width="25px" src="https://img.icons8.com/ultraviolet/40/000000/buy.png"></a>
 								<security:authorize access="hasRole('ADMIN')">
-									<a href="#" onclick="return deleteBook('${b.isbn}');">delete</a>
-									|
-									<a href="#" onclick="return setFields('${b.isbn}', '${b.authors}', '${b.name}', '${b.price}', '${b.genres}');">edit</a>
-									|
+									<a href="/book/${b.isbn}?edit=true"><img width="25px" src="https://img.icons8.com/dusk/64/000000/pencil.png"></a>
+									<a href="#" onclick="return deleteBook('${b.isbn}');"><img width="25px" src="https://img.icons8.com/color/48/000000/close-window.png"></a>
 								</security:authorize>
-								<a href="#" onclick="buyBook('<security:authentication property='principal.username'/>', '${b.isbn}');">buy</a>
-								|
-								<a href="books/${b.isbn}" >more</a>
 							</td>
 
 						</tr>

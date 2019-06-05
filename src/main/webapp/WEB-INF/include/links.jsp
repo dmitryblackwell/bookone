@@ -9,7 +9,6 @@
 <script src="<c:url value="/resources/js/jquery-3.3.1.min.js"/>"></script>
 <script src="<c:url value="/resources/js/jquery-ui.min.js"/>"></script>
 <script src="<c:url value="/resources/js/ajax-books.js"/>"></script>
-<script src="<c:url value="/resources/js/set-fields.js"/>"></script>
 <script src="<c:url value="/resources/js/form.js"/>"></script>
 <script src="<c:url value="/resources/js/upload-form.js"/>"></script>
 <script src="<c:url value="/resources/js/authors.js"/>"></script>

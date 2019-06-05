@@ -38,4 +38,5 @@ public class Book {
     public List<String> getGenresNames() {
         return genres.stream().map(Genre::getName).collect(Collectors.toList());
     }
+
 }

@@ -44,7 +44,6 @@ public class BookController {
 		modelAndView.addObject("books", bookService.getBooks());
 		return modelAndView;
 	}
-	
 
 	@PostMapping("/{isbn}")
 	public ModelAndView saveBook(@PathVariable long isbn, @ModelAttribute Book book) {

@@ -53,8 +53,11 @@
                             <th>authors</th>
                             <td>
                                 <ul id="myUL">
-                                    <c:forEach items="${book.authors}" var="a">
-                                        <li value="${a.id}">${a.fullName} <span class="close">×</span></li>
+                                    <c:forEach items="${book.authors}" var="a" varStatus="status">
+                                        <li class="closeLi" value="${a.id}">
+                                            ${a.fullName}
+                                            <%--form:input type="hidden" path="authors[${status.index}].id" name="id" id="id" value=""/--%>
+                                        </li>
                                     </c:forEach>
                                 </ul>
                                 <div id="myDIV" class="header">
