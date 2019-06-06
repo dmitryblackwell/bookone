@@ -11,4 +11,6 @@ public interface CommentService {
     void deleteComment(int id);
     List<Comment> getComments(String username);
     List<Comment> getComments(long isbn);
+
+    Float getAvgScoreByIsbn(long isbn);
 }

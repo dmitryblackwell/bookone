@@ -64,13 +64,19 @@
 						<c:forEach items="${comments}" var="c">
 							<div class="comment-post" id="comment${c.id}">
 
+								<span class="comment-author"><a href="${contextPath}/users/${c.username}">${c.username}</a></span>
 								<div class="col-xs-2"><img src="${contextPath}/resources/uploaded-images/users/${c.username}.jpg"/></div>
+
 								<div class="col-xs-9">
 									<p>
-										<span class="comment-author"><a href="${contextPath}/users/${c.username}">${c.username}</a></span>
-										<security:authorize access="hasRole('ADMIN')">
-											<span class="comment-time"><a href="#" onclick="return deleteComment('${book.isbn}', '${c.id}')">delete</a> </span>
-										</security:authorize>
+										<h3>
+											${c.header}
+											<security:authorize access="hasRole('ADMIN')">
+												<span class="comment-time"><a href="#" onclick="return deleteComment('${book.isbn}', '${c.id}')">delete</a> </span>
+											</security:authorize>
+										</h3>
+
+									<p>${c.score}</p>
 									</p>
 									<p class="comment-content">${c.body}</p>
 								</div>
@@ -80,9 +86,18 @@
 
 						<div class="col-xs-12">
 							<form:form action="${book.isbn}/comments" method="post" id="addCommentForm" cssStyle="margin-top: 50px;">
-								<textarea name="comment"></textarea>
+								<input type="text" placeholder="Right your title here..." style="width: 100%;" name="header">
+								<input type="hidden" id="commentScore" name="score" value="">
+								<div class="stars" data-rating="3">
+									<span class="star">&nbsp;</span>
+									<span class="star">&nbsp;</span>
+									<span class="star">&nbsp;</span>
+									<span class="star">&nbsp;</span>
+									<span class="star">&nbsp;</span>
+								</div>
+								<textarea placeholder="Right your comment here..." name="body"></textarea>
 								<input type="hidden" name="username" value="<security:authentication property="principal.username"/>">
-								<div class="btn" for="test" id="addcomment" onclick="document.getElementById('addCommentForm').submit();" style="float: right;">
+								<div class="btn" for="test" id="addcomment" onclick="document.getElementById('addCommentForm').submit();" style="margin-top: 20px; float: right;">
 									<span>add comment</span>
 								</div>
 							</form:form>

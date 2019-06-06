@@ -1,9 +1,11 @@
 package com.blackwell.web;
 
 import com.blackwell.constant.PageConstants;
+import com.blackwell.converter.BookToDTOConverter;
 import com.blackwell.entity.Book;
 import com.blackwell.entity.Comment;
 import com.blackwell.entity.Genre;
+import com.blackwell.model.BookDTO;
 import com.blackwell.service.BookService;
 import com.blackwell.service.CommentService;
 import com.blackwell.service.FileUploadService;
@@ -20,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/book")
@@ -29,19 +32,36 @@ public class BookController {
 	private final CommentService commentService;
 	private final GenreEditor genreEditor;
 	private final FileUploadService fileUploadService;
+	private final BookToDTOConverter bookConverter;
 
 	@Autowired
-	public BookController(BookService bookService, CommentService commentService, GenreEditor genreEditor, FileUploadService fileUploadService) {
+	public BookController(BookService bookService, CommentService commentService, GenreEditor genreEditor,
+						  FileUploadService fileUploadService, BookToDTOConverter bookConverter) {
 		this.bookService = bookService;
 		this.commentService = commentService;
 		this.genreEditor = genreEditor;
 		this.fileUploadService = fileUploadService;
+		this.bookConverter = bookConverter;
 	}
 
 	@GetMapping
 	public ModelAndView getBooks() {
 		ModelAndView modelAndView = new ModelAndView("index");
-		modelAndView.addObject("books", bookService.getBooks());
+		List<BookDTO> bookDTOS =  bookService.getBooks().stream()
+				.map(book -> {
+					if (book == null)
+						return null;
+					Float score = commentService.getAvgScoreByIsbn(book.getIsbn());
+					BookDTO bookDTO = bookConverter.convert(book);
+					if (bookDTO != null) {
+						bookDTO = bookDTO.toBuilder()
+									.score(score)
+									.build();
+					}
+					return bookDTO;
+				})
+				.collect(Collectors.toList());
+		modelAndView.addObject("books",bookDTOS);
 		return modelAndView;
 	}
 
@@ -63,8 +83,8 @@ public class BookController {
 	}
 
 	@PostMapping("/{isbn}/comments")
-	public ModelAndView saveComment(@PathVariable long isbn, @RequestParam String username, @RequestParam String comment){
-		commentService.saveComment(isbn, username, comment);
+	public ModelAndView saveComment(@PathVariable long isbn, Comment comment){
+		commentService.saveComment(comment);
 
 		String viewName = StringUtils.join(PageConstants.REDIRECT_BOOKS, "/", isbn);
 		return new ModelAndView(viewName);
@@ -114,5 +134,5 @@ public class BookController {
 		modelAndView.addObject("comments", comments);
 		return modelAndView;
 	}
-	
+
 }

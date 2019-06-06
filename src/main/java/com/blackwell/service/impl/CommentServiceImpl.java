@@ -49,4 +49,9 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> getComments(long isbn) {
         return commentRepository.findAllByIsbn(isbn);
     }
+
+    @Override
+    public Float getAvgScoreByIsbn(long isbn) {
+        return commentRepository.getAvgScoreByIsbn(isbn);
+    }
 }

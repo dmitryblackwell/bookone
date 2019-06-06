@@ -5,6 +5,7 @@
 <link href="<c:url value="/resources/css/comments.css"/>" rel="stylesheet" />
 <link href="<c:url value="/resources/css/textarea.css"/>" rel="stylesheet" />
 <link href="<c:url value="/resources/css/authors.css"/>" rel="stylesheet" />
+<link href="<c:url value="/resources/css/rating.css"/>" rel="stylesheet" />
 
 <script src="<c:url value="/resources/js/jquery-3.3.1.min.js"/>"></script>
 <script src="<c:url value="/resources/js/jquery-ui.min.js"/>"></script>
@@ -12,3 +13,4 @@
 <script src="<c:url value="/resources/js/form.js"/>"></script>
 <script src="<c:url value="/resources/js/upload-form.js"/>"></script>
 <script src="<c:url value="/resources/js/authors.js"/>"></script>
+<script src="<c:url value="/resources/js/rating.js"/>"></script>

@@ -71,7 +71,7 @@ CREATE TABLE orders(
 
 CREATE TABLE comments(
 	id INT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
-  score float UNSIGNED,
+    score float UNSIGNED,
 	isbn BIGINT NOT NULL,
 	username VARCHAR(50) NOT NULL,
 	header VARCHAR(64),
