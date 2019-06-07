@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional
@@ -24,7 +25,14 @@ public class BookServiceImpl implements BookService {
 
 	
 	@Override
-	public Book getBook(long isbn) {return bookRepository.findById(isbn).get(); }
+	public Book getBook(long isbn) {
+		try {
+			// TODO fix it later
+			return bookRepository.findById(isbn).get();
+		} catch (NoSuchElementException ex) {
+			return null;
+		}
+	}
 
 	@Override
 	public List<Book> getBooks() {

@@ -21,7 +21,7 @@
                 <img src="${pageContext.request.contextPath}/resources/uploaded-images/books/${book.isbn}.jpg"
                         style="height: 400px; width: 290px; background-color: #dddddd" />
                 <security:authorize access="hasRole('ADMIN')">
-                    <form:form method="POST" action="upload-image" enctype="multipart/form-data">
+                    <form:form method="POST" action="upload-image" id="imageUploadedForm" isUploaded="false" enctype="multipart/form-data">
                         <div id="photoWrapper">
                             <label style="float:left;"> <input type="file" accept="image/jpeg" name="file"></input>
                                 <div class="newInputWrapper">
@@ -29,8 +29,8 @@
                                     <p class="filename">Add Picture</p>
                                 </div>
                             </label>
-                            <input type="hidden" name="isbn" accept="image/jpeg" value="${book.isbn}">
-                            <input type="submit" value="Submit" style="float:right;" />
+                            <input type="hidden" name="isbn" id="photoIsbn" accept="image/jpeg" value="${book.isbn}">
+                           <%-- <input type="submit" value="Submit" style="float:right;" /> --%>
                         </div>
                     </form:form>
                 </security:authorize>

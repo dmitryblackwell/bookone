@@ -52,6 +52,11 @@
 					</c:forEach>
 				</tbody>
 			</table>
+			<a href="book/0?edit=true">
+			<div class="btn" style="margin-top: 20px; float: right;">
+				<span>add book</span>
+			</div>
+			</a>
 		</div>
 	</div>
 

@@ -89,7 +89,7 @@
 							<form:form action="${book.isbn}/comments" method="post" id="addCommentForm" cssStyle="margin-top: 50px;">
 								<input type="text" placeholder="Right your title here..." style="width: 100%;" name="header">
 								<input type="hidden" id="commentScore" name="score" value="">
-								<div class="stars" data-rating="3">
+								<div class="stars" data-rating="0">
 									<span class="star">&nbsp;</span>
 									<span class="star">&nbsp;</span>
 									<span class="star">&nbsp;</span>

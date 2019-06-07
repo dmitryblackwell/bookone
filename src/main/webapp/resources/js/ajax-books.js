@@ -76,6 +76,11 @@ function saveBook() {
         addAuthorToSelect($(this).attr("id"));
     });
 
+    $("#photoIsbn").attr("value", $("#isbn").innerText);
+    if ($("#imageUploadedForm").attr("isUploaded") === "true") {
+        $("#imageUploadedForm").submit();
+    }
+
     document.getElementById('bookform').submit();
 }
 
