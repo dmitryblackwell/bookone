@@ -10,7 +10,6 @@
     <meta charset="ISO-8859-1">
     <title>Home</title>
     <%@ include file="/WEB-INF/include/links.jsp"%>
-
 </head>
 <body>
 
@@ -86,7 +85,7 @@
                         <tr>
                             <th></th>
                             <td>
-                                <div class="btn" for="test" id="savebook" onclick="document.getElementById('bookform').submit();">
+                                <div class="btn" for="test" id="savebook" onclick="saveBook()">
                                     <span>save</span>
                                 </div>
                             </td>

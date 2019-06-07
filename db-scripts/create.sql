@@ -44,11 +44,11 @@ CREATE TABLE book(
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE author (
-	id INTEGER auto_increment NOT NULL,
-  full_name VARCHAR(50) NOT NULL,
-  born INTEGER,
-  die INTEGER,
-  description VARCHAR(2048),
+    id INTEGER auto_increment NOT NULL,
+    full_name VARCHAR(50) NOT NULL,
+    born INTEGER,
+    die INTEGER,
+    description VARCHAR(2048),
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

@@ -13,4 +13,3 @@
 <script src="<c:url value="/resources/js/form.js"/>"></script>
 <script src="<c:url value="/resources/js/upload-form.js"/>"></script>
 <script src="<c:url value="/resources/js/authors.js"/>"></script>
-<script src="<c:url value="/resources/js/rating.js"/>"></script>

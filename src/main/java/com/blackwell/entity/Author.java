@@ -17,7 +17,7 @@ public class Author {
     @Id
     private int id;
     private String fullName;
-    private int born;
-    private int die;
+    private Integer born;
+    private Integer die;
     private String description;
 }

@@ -64,3 +64,24 @@ function deleteComment(isbn, id){
     });
     return false;
 }
+
+function saveBook() {
+    $('<select>').attr({
+        multiple: 'multiple',
+        name: 'authors',
+        id: 'authorsSelect'
+    }).appendTo('#bookform');
+
+    $('#myUL li').each(function(i) {
+        addAuthorToSelect($(this).attr("id"));
+    });
+
+    document.getElementById('bookform').submit();
+}
+
+function addAuthorToSelect(author) {
+    $('<option>').attr({
+        value: author,
+        selected: 'selected'
+    }).appendTo('#authorsSelect')
+}

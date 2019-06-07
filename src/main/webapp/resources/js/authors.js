@@ -29,8 +29,7 @@ $(document).ready(function () {
             __response: function() {}
         },
         select: function(event, ui) {
-            $("#sl-label").val(ui.item.label);
-            $("#sl-id").val(ui.item.value);
+            $("#myInput").attr("authorId", ui.item.data);
             return false;
         }
     });
@@ -47,6 +46,7 @@ $(document).ready(function () {
 function newElement() {
     var li = document.createElement("li");
     li.setAttribute("class", "closeLi");
+    li.setAttribute("id", $("#myInput").attr("authorId"));
     var inputValue = document.getElementById("myInput").value;
     var t = document.createTextNode(inputValue);
     li.appendChild(t);

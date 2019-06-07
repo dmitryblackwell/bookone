@@ -7,6 +7,7 @@
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 <%@ include file="/WEB-INF/include/links.jsp"%>
+<script src="<c:url value="/resources/js/rating.js"/>"></script>
 </head>
 <body>
 

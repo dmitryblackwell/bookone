@@ -130,7 +130,7 @@
 
                                                 <td>
                                                     <%--<a href="#" onclick="return deleteOrder('${o.orderNo}');">delete</a>--%>
-                                                    <a href="/books/${o.book.isbn}" >more</a>
+                                                    <a href="/book/${o.book.isbn}" >more</a>
                                                 </td>
 
                                             </tr>
