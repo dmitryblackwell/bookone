@@ -17,6 +17,7 @@ $(document).ready(function () {
         close[i].onclick = function() {
             var div = this.parentElement;
             div.style.display = "none";
+            $(div).removeAttr("id");
         }
     }
 
@@ -63,10 +64,12 @@ function newElement() {
     span.appendChild(txt);
     li.appendChild(span);
 
+    var close = document.getElementsByClassName("close");
     for (i = 0; i < close.length; i++) {
         close[i].onclick = function() {
             var div = this.parentElement;
             div.style.display = "none";
+            $(div).removeAttr("id");
         }
     }
 }

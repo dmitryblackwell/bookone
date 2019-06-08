@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface BookRepository extends CrudRepository<Book, Long> {
     void deleteBookByIsbn(Long isbn);
+
 }

@@ -13,6 +13,9 @@ import com.blackwell.util.GenreEditor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -47,21 +50,8 @@ public class BookController {
 	@GetMapping
 	public ModelAndView getBooks() {
 		ModelAndView modelAndView = new ModelAndView("index");
-		List<BookDTO> bookDTOS =  bookService.getBooks().stream()
-				.map(book -> {
-					if (book == null)
-						return null;
-					Float score = commentService.getAvgScoreByIsbn(book.getIsbn());
-					BookDTO bookDTO = bookConverter.convert(book);
-					if (bookDTO != null) {
-						bookDTO = bookDTO.toBuilder()
-									.score(score)
-									.build();
-					}
-					return bookDTO;
-				})
-				.collect(Collectors.toList());
-		modelAndView.addObject("books",bookDTOS);
+		modelAndView.addObject("bestBooks", bookService.getBooksForSlider());
+		modelAndView.addObject("books", bookService.getBooks());
 		return modelAndView;
 	}
 
@@ -79,6 +69,9 @@ public class BookController {
 
 	@GetMapping("/{isbn}")
 	public ModelAndView getBook(@PathVariable long isbn, @RequestParam(required = false) boolean edit) {
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		boolean hasPermission = userDetails.getAuthorities().stream().anyMatch(authority -> ((GrantedAuthority) authority).getAuthority().equals("ROLE_ADMIN"));
+		// TODO check and add hasPermission to edit
 		return edit ? getBookEditPage(isbn) : getBookPage(isbn);
 	}
 

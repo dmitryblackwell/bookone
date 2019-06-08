@@ -16,7 +16,9 @@
 
 	<div class="container" id="wrap">
 		<%@ include file="/WEB-INF/include/header.jsp"%>
-		
+		<div class="row">
+			<%@ include file="/WEB-INF/include/slider.jsp"%>
+		</div>
 		<div class="col">
 			<table id="bookTable" class="table table-hover sortable "> <!-- table-striped -->
 				<thead>
@@ -39,12 +41,12 @@
 							<td>${b.score}</td>
 							<td>${b.price}</td>
 							<td>${b.genres}</td>
-							<td>
-								<a href="book/${b.isbn}" ><img width="25px" src="https://img.icons8.com/dusk/64/000000/details-popup.png"></a>
-								<a href="#" onclick="buyBook('<security:authentication property='principal.username'/>', '${b.isbn}');"><img width="25px" src="https://img.icons8.com/ultraviolet/40/000000/buy.png"></a>
+							<td style="display: inline-flex">
+								<a href="book/${b.isbn}" ><img width="20px" src="https://img.icons8.com/dusk/64/000000/details-popup.png"></a>
+								<a href="#" onclick="buyBook('<security:authentication property='principal.username'/>', '${b.isbn}');"><img width="20px" src="https://img.icons8.com/ultraviolet/40/000000/buy.png"></a>
 								<security:authorize access="hasRole('ADMIN')">
-									<a href="/book/${b.isbn}?edit=true"><img width="25px" src="https://img.icons8.com/dusk/64/000000/pencil.png"></a>
-									<a href="#" onclick="return deleteBook('${b.isbn}');"><img width="25px" src="https://img.icons8.com/color/48/000000/close-window.png"></a>
+									<a href="/book/${b.isbn}?edit=true"><img width="20px" src="https://img.icons8.com/dusk/64/000000/pencil.png"></a>
+									<a href="#" onclick="return deleteBook('${b.isbn}');"><img width="20px" src="https://img.icons8.com/color/48/000000/close-window.png"></a>
 								</security:authorize>
 							</td>
 
@@ -52,11 +54,13 @@
 					</c:forEach>
 				</tbody>
 			</table>
+			<security:authorize access="hasRole('ADMIN')">
 			<a href="book/0?edit=true">
 			<div class="btn" style="margin-top: 20px; float: right;">
 				<span>add book</span>
 			</div>
 			</a>
+			</security:authorize>
 		</div>
 	</div>
 

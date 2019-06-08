@@ -1,6 +1,6 @@
 function deleteBook(isbn){
 	$.ajax({
-        url: "books/" + isbn,
+        url: "book/" + isbn,
         type: "DELETE"
     }).then(function() {
     	var trId = "#tr" + isbn;
@@ -76,10 +76,10 @@ function saveBook() {
         addAuthorToSelect($(this).attr("id"));
     });
 
-    $("#photoIsbn").attr("value", $("#isbn").innerText);
-    if ($("#imageUploadedForm").attr("isUploaded") === "true") {
-        $("#imageUploadedForm").submit();
-    }
+    // $("#photoIsbn").attr("value", $("#isbn").val());
+    // if ($("#imageUploadedForm").attr("isUploaded") === "true") {
+    //     document.getElementById("imageUploadedForm").submit();
+    // }
 
     document.getElementById('bookform').submit();
 }

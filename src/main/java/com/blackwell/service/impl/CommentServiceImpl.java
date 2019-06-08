@@ -51,7 +51,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Float getAvgScoreByIsbn(long isbn) {
+    public Double getAvgScoreByIsbn(long isbn) {
         return commentRepository.getAvgScoreByIsbn(isbn);
     }
 }

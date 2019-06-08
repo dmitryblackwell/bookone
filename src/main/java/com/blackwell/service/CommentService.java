@@ -12,5 +12,5 @@ public interface CommentService {
     List<Comment> getComments(String username);
     List<Comment> getComments(long isbn);
 
-    Float getAvgScoreByIsbn(long isbn);
+    Double getAvgScoreByIsbn(long isbn);
 }

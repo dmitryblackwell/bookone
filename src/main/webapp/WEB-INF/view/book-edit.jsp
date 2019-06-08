@@ -4,12 +4,16 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="security"
            uri="http://www.springframework.org/security/tags"%>
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="ISO-8859-1">
     <title>Home</title>
     <%@ include file="/WEB-INF/include/links.jsp"%>
+
+    <link href="<c:url value="/resources/css/authors.css"/>" rel="stylesheet" />
+    <script src="<c:url value="/resources/js/authors.js"/>"></script>
 </head>
 <body>
 
@@ -30,7 +34,7 @@
                                 </div>
                             </label>
                             <input type="hidden" name="isbn" id="photoIsbn" accept="image/jpeg" value="${book.isbn}">
-                           <%-- <input type="submit" value="Submit" style="float:right;" /> --%>
+                            <input type="submit" value="Submit" style="float:right;" />
                         </div>
                     </form:form>
                 </security:authorize>
@@ -53,7 +57,7 @@
                             <td>
                                 <ul id="myUL">
                                     <c:forEach items="${book.authors}" var="a" varStatus="status">
-                                        <li class="closeLi" value="${a.id}">
+                                        <li class="closeLi" id="${a.id}">
                                             ${a.fullName}
                                             <%--form:input type="hidden" path="authors[${status.index}].id" name="id" id="id" value=""/--%>
                                         </li>

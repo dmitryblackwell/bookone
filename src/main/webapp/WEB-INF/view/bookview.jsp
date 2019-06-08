@@ -21,6 +21,13 @@
 					<img
 						src="${pageContext.request.contextPath}/resources/uploaded-images/books/${book.isbn}.jpg"
 						style="height: 400px; width: 290px; background-color: #dddddd" />
+						<security:authorize access="hasRole('ADMIN')">
+							<a href="?edit=true">
+								<div class="btn" style="margin-top: 20px;">
+									<span>edit</span>
+								</div>
+							</a>
+						</security:authorize>
 				</div>
 
 				<div class="book-table col-xs-12 col-md-8">
@@ -55,6 +62,7 @@
 					<div class="btn" for="test"  onclick="buyBook('<security:authentication property='principal.username'/>', '${book.isbn}');" id="savebook" style="float: right;">
 						<span>buy</span>
 					</div>
+
 				</div>
 
 			</div>

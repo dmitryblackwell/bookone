@@ -21,8 +21,3 @@
 		</p>
 	</div>
 </div>
-<!-- 
-<div class="row">
-	<img id="headerimg" src="<c:url value="/resources/img/bookshelf-45-cm.jpg"/>">
-</div>
- -->
