@@ -90,3 +90,40 @@ function addAuthorToSelect(author) {
         selected: 'selected'
     }).appendTo('#authorsSelect')
 }
+
+
+function loadPage(pageNo) {
+    $.ajax({
+        url: "/book/ajax/load",
+        data: {"pageNo": pageNo},
+        type: "GET",
+        success: function (data) {
+            $("#book-content").html(data);
+        }
+    });
+    return false;
+}
+
+function sortPage(sortColumn) {
+    $.ajax({
+        url: "/book/ajax/sort",
+        data: {"sortColumn": sortColumn},
+        type: "GET",
+        success: function (data) {
+            $("#book-content").html(data);
+        }
+    });
+    return false;
+}
+
+function search() {
+    $.ajax({
+        url: "/book/ajax/search",
+        data: {"searchValue": $("#searchInput").val()},
+        type: "GET",
+        success: function (data) {
+            $("#book-content").html(data);
+        }
+    });
+    return false;
+}

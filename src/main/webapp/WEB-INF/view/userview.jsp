@@ -148,7 +148,7 @@
                                                         <div class="col-xs-2"><img src="${contextPath}/resources/uploaded-images/users/${c.username}.jpg"/></div>
                                                         <div class="col-xs-9">
                                                             <p>
-                                                                <span class="comment-author">${c.username}</span> commented book <a href="${contextPath}/books/${c.isbn}">${c.isbn}</a>
+                                                                <span class="comment-author">${c.username}</span> commented book <a href="${contextPath}/book/${c.isbn}">${c.isbn}</a>
                                                             </p>
                                                             <p class="comment-content">${c.body}</p>
                                                         </div>

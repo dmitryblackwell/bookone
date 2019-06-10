@@ -12,6 +12,7 @@ import com.blackwell.service.FileUploadService;
 import com.blackwell.util.GenreEditor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -48,12 +49,39 @@ public class BookController {
 	}
 
 	@GetMapping
-	public ModelAndView getBooks() {
+	public ModelAndView getBooks(HttpSession session) {
 		ModelAndView modelAndView = new ModelAndView("index");
 		modelAndView.addObject("bestBooks", bookService.getBooksForSlider());
-		modelAndView.addObject("books", bookService.getBooks());
+		String searchValue = (String) session.getAttribute("searchValue");
+		if (StringUtils.isBlank(searchValue))
+		    searchValue = "";
+		modelAndView.addObject("searchValue", searchValue);
+		modelAndView.addObject("loadBooks", true);
 		return modelAndView;
 	}
+
+	@GetMapping("/ajax/load")
+	public ModelAndView loadBooksByPage(HttpSession session, Integer pageNo) {
+		session.setAttribute("pageNo", pageNo);
+		return getBooksTable(pageNo, String.valueOf(session.getAttribute("sortColumn")),
+				(String) session.getAttribute("searchValue"));
+	}
+
+	@GetMapping("/ajax/sort")
+	public ModelAndView loadBooksByPage(HttpSession session, String sortColumn) {
+		session.setAttribute("sortColumn", sortColumn);
+		return getBooksTable((Integer) session.getAttribute("pageNo"), sortColumn,
+				(String) session.getAttribute("searchValue"));
+	}
+
+	@GetMapping("/ajax/search")
+	public ModelAndView searchBooks(HttpSession session, String searchValue) {
+		session.setAttribute("searchValue", searchValue);
+		return getBooksTable((Integer) session.getAttribute("pageNo"),
+				String.valueOf(session.getAttribute("sortColumn")), searchValue);
+	}
+
+
 
 	@PostMapping("/{isbn}")
 	public ModelAndView saveBook(@PathVariable long isbn, @ModelAttribute Book book) {
@@ -125,6 +153,20 @@ public class BookController {
 		ModelAndView modelAndView = new ModelAndView("bookview");
 		modelAndView.addObject("book", book);
 		modelAndView.addObject("comments", comments);
+		return modelAndView;
+	}
+
+	private ModelAndView getBooksTable(Integer pageNo, String sortColumn, String searchValue) {
+		if (pageNo == null)
+			pageNo = 0;
+		if (StringUtils.isBlank(sortColumn) || "null".equals(sortColumn))
+			sortColumn = "isbn";
+		if (StringUtils.isBlank(searchValue) || "null".equals(searchValue))
+			searchValue = null;
+		ModelAndView modelAndView = new ModelAndView("snippets/book-table");
+		modelAndView.addObject("books", bookService.getBooks(pageNo, sortColumn, searchValue));
+		modelAndView.addObject("currentPage", pageNo);
+		modelAndView.addObject("pagesCount", bookService.getPagesCount());
 		return modelAndView;
 	}
 

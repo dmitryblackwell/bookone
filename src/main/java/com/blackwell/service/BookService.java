@@ -7,11 +7,12 @@ import com.blackwell.model.BookDTO;
 import java.util.List;
 
 public interface BookService {
-	List<BookDTO> getBooks();
+	List<BookDTO> getBooks(int pageNo, String sortColumn, String searchValue);
 	List<BookDTO> getBooksForSlider();
 	Book getBook(long isbn);
 	void saveBook(Book book);
 	void deleteBook(long isbn);
+	int getPagesCount();
 	
 	List<Genre> getGenres();
 	Genre getGenre(int id);

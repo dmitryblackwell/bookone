@@ -10,12 +10,15 @@ import com.blackwell.repository.CommentRepository;
 import com.blackwell.repository.GenreRepository;
 import com.blackwell.service.BookService;
 import com.blackwell.util.ServiceUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,6 +26,8 @@ import java.util.stream.Collectors;
 public class BookServiceImpl implements BookService {
 
 	public static final int MAX_BOOKS_FOR_SLIDER = 10;
+
+	public static final int BOOKS_ON_PAGE = 10;
 	@Autowired
 	private BookRepository bookRepository;
 
@@ -46,9 +51,33 @@ public class BookServiceImpl implements BookService {
 		}
 	}
 
+	public static Specification<Book> containsText(String text) {
+		if (!text.contains("%")) {
+			text = "%" + text + "%";
+		}
+		String finalText = text;
+		return (root, query, builder) -> {
+			query.distinct(true);
+			return builder.or(
+					builder.like(root.get("name"), finalText),
+					builder.like(root.get("description"), finalText),
+					builder.like(root.join("genres").get("name"), finalText),
+					builder.like(root.join("authors").get("fullName"), finalText)
+			);
+		};
+	}
+
 	@Override
-	public List<BookDTO> getBooks() {
-		return ServiceUtils.getListFromIterable(bookRepository.findAll()).stream()
+	public List<BookDTO> getBooks(int pageNo, String sortColumn, String searchValue) {
+		Iterable<Book> booksIt;
+		if (StringUtils.isBlank(searchValue)) {
+			// set distinct query
+			booksIt = bookRepository.findAll(PageRequest.of(pageNo, BOOKS_ON_PAGE, Sort.by(sortColumn).descending()));
+		} else {
+			booksIt = bookRepository.findAll(containsText(searchValue), PageRequest.of(pageNo, BOOKS_ON_PAGE, Sort.by(sortColumn).descending()));
+		}
+		return ServiceUtils.getListFromIterable(booksIt)
+				.stream()
 				.map(book -> {
 					Double score = commentRepository.getAvgScoreByIsbn(book.getIsbn());
 					return bookConverter.convert(book).toBuilder()
@@ -56,6 +85,11 @@ public class BookServiceImpl implements BookService {
 							.build();
 				})
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public int getPagesCount() {
+		return (int) (bookRepository.count() / BOOKS_ON_PAGE);
 	}
 
 	@Override

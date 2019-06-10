@@ -19,49 +19,26 @@
 		<div class="row">
 			<%@ include file="/WEB-INF/include/slider.jsp"%>
 		</div>
-		<div class="col">
-			<table id="bookTable" class="table table-hover sortable "> <!-- table-striped -->
-				<thead>
-					<tr>
-						<th>isbn</th>
-						<th>author</th>
-						<th>name</th>
-						<th>score</th>
-						<th>price</th>
-						<th>genre</th>
-						<th>action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach items="${books}" var="b">
-						<tr id="tr${b.isbn}" class="pointer"> <%--  onclick="window.location.href = 'books/${b.isbn}';" --%>
-							<td>${b.isbn}</td>
-							<td>${b.authors}</td>
-							<td>${b.name}</td>
-							<td>${b.score}</td>
-							<td>${b.price}</td>
-							<td>${b.genres}</td>
-							<td style="display: inline-flex">
-								<a href="book/${b.isbn}" ><img width="20px" src="https://img.icons8.com/dusk/64/000000/details-popup.png"></a>
-								<a href="#" onclick="buyBook('<security:authentication property='principal.username'/>', '${b.isbn}');"><img width="20px" src="https://img.icons8.com/ultraviolet/40/000000/buy.png"></a>
-								<security:authorize access="hasRole('ADMIN')">
-									<a href="/book/${b.isbn}?edit=true"><img width="20px" src="https://img.icons8.com/dusk/64/000000/pencil.png"></a>
-									<a href="#" onclick="return deleteBook('${b.isbn}');"><img width="20px" src="https://img.icons8.com/color/48/000000/close-window.png"></a>
-								</security:authorize>
-							</td>
-
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-			<security:authorize access="hasRole('ADMIN')">
-			<a href="book/0?edit=true">
-			<div class="btn" style="margin-top: 20px; float: right;">
-				<span>add book</span>
-			</div>
-			</a>
-			</security:authorize>
+		<form>
+			<fieldset class="form-fieldset ui-input __third">
+				<input type="text" style="width:100%;text-align:center;margin-bottom:15px;margin-top:30px;" id="searchInput" onkeyup="search()" value="${searchValue}" placeholder="search...">
+			</fieldset>
+		</form>
+		<div class="col" id="book-content">
 		</div>
+		<c:if test="${loadBooks == true}">
+			<script>
+				loadPage('0');
+			</script>
+		</c:if>
+
+		<security:authorize access="hasRole('ADMIN')">
+			<a href="book/0?edit=true">
+				<div class="btn" style="margin-top: 20px; float: right;">
+					<span>add book</span>
+				</div>
+			</a>
+		</security:authorize>
 	</div>
 
 </body>
