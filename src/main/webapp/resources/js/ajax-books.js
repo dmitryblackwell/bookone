@@ -127,3 +127,8 @@ function search() {
     });
     return false;
 }
+
+
+function redirect(url) {
+    window.location.href = url;
+}

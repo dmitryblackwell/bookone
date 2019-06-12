@@ -10,7 +10,6 @@
 <meta charset="ISO-8859-1">
 <title>Home</title>
 <%@ include file="/WEB-INF/include/links.jsp"%>
-
 </head>
 <body>
 
@@ -41,5 +40,6 @@
 		</security:authorize>
 	</div>
 
+	<%@ include file="/WEB-INF/include/footer.jsp"%>
 </body>
 </html>

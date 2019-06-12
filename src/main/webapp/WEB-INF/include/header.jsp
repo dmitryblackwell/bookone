@@ -5,6 +5,7 @@
 
 <form:form action="${pageContext.request.contextPath}/logout" method="POST" id="form"/>
 <div id="header" class="row">
+	<!--
 	<div class="col" id="header-title">
 		<h1>
 			<a href="${contextPath}/">BookOne</a>
@@ -20,4 +21,27 @@
 			<a href="#" onClick="formClick()">(logout)</a>
 		</p>
 	</div>
+	-->
+
+
+
 </div>
+
+<header class="header-fixed">
+
+	<div class="header-limiter">
+
+		<h1><a href="${contextPath}/">Book<span>ONE</span></a></h1>
+
+		<nav>
+			<a href="${contextPath}/book">books</a>
+			<security:authorize access="hasRole('ADMIN')">
+				<a href="${contextPath}/orders">orders</a>
+			</security:authorize>
+			<a href="${contextPath}/users/<security:authentication property="principal.username"/>" id="profilePageLink"><security:authentication property="principal.username"/></a>
+			<a href="#" onClick="formClick()">logout</a>
+		</nav>
+
+	</div>
+
+</header>
