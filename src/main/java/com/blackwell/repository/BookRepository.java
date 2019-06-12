@@ -17,4 +17,5 @@ public interface BookRepository extends PagingAndSortingRepository<Book, Long> {
     void deleteBookByIsbn(Long isbn);
 
     Iterable<Book> findAll(Specification<Book> searchValue, Pageable pageable);
+
 }

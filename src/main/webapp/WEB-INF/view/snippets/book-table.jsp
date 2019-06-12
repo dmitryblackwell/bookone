@@ -5,12 +5,12 @@
 <table id="bookTable" class="table table-hover sortable "> <!-- table-striped -->
     <thead>
     <tr>
-        <th onclick="sortPage('isbn')">isbn</th>
-        <th onclick="sortPage('authors')">author</th>
-        <th onclick="sortPage('name')">name</th>
+        <th id="isbnTh" onclick="sortPage('isbn')">isbn</th>
+        <th id="authorsTh" onclick="sortPage('authors')">author</th>
+        <th id="nameTh" onclick="sortPage('name')">name</th>
         <th>score</th>
-        <th onclick="sortPage('price')">price</th>
-        <th>genre</th>
+        <th id="priceTh" onclick="sortPage('price')">price</th>
+        <th id="genresTh" onclick="sortPage('genres')">genre</th>
         <th>action</th>
     </tr>
     </thead>
@@ -36,6 +36,10 @@
     </c:forEach>
     </tbody>
 </table>
+
+<script>
+    $("#${sortColumn}Th").addClass("bookTh");
+</script>
 
 <nav data-pagination>
     <a href=# disabled><i class=ion-chevron-left></i></a>

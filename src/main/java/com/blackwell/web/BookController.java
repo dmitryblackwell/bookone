@@ -167,6 +167,7 @@ public class BookController {
 		modelAndView.addObject("books", bookService.getBooks(pageNo, sortColumn, searchValue));
 		modelAndView.addObject("currentPage", pageNo);
 		modelAndView.addObject("pagesCount", bookService.getPagesCount());
+		modelAndView.addObject("sortColumn", sortColumn);
 		return modelAndView;
 	}
 

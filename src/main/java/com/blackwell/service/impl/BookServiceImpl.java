@@ -51,33 +51,25 @@ public class BookServiceImpl implements BookService {
 		}
 	}
 
-	public static Specification<Book> containsText(String text) {
-		if (!text.contains("%")) {
-			text = "%" + text + "%";
-		}
-		String finalText = text;
+	public static Specification<Book> getSpecificationForSearch(String textForSearch) {
+        final String searchValue = StringUtils.isBlank(textForSearch) ? "%" : ("%" + textForSearch + "%");
 		return (root, query, builder) -> {
 			query.distinct(true);
 			return builder.or(
-					builder.like(root.get("name"), finalText),
-					builder.like(root.get("description"), finalText),
-					builder.like(root.join("genres").get("name"), finalText),
-					builder.like(root.join("authors").get("fullName"), finalText)
+					builder.like(root.get("name"), searchValue),
+					builder.like(root.get("description"), searchValue),
+					builder.like(root.join("genres").get("name"), searchValue),
+					builder.like(root.join("authors").get("fullName"), searchValue)
 			);
 		};
 	}
 
 	@Override
 	public List<BookDTO> getBooks(int pageNo, String sortColumn, String searchValue) {
-		Iterable<Book> booksIt;
-		if (StringUtils.isBlank(searchValue)) {
-			// set distinct query
-			booksIt = bookRepository.findAll(PageRequest.of(pageNo, BOOKS_ON_PAGE, Sort.by(sortColumn).descending()));
-		} else {
-			booksIt = bookRepository.findAll(containsText(searchValue), PageRequest.of(pageNo, BOOKS_ON_PAGE, Sort.by(sortColumn).descending()));
-		}
-		return ServiceUtils.getListFromIterable(booksIt)
-				.stream()
+	    PageRequest pageRequest = PageRequest.of(pageNo, BOOKS_ON_PAGE, Sort.by(sortColumn).descending());
+		List<Book> booksIt = ServiceUtils.getListFromIterable(
+		        bookRepository.findAll(getSpecificationForSearch(searchValue), pageRequest));
+		return booksIt.stream()
 				.map(book -> {
 					Double score = commentRepository.getAvgScoreByIsbn(book.getIsbn());
 					return bookConverter.convert(book).toBuilder()

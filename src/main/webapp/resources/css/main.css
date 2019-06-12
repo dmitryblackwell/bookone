@@ -70,3 +70,11 @@ a:hover{
 /*.not-allowed {cursor: not-allowed;}
 .pointer {cursor: pointer;}*/
 
+.bookTh:after {
+	content: '';
+	background:url('https://img.icons8.com/ios-glyphs/30/000000/sort-down.png');
+	background-size:cover;
+	position:absolute;
+	width:20px;
+	height:20px;
+}
