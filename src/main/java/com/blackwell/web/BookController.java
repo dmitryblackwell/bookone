@@ -97,9 +97,6 @@ public class BookController {
 
 	@GetMapping("/{isbn}")
 	public ModelAndView getBook(@PathVariable long isbn, @RequestParam(required = false) boolean edit) {
-		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		boolean hasPermission = userDetails.getAuthorities().stream().anyMatch(authority -> ((GrantedAuthority) authority).getAuthority().equals("ROLE_ADMIN"));
-		// TODO check and add hasPermission to edit
 		return edit ? getBookEditPage(isbn) : getBookPage(isbn);
 	}
 

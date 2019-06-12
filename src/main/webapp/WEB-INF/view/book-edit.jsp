@@ -5,6 +5,8 @@
 <%@ taglib prefix="security"
            uri="http://www.springframework.org/security/tags"%>
 
+
+<security:authorize access="hasRole('ADMIN')">
 <!DOCTYPE html>
 <html>
 <head>
@@ -105,3 +107,4 @@
 <%@ include file="/WEB-INF/include/footer.jsp"%>
 </body>
 </html>
+</security:authorize>

@@ -16,35 +16,15 @@
     git clone https://github.com/dmitryblackwell/bookone.git
     ```
 1. Make sure your JDK is downloaded and JAVA_HOME is setup correct.
-1. Setup [DB connection](#db-connection) or [Mocks](#mocks).
-
-#### <a name="mocks"></a> Setup Mocks
- 
-To enable mocks follow next steps:
-
-1. Go to `/src/main/resources/application.properties`
-1. Set `mocks.enabled=true`
-1. Make sure next line is present and not comment:
-    ```
-    spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
-    ```
-    This one is turning of datasource autoconfig. Don't forget to delete it, if you are using database!
-
-#### <a name="db-connection"></a> Setup DataBase Connection
+1. Install [MySQL WorkBench](https://dev.mysql.com/downloads/workbench/) or other RDBMS.
+1. Create new connection with username add password specified in `application.properties`
 1. Set up database using scripts in `db-scripts`
-1. Set up database properties (url, user, password) in `/src/main/resources/persistence-mysql.properties`
-1. Go to `/src/main/resources/application.properties`
-1. Set `mocks.enabled=false`
-1. Make sure next line is absent or comment:
-    ```
-    spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
-    ```
 
 ### Run project from console
 
 To run this project without importing it to the IDE follow next steps:
 
-1. Firstly you need to do basic setup.
+1. Firstly, you need to do basic setup.
 1. Open your command line and go to project location.
 1. Enter next command for windows:
     ```git
@@ -59,10 +39,10 @@ To run this project without importing it to the IDE follow next steps:
 
 ### Import and run project from IDE
 
-1. Firstly you need to do basic setup.
-1. Open you IDE and import bookone as Maven Project.
+1. Firstly, you need to do basic setup.
+1. Open you IDE and import BookONE as Maven Project.
 1. Wait until project is resolved and all dependencies are set.
-1. Run BookoneApplication class as java application.
+1. Run BookOneApplication class as java application.
 1. Enjoy.
 
 ### Run Integration tests
@@ -74,8 +54,9 @@ It will also create report from JaCoCo in `target/site/jacoco/index.html`
 
 ### Development history
 
-- 1 - Basic working project.
+1) Basic working project.
     - 1.1 - Move project to spring boot. Add lombok.
     - 1.2 - Add mocks and Travis CI.
     - 1.3 - Integration tests.
-        - 1.3.1 - Add more tests.
+        - 1.3.1 - Add more tests. 
+    
