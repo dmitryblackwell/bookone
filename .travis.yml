@@ -2,8 +2,10 @@ language: java
 sudo: true
 dist: trusty
 jdk: oraclejdk8
+
 services:
   - mysql
+
 addons:
   apt:
     packages:
@@ -11,6 +13,7 @@ addons:
 env:
   global:
     - CODECOV_TOKEN=6d0d7ff5-31c7-4798-a8b2-655e6a274a64
+    - CC_TEST_REPORTER_ID=62c6b2ad694f8b15d00d369627284cc7c669437a5cdadc7ff98bce8070541b7d
 
 before_install:
   - chmod +x mvnw
@@ -19,5 +22,15 @@ before_install:
   - mysql -u root --password="" < db-scripts/fill.sql
   - pip install --user codecov
 
-after_success:
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+script:
+  - ./mvnw clean install
   - bash <(curl -s https://codecov.io/bash)
+  - bundle exec rspec
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

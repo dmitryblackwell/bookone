@@ -4,8 +4,9 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/e908eabd23e03aa282aa/maintainability)](https://codeclimate.com/github/dmitryblackwell/bookone/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/e908eabd23e03aa282aa/test_coverage)](https://codeclimate.com/github/dmitryblackwell/bookone/test_coverage)
 [![Build Status](https://travis-ci.org/dmitryblackwell/bookone.svg?branch=master)](https://travis-ci.org/dmitryblackwell/bookone)
+[![codecov](https://codecov.io/gh/dmitryblackwell/BookONE/branch/master/graph/badge.svg)](https://codecov.io/gh/dmitryblackwell/BookONE)
 
-##### version: __2.0.0-SNAPSHOT__
+##### version: __2.0.0__
 
 ## Getting started
 
@@ -54,9 +55,4 @@ It will also create report from JaCoCo in `target/site/jacoco/index.html`
 
 ### Development history
 
-1) Basic working project.
-    - 1.1 - Move project to spring boot. Add lombok.
-    - 1.2 - Add mocks and Travis CI.
-    - 1.3 - Integration tests.
-        - 1.3.1 - Add more tests. 
-    
+Too see development history you can check [ChangeLog](https://github.com/dmitryblackwell/BookONE/blob/master/CHANGELOG.md). 
