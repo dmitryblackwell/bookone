@@ -52,10 +52,7 @@ public class BookController {
 	public ModelAndView getBooks(HttpSession session) {
 		ModelAndView modelAndView = new ModelAndView("index");
 		modelAndView.addObject("bestBooks", bookService.getBooksForSlider());
-		String searchValue = (String) session.getAttribute("searchValue");
-		if (StringUtils.isBlank(searchValue))
-		    searchValue = "";
-		modelAndView.addObject("searchValue", searchValue);
+		modelAndView.addObject("searchValue", getSearchValue(session));
 		modelAndView.addObject("loadBooks", true);
 		return modelAndView;
 	}
@@ -166,6 +163,12 @@ public class BookController {
 		modelAndView.addObject("pagesCount", bookService.getPagesCount());
 		modelAndView.addObject("sortColumn", sortColumn);
 		return modelAndView;
+	}
+
+
+	private String getSearchValue(HttpSession session) {
+		String searchValue = (String) session.getAttribute("searchValue");
+		return StringUtils.isBlank(searchValue) ? StringUtils.EMPTY : searchValue;
 	}
 
 }

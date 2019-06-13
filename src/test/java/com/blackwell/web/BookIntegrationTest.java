@@ -17,8 +17,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.*;
 import static com.blackwell.MockEntityGenerator.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class BookIntegrationTest extends IntegrationTest {
 
@@ -29,11 +32,25 @@ public class BookIntegrationTest extends IntegrationTest {
     private BookToDTOConverter bookConverter;
 
     @Test
-    public void getBooksTest() {
-        // TODO rewrite test with mockMvc
+    public void getBooksTest() throws Exception {
+        mockMvc.perform(get("/book"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("index"))
+                .andExpect(model().attribute("searchValue", ""))
+                .andExpect(model().attribute("loadBooks", true))
+                .andExpect(model().attribute("bestBooks", notNullValue()));
+    }
 
-        // TODO extend this test!
-        // assertEquals(model.get("books"), bookDTOS);
+    @Test
+    public void loadBooksByPageTest() throws Exception {
+        mockMvc.perform(get("/book/ajax/load")
+            .param("pageNo", "0"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("snippets/book-table"))
+                .andExpect(model().attribute("books", notNullValue()))
+                .andExpect(model().attribute("currentPage", 0))
+                .andExpect(model().attribute("pagesCount", (int) bookRepository.count()/10))
+                .andExpect(model().attribute("sortColumn", "isbn"));
     }
 
     @Test
