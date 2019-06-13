@@ -40,7 +40,7 @@ public class BookIntegrationTest extends IntegrationTest {
     public void saveAndDeleteBookTest() {
         Book generatedBook = generateBook();
         long isbn = generatedBook.getIsbn();
-        ModelAndView modelAndView = bookController.saveBook(ISBN, generatedBook);
+        ModelAndView modelAndView = bookController.saveBook(generatedBook);
         assertEquals(modelAndView.getViewName(), PageConstants.REDIRECT_HOME);
 
         Book book = bookRepository.findById(isbn).get();

@@ -17,12 +17,12 @@
     <tbody>
     <c:forEach items="${books}" var="b">
         <tr id="tr${b.isbn}" class="pointer"> <%--  onclick="window.location.href = 'books/${b.isbn}';" --%>
-            <td>${b.isbn}</td>
-            <td>${b.authors}</td>
-            <td>${b.name}</td>
-            <td>${b.score}</td>
-            <td>${b.price}</td>
-            <td>${b.genres}</td>
+            <td onclick="redirect('book/${b.isbn}')">${b.isbn}</td>
+            <td onclick="redirect('book/${b.isbn}')">${b.authors}</td>
+            <td onclick="redirect('book/${b.isbn}')">${b.name}</td>
+            <td onclick="redirect('book/${b.isbn}')">${b.score}</td>
+            <td onclick="redirect('book/${b.isbn}')">${b.price}</td>
+            <td onclick="redirect('book/${b.isbn}')">${b.genres}</td>
             <td style="display: inline-flex">
                 <a href="book/${b.isbn}" ><img width="20px" src="https://img.icons8.com/dusk/64/000000/details-popup.png"></a>
                 <a href="#" onclick="buyBook('<security:authentication property='principal.username'/>', '${b.isbn}');"><img width="20px" src="https://img.icons8.com/ultraviolet/40/000000/buy.png"></a>

@@ -84,7 +84,7 @@ public class BookController {
 
 
 	@PostMapping("/{isbn}")
-	public ModelAndView saveBook(@PathVariable long isbn, @ModelAttribute Book book) {
+	public ModelAndView saveBook(@ModelAttribute Book book) {
 		bookService.saveBook(book);
 		return new ModelAndView(PageConstants.REDIRECT_HOME);
 	}
