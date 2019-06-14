@@ -11,7 +11,7 @@ import com.blackwell.repository.CommentRepository;
 import com.blackwell.repository.GenreRepository;
 import com.blackwell.service.BookService;
 import com.blackwell.util.ServiceUtils;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -69,13 +69,16 @@ public class BookServiceImpl implements BookService {
 		};
 	}
 
-	public static Specification<Book> specificationWithGenres(Specification<Book> specification, List<String> genresName) {
+	public static Specification<Book> getFilterSpecification(BookFilter filter) {
 		return (root, query, builder) -> {
-			Predicate predicate = specification.toPredicate(root, query, builder);
-			for (String name : genresName) {
+			Predicate predicate = getSpecificationForSearch(filter.getSearchValue())
+					.toPredicate(root, query, builder);
+
+			for (String name : CollectionUtils.emptyIfNull(filter.getGenresNames())) {
 				predicate = builder.and(predicate,
 						builder.like(root.join("genres").get("name"), name));
 			}
+
 			return predicate;
 		};
 	}
@@ -83,10 +86,7 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public List<BookDTO> getBooks(BookFilter filter) {
-		Specification<Book> specification = getSpecificationForSearch(filter.getSearchValue());
-		if (CollectionUtils.isNotEmpty(filter.getGenresNames())) {
-			specification = specificationWithGenres(specification, filter.getGenresNames());
-		}
+		Specification<Book> specification = getFilterSpecification(filter);
 
 	    PageRequest pageRequest = PageRequest.of(filter.getPageNo(), BOOKS_ON_PAGE, Sort.by(filter.getSortColumn()).descending());
 		List<Book> booksIt = ServiceUtils.getListFromIterable(
@@ -103,7 +103,10 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public int getPagesCount() {
-		return (int) (bookRepository.count() / BOOKS_ON_PAGE);
+		int pagesCount = (int) (bookRepository.count() / BOOKS_ON_PAGE);
+		if (bookRepository.count()%BOOKS_ON_PAGE == 0)
+			pagesCount--;
+		return pagesCount;
 	}
 
 	@Override

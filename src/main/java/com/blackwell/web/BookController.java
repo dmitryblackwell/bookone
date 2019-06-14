@@ -22,7 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -33,8 +32,6 @@ public class BookController {
 	private final CommentService commentService;
 	private final GenreEditor genreEditor;
 	private final FileUploadService fileUploadService;
-	private final BookToDTOConverter bookConverter;
-
 	@Autowired
 	public BookController(BookService bookService, CommentService commentService, GenreEditor genreEditor,
 						  FileUploadService fileUploadService, BookToDTOConverter bookConverter) {
@@ -42,7 +39,6 @@ public class BookController {
 		this.commentService = commentService;
 		this.genreEditor = genreEditor;
 		this.fileUploadService = fileUploadService;
-		this.bookConverter = bookConverter;
 	}
 
 	@GetMapping
@@ -58,33 +54,32 @@ public class BookController {
 	@GetMapping("/ajax/load")
 	public ModelAndView loadBooksByPage(HttpSession session, Integer pageNo) {
 		session.setAttribute("pageNo", pageNo);
-		return getBooksTable(pageNo, String.valueOf(session.getAttribute("sortColumn")),
-				(String) session.getAttribute("searchValue"),
-				(List<String>) session.getAttribute("genresNames"));
+		return getBooksTable(getFilterFromSession(session));
 	}
 
 	@GetMapping("/ajax/sort")
-	public ModelAndView loadBooksByPage(HttpSession session, String sortColumn) {
+	public ModelAndView sortBooks(HttpSession session, String sortColumn) {
 		session.setAttribute("sortColumn", sortColumn);
-		return getBooksTable((Integer) session.getAttribute("pageNo"), sortColumn,
-				(String) session.getAttribute("searchValue"),
-				(List<String>) session.getAttribute("genresNames"));
+		return getBooksTable(getFilterFromSession(session));
 	}
 
 	@GetMapping("/ajax/search")
 	public ModelAndView searchBooks(HttpSession session, String searchValue) {
 		session.setAttribute("searchValue", searchValue);
-		return getBooksTable((Integer) session.getAttribute("pageNo"),
-				String.valueOf(session.getAttribute("sortColumn")), searchValue,
-				(List<String>) session.getAttribute("genresNames"));
+		return getBooksTable(getFilterFromSession(session));
 	}
 
 	@GetMapping("/ajax/genre")
-	public ModelAndView getBooksTableByGenresNames(HttpSession session, @RequestParam(value="genresNames[]", required = false) @Nullable List<String> genresNames) {
+	public ModelAndView loadBooksByGenresNames(HttpSession session, @RequestParam(value="genresNames[]") @Nullable List<String> genresNames) {
 		session.setAttribute("genresNames", genresNames);
-		return getBooksTable((Integer) session.getAttribute("pageNo"),
+		return getBooksTable(getFilterFromSession(session));
+	}
+
+	private BookFilter getFilterFromSession(HttpSession session) {
+		return new BookFilter((Integer) session.getAttribute("pageNo"),
 				String.valueOf(session.getAttribute("sortColumn")),
-				String.valueOf(session.getAttribute("searchValue")), genresNames);
+				(String) session.getAttribute("searchValue"),
+				(List<String>) session.getAttribute("genresNames"));
 	}
 
 	@PostMapping("/{isbn}")
@@ -129,8 +124,7 @@ public class BookController {
 	
 	@PostMapping("/upload-image") 
     public String singleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("isbn") long isbn, HttpSession session) {
-		
-    	final String UPLOADED_PATH = session.getServletContext().getRealPath("/") + IMG_PATH + File.separator + String.valueOf(isbn) + ".jpg";
+    	final String UPLOADED_PATH = session.getServletContext().getRealPath("/") + IMG_PATH + File.separator + isbn + ".jpg";
 		fileUploadService.uploadFile(file, UPLOADED_PATH);
 
         return PageConstants.REDIRECT_BOOKS + "/" + isbn + "?";
@@ -138,11 +132,7 @@ public class BookController {
 
     private ModelAndView getBookEditPage(long isbn) {
 		ModelAndView modelAndView = new ModelAndView("book-edit");
-		Book book;
-		if (isbn != 0)
-			book = bookService.getBook(isbn);
-		else
-			book = new Book();
+		Book book = (isbn != 0) ? bookService.getBook(isbn) : new Book();
 		modelAndView.addObject("genres", bookService.getGenres());
 		modelAndView.addObject("book", book);
 		return modelAndView;
@@ -155,11 +145,6 @@ public class BookController {
 		modelAndView.addObject("book", book);
 		modelAndView.addObject("comments", comments);
 		return modelAndView;
-	}
-
-	private ModelAndView getBooksTable(Integer pageNo, String sortColumn, String searchValue, List<String> genresNames) {
-		return getBooksTable(
-				new BookFilter(pageNo, sortColumn, searchValue, genresNames));
 	}
 
 	private ModelAndView getBooksTable(BookFilter filter) {

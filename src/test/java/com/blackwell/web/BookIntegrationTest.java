@@ -1,31 +1,27 @@
 package com.blackwell.web;
 
 import com.blackwell.constant.PageConstants;
-import com.blackwell.converter.BookToDTOConverter;
 import com.blackwell.entity.Book;
 import com.blackwell.entity.Comment;
 import com.blackwell.model.BookDTO;
 import com.blackwell.util.ServiceUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.Matchers.hasItemInArray;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.junit.Assert.*;
 import static com.blackwell.MockEntityGenerator.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -33,9 +29,6 @@ public class BookIntegrationTest extends IntegrationTest {
 
     @Autowired
     private BookController bookController;
-
-    @Autowired
-    private BookToDTOConverter bookConverter;
 
     @Test
     public void getBooksTest() throws Exception {
@@ -55,21 +48,58 @@ public class BookIntegrationTest extends IntegrationTest {
                 .andExpect(view().name("snippets/book-table"))
                 .andExpect(model().attribute("books", notNullValue()))
                 .andExpect(model().attribute("currentPage", 0))
-                .andExpect(model().attribute("pagesCount", (int) bookRepository.count()/10))
                 .andExpect(model().attribute("sortColumn", "isbn"));
     }
 
     @Test
-    public void getBooksTableByGenresNamesTest() throws Exception {
+    public void sortBooksByIsbnTest() throws Exception {
+        MvcResult result = mockMvc.perform(get("/book/ajax/sort")
+                .param("sortColumn", "isbn"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("snippets/book-table"))
+                .andReturn();
+
+        List<Long> isbns = getBookDTOs(result)
+                    .stream().map(BookDTO::getIsbn)
+                    .collect(Collectors.toList());
+        List<Long> isbnsSorted = new ArrayList<>(isbns);
+        isbnsSorted.sort(Comparator.reverseOrder());
+        assertEquals(isbns, isbnsSorted);
+    }
+
+    @Test
+    public void searchBooksByAuthorTest() throws Exception {
+        final String authorName = "lem";
+        MvcResult result = mockMvc.perform(get("/book/ajax/search")
+                .param("searchValue", authorName))
+                .andExpect(status().isOk())
+                .andExpect(view().name("snippets/book-table"))
+                .andReturn();
+        assertTrue(getBookDTOs(result).stream()
+                .allMatch(bookDTO -> StringUtils.containsIgnoreCase(
+                        bookDTO.getAuthors().toString(), authorName)));
+    }
+
+    @Test
+    public void loadBooksByGenresNamesTest() throws Exception {
         MvcResult result = mockMvc.perform(get("/book/ajax/genre")
             .param("genresNames[]", "sci-fi,mystery"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("snippets/book-table"))
                 .andReturn();
-        List<BookDTO> books = (List<BookDTO>) result.getModelAndView().getModel().get("books");
+
+        List<BookDTO> books = getBookDTOs(result);
         assertTrue(books.stream()
                 .allMatch(bookDTO -> bookDTO.getGenres().contains("sci-fi") &&
                                     bookDTO.getGenres().contains("mystery")));
+    }
+
+    private List<BookDTO> getBookDTOs(MvcResult result) {
+        assertNotNull(result.getModelAndView());
+        Object booksObj = result.getModelAndView().getModel().get("books");
+
+        assertTrue(booksObj instanceof List<?>);
+        return  (List<BookDTO>) booksObj;
     }
 
     @Test
