@@ -4,12 +4,14 @@ import com.blackwell.converter.BookToDTOConverter;
 import com.blackwell.entity.Book;
 import com.blackwell.entity.Genre;
 import com.blackwell.model.BookDTO;
+import com.blackwell.model.BookFilter;
 import com.blackwell.model.ScoreDTO;
 import com.blackwell.repository.BookRepository;
 import com.blackwell.repository.CommentRepository;
 import com.blackwell.repository.GenreRepository;
 import com.blackwell.service.BookService;
 import com.blackwell.util.ServiceUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -52,23 +55,42 @@ public class BookServiceImpl implements BookService {
 	}
 
 	public static Specification<Book> getSpecificationForSearch(String textForSearch) {
-        final String searchValue = StringUtils.isBlank(textForSearch) ? "%" : ("%" + textForSearch + "%");
+        final String searchValue = StringUtils.contains(textForSearch,"%") ? textForSearch :
+				StringUtils.isBlank(textForSearch) ? "%" : ("%" + textForSearch + "%");
+
 		return (root, query, builder) -> {
 			query.distinct(true);
 			return builder.or(
 					builder.like(root.get("name"), searchValue),
 					builder.like(root.get("description"), searchValue),
 					builder.like(root.join("genres").get("name"), searchValue),
-					builder.like(root.join("authors").get("fullName"), searchValue)
+					builder.like(root.join("authors").get("fullName").as(String.class), searchValue)
 			);
 		};
 	}
 
+	public static Specification<Book> specificationWithGenres(Specification<Book> specification, List<String> genresName) {
+		return (root, query, builder) -> {
+			Predicate predicate = specification.toPredicate(root, query, builder);
+			for (String name : genresName) {
+				predicate = builder.and(predicate,
+						builder.like(root.join("genres").get("name"), name));
+			}
+			return predicate;
+		};
+	}
+
+
 	@Override
-	public List<BookDTO> getBooks(int pageNo, String sortColumn, String searchValue) {
-	    PageRequest pageRequest = PageRequest.of(pageNo, BOOKS_ON_PAGE, Sort.by(sortColumn).descending());
+	public List<BookDTO> getBooks(BookFilter filter) {
+		Specification<Book> specification = getSpecificationForSearch(filter.getSearchValue());
+		if (CollectionUtils.isNotEmpty(filter.getGenresNames())) {
+			specification = specificationWithGenres(specification, filter.getGenresNames());
+		}
+
+	    PageRequest pageRequest = PageRequest.of(filter.getPageNo(), BOOKS_ON_PAGE, Sort.by(filter.getSortColumn()).descending());
 		List<Book> booksIt = ServiceUtils.getListFromIterable(
-		        bookRepository.findAll(getSpecificationForSearch(searchValue), pageRequest));
+		        bookRepository.findAll(specification, pageRequest));
 		return booksIt.stream()
 				.map(book -> {
 					Double score = commentRepository.getAvgScoreByIsbn(book.getIsbn());
@@ -85,6 +107,7 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
+	@Deprecated
 	public List<BookDTO> getBooksForSlider() {
 		List<ScoreDTO> scoresDTOS = commentRepository.getBookAndAvgScore();
 		if (scoresDTOS.size() > MAX_BOOKS_FOR_SLIDER)

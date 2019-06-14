@@ -8,16 +8,22 @@ import com.blackwell.model.BookDTO;
 import com.blackwell.util.ServiceUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.Matchers.hasItemInArray;
+import static org.hamcrest.Matchers.hasProperty;
 import static org.junit.Assert.*;
 import static com.blackwell.MockEntityGenerator.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -51,6 +57,19 @@ public class BookIntegrationTest extends IntegrationTest {
                 .andExpect(model().attribute("currentPage", 0))
                 .andExpect(model().attribute("pagesCount", (int) bookRepository.count()/10))
                 .andExpect(model().attribute("sortColumn", "isbn"));
+    }
+
+    @Test
+    public void getBooksTableByGenresNamesTest() throws Exception {
+        MvcResult result = mockMvc.perform(get("/book/ajax/genre")
+            .param("genresNames[]", "sci-fi,mystery"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("snippets/book-table"))
+                .andReturn();
+        List<BookDTO> books = (List<BookDTO>) result.getModelAndView().getModel().get("books");
+        assertTrue(books.stream()
+                .allMatch(bookDTO -> bookDTO.getGenres().contains("sci-fi") &&
+                                    bookDTO.getGenres().contains("mystery")));
     }
 
     @Test

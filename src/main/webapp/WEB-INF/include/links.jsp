@@ -9,6 +9,7 @@
 <link href="<c:url value="/resources/css/slider.css"/>" rel="stylesheet" />
 <link href="<c:url value="/resources/css/pagination.css"/>" rel="stylesheet" />
 <link href="<c:url value="/resources/css/footer.css"/>" rel="stylesheet" />
+<link href="<c:url value="/resources/css/genres-list.css"/>" rel="stylesheet" />
 
 <script src="<c:url value="/resources/js/jquery-3.3.1.min.js"/>"></script>
 <script src="<c:url value="/resources/js/jquery-ui.min.js"/>"></script>

@@ -3,11 +3,12 @@ package com.blackwell.service;
 import com.blackwell.entity.Book;
 import com.blackwell.entity.Genre;
 import com.blackwell.model.BookDTO;
+import com.blackwell.model.BookFilter;
 
 import java.util.List;
 
 public interface BookService {
-	List<BookDTO> getBooks(int pageNo, String sortColumn, String searchValue);
+	List<BookDTO> getBooks(BookFilter filter);
 	List<BookDTO> getBooksForSlider();
 	Book getBook(long isbn);
 	void saveBook(Book book);

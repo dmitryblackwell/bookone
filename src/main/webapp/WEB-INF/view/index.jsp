@@ -23,7 +23,23 @@
 				<input type="text" style="width:100%;text-align:center;margin-bottom:15px;margin-top:30px;" id="searchInput" onkeyup="search()" value="${searchValue}" placeholder="search...">
 			</fieldset>
 		</form>
-		<div class="col" id="book-content">
+		<div class="row">
+			<div class="col-4">
+				<section class="tasks">
+					<fieldset class="tasks-list">
+						<c:forEach items="${genres}" var="g" varStatus="status">
+							<label class="tasks-list-item">
+								<input type="checkbox" name="${g.name}" value="${g.id}" class="tasks-list-cb"
+									   onclick="filterWithGenres(this)">
+								<span class="tasks-list-mark"></span>
+								<span class="tasks-list-desc">${g.name}</span>
+							</label>
+						</c:forEach>
+					</fieldset>
+				</section>
+			</div>
+			<div class="col-8" id="book-content">
+			</div>
 		</div>
 		<c:if test="${loadBooks == true}">
 			<script>

@@ -5,7 +5,6 @@
 <table id="bookTable" class="table table-hover sortable "> <!-- table-striped -->
     <thead>
     <tr>
-        <th id="isbnTh" onclick="sortPage('isbn')">isbn</th>
         <th id="authorsTh" onclick="sortPage('authors')">author</th>
         <th id="nameTh" onclick="sortPage('name')">name</th>
         <th>score</th>
@@ -17,7 +16,6 @@
     <tbody>
     <c:forEach items="${books}" var="b">
         <tr id="tr${b.isbn}" class="pointer"> <%--  onclick="window.location.href = 'books/${b.isbn}';" --%>
-            <td onclick="redirect('book/${b.isbn}')">${b.isbn}</td>
             <td onclick="redirect('book/${b.isbn}')">${b.authors}</td>
             <td onclick="redirect('book/${b.isbn}')">${b.name}</td>
             <td onclick="redirect('book/${b.isbn}')">${b.score}</td>

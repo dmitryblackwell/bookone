@@ -132,3 +132,21 @@ function search() {
 function redirect(url) {
     window.location.href = url;
 }
+
+function filterWithGenres(clickedEl) {
+    let isChecked = $(clickedEl).attr("checked");
+    $(clickedEl).attr("checked", !isChecked);
+    const checkedGenres = $(".tasks-list-cb[checked]");
+    let genresNames = [];
+    for(let i=0; i<checkedGenres.length; ++i) {
+        genresNames.push(checkedGenres[i].name)
+    }
+    $.ajax({
+        url: "/book/ajax/genre",
+        data: {"genresNames": genresNames},
+        type: "GET",
+        success: function (data) {
+            $("#book-content").html(data);
+        }
+    });
+}

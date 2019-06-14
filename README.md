@@ -2,11 +2,10 @@
 
 ##### Master Status: 
 [![Maintainability](https://api.codeclimate.com/v1/badges/e908eabd23e03aa282aa/maintainability)](https://codeclimate.com/github/dmitryblackwell/bookone/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/e908eabd23e03aa282aa/test_coverage)](https://codeclimate.com/github/dmitryblackwell/bookone/test_coverage)
 [![Build Status](https://travis-ci.org/dmitryblackwell/bookone.svg?branch=master)](https://travis-ci.org/dmitryblackwell/bookone)
 [![codecov](https://codecov.io/gh/dmitryblackwell/BookONE/branch/master/graph/badge.svg)](https://codecov.io/gh/dmitryblackwell/BookONE)
 
-##### version: __2.0.0__
+##### version: __2.1.0-SNAPSHOT__
 
 ## Getting started
 
