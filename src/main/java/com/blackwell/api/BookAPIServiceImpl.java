@@ -1,28 +1,20 @@
 package com.blackwell.api;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import com.blackwell.api.model.GoogleBookRespond;
 import com.blackwell.api.model.ItemAPIModel;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
-
-
 import okhttp3.OkHttpClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+
 @Service
 public class BookAPIServiceImpl implements BookAPIService {
-
-    @Value("${googleAPI.key}")
-    private String googleAPIKey;
 
     @Override
     public List<ItemAPIModel> searchBookList(String searchText, Integer startIndex) {

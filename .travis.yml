@@ -6,11 +6,6 @@ jdk: oraclejdk8
 services:
   - mysql
 
-coverage:
-  range: 50..80
-  round: down
-  precision: 2
-
 addons:
   apt:
     packages:
