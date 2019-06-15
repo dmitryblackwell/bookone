@@ -44,4 +44,5 @@ public class HomeController {
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return "redirect:/users/" + userDetails.getUsername();
 	}
+
 }

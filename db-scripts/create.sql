@@ -40,7 +40,8 @@ CREATE TABLE book(
 	isbn BIGINT NOT NULL PRIMARY KEY,
 	name VARCHAR(32) NOT NULL,
 	price float,
-	description VARCHAR(2048)
+	description VARCHAR(2048),
+	image_url VARCHAR(128) default ""
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE author (

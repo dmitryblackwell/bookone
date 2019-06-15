@@ -19,7 +19,7 @@
 			<div class="row">
 				<div class="artwork col-xs-12 col-md-4">
 					<img
-						src="${pageContext.request.contextPath}/resources/uploaded-images/books/${book.isbn}.jpg"
+						src="${book.imageUrl}"
 						style="height: 400px; width: 290px; background-color: #dddddd" />
 						<security:authorize access="hasRole('ADMIN')">
 							<a href="?edit=true">

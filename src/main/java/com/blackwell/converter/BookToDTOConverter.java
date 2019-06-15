@@ -18,6 +18,7 @@ public class BookToDTOConverter implements Converter<Book, BookDTO> {
         return BookDTO.builder()
                 .isbn(book.getIsbn())
                 .name(book.getName())
+                .imageUrl(book.getImageUrl())
                 .description(book.getDescription())
                 .price(book.getPrice())
                 .authors(book.getAuthors().stream()

@@ -12,6 +12,7 @@ import java.util.List;
 public class BookDTO {
     private long isbn;
     private String name;
+    private String imageUrl;
     private Double score;
     private float price;
     private String description;

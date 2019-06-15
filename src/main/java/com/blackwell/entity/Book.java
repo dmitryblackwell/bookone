@@ -22,8 +22,9 @@ public class Book {
     private String name;
     private float price;
     private String description;
+    private String imageUrl;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     private Set<Genre> genres;
     @ManyToMany(fetch = FetchType.EAGER,
             cascade = CascadeType.ALL)

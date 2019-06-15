@@ -28,7 +28,7 @@
                             </c:otherwise>
                         </c:choose>
                             <div class="col-xs-12 col-sm-6 col-md-2">
-                                <a href="book/${b.isbn}"><img src="${pageContext.request.contextPath}/resources/uploaded-images/books/${b.isbn}.jpg" class="img-responsive center-block"></a>
+                                <a href="book/${b.isbn}"><img src="${b.imageUrl}" class="img-responsive center-block"></a>
                                 <span class="item-badge">${b.score}</span>
                                 <h4 class="text-center">${b.name}</h4>
                                 <h5 class="text-center">${b.authors}</h5>
