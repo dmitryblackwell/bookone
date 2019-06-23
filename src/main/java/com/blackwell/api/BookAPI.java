@@ -7,6 +7,6 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface BookAPI {
-    @GET("/books/v1/volumes?langRestrict=en&printType=books&max-results=40")
-    public Call<GoogleBookRespond> searchBooks(@Query("q") String searchText, @Query("startIndex") Integer startIndex); //@Query("key") String key
+    @GET("/books/v1/volumes?langRestrict=en&printType=books&maxResults=40")
+    public Call<GoogleBookRespond> searchBooks(@Query("q") String searchText, @Query("startIndex") Integer startIndex);
 }

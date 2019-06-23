@@ -5,5 +5,5 @@ import com.blackwell.api.model.ItemAPIModel;
 import java.util.List;
 
 public interface BookAPIService {
-    public List<ItemAPIModel> searchBookList(String searchText, Integer startIndex);
+    List<ItemAPIModel> searchBookList(String searchText, Integer startIndex);
 }

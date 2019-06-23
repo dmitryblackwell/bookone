@@ -34,35 +34,40 @@ public class BookAPIController {
     @GetMapping("/update")
     @ResponseBody
     public String updateLibrary() {
-        List<Genre> genres = ServiceUtils.getListFromIterable(genreRepository.findAll());
+        List<Genre> genres = ServiceUtils.getListFromIterable(genreRepository. findAll());
         for (Genre genre : genres) {
-            for (int i = 0; i < 100; ++i) {
+            int index = 0;
+            int errorsCount = 0;
+            while (true) {
                 String search = "subject:" + genre.getName();
                 try {
-                    List<ItemAPIModel> models = bookAPIService.searchBookList(search, i);
-                    saveBooks(models);
-                    System.out.println(search + ":" + i);
+                    List<ItemAPIModel> models = bookAPIService.searchBookList(search, index++);
+                    if (CollectionUtils.emptyIfNull(models).isEmpty())
+                        break;
+                    saveBooks(models, genre);
+                    System.out.println(search + ":" + index);
                 } catch (Exception e) {
+                    errorsCount++;
                     e.printStackTrace();
-                    System.err.println("!" + search + ":" + i);
+                    System.err.println("!" + search + ":" + index);
+                    if (errorsCount >= 10)
+                        break;
                 }
             }
         }
         return "<a href='/book'>books</a>";
     }
 
-    private void saveBooks(List<ItemAPIModel> models) {
+    private void saveBooks(List<ItemAPIModel> models, Genre genre) {
         for(ItemAPIModel itemAPIModel : models) {
             VolumeInfoModel volumeInfo = itemAPIModel.getVolumeInfo();
+            if (volumeInfo == null)
+                continue;
             Set<Author> authors = new HashSet<>();
             for (String authorName : volumeInfo.getAuthors())
                 authors.add(Author.builder().fullName(authorName).build());
             Set<Genre> genres = new HashSet<>();
-            for (String genresNames : CollectionUtils.emptyIfNull(volumeInfo.getCategories())) {
-                Genre g = new Genre();
-                g.setName(genresNames);
-                genres.add(g);
-            }
+            genres.add(genre);
             Long isbn;
             try {
                 isbn = Long.valueOf(volumeInfo.getIndustryIdentifiers().get(0).getIdentifier());
@@ -74,7 +79,7 @@ public class BookAPIController {
                     .name(getSubStr(volumeInfo.getTitle(), 31))
                     .price(volumeInfo.getPageCount())
                     .description(getSubStr(volumeInfo.getDescription(), 2047))
-                    .imageUrl(volumeInfo.getImageLinks().getThumbnail())
+                    .imageUrl(volumeInfo.getImageLinks() == null ? "" : volumeInfo.getImageLinks().getThumbnail())
                     .authors(authors)
                     .genres(genres)
                     .build();
