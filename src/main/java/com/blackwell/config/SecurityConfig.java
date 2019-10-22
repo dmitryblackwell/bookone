@@ -25,18 +25,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/resources/**").permitAll()
-                .antMatchers("/orders/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .loginProcessingUrl("/authentication")
-                .permitAll()
-                .and()
-                .logout()
-                .permitAll();
+//        http.csrf().disable()
+//                .authorizeRequests()
+//                .antMatchers("/resources/**").permitAll()
+//                .antMatchers("/orders/**").hasRole("ADMIN")
+//                .anyRequest().authenticated()
+//                .and()
+//                .formLogin()
+//                .loginPage("/login")
+//                .loginProcessingUrl("/authentication")
+//                .permitAll()
+//                .and()
+//                .logout()
+//                .permitAll();
     }
 }
