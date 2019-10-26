@@ -6,14 +6,13 @@ import com.blackwell.entity.Genre;
 import com.blackwell.repository.BookRepository;
 import com.blackwell.repository.GenreRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-// I am fucking drunk, bitches!
+import java.util.Collections;
 
 @RestController
-@RequestMapping("/api/book/")
-@AllArgsConstructor // Yeah, Bitch, I can do IT~!
+@RequestMapping("/api/book")
+@AllArgsConstructor
 public class BookRestController {
 
     private BookRepository bookRepository;
@@ -24,10 +23,12 @@ public class BookRestController {
         return bookRepository.findAll();
     }
 
-    @GetMapping("genre/{genreName}")
+    @GetMapping("/genre/{genreName}")
     public Iterable<Book> findBookByGenre(@RequestBody @PathVariable String genreName) {
         Genre genre = genreRepository.findGenreByName(genreName);
-        return bookRepository.getBookByGenresContaining(genre);
+        return genre != null ?
+                bookRepository.getBookByGenresContaining(genre) :
+                Collections.EMPTY_LIST;
     }
 
 }
